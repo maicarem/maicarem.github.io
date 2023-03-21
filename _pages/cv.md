@@ -6,9 +6,9 @@ author_profile: true
 redirect_from:
   - /resume
 ---
+You can find my CV for more information [here](https://drive.google.com/file/d/1kMeYPelVcrb0XiphjLSFVaUUx1yp-Hfc/view?usp=share_link)
 
-{% include base_path %}
-
+<!-- 
 Education
 ======
 * B.S. in GitHub, GitHub University, 2012
@@ -56,4 +56,4 @@ Teaching
   
 Service and leadership
 ======
-* Currently signed in to 43 different slack teams
+* Currently signed in to 43 different slack teams -->

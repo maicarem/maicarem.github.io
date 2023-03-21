@@ -7,7 +7,7 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Mai-Anh Truong-Tran"
+title                    : "Anh Truong"
 title_separator          : "-"
 name                     : &name "Mai-Anh"
 description              : &description "personal description"
@@ -80,7 +80,7 @@ analytics:
 
 # Site Author
 author:
-  name             : "Mai-Anh Truong-Tran"
+  name             : "Anh Truong"
   avatar           : "profile.png"
   bio              : "Master MODO student at PSL University"
   location         : "Paris, France"

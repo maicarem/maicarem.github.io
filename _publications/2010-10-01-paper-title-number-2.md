@@ -1,15 +1,10 @@
 ---
-title: "Paper Title Number 2"
+title: "An improved hybrid metaheuristics and rule-based approach for flexible job-shop scheduling subject to machine breakdowns"
 collection: publications
 permalink: /publication/2010-10-01-paper-title-number-2
-excerpt: 'This paper is about the number 2. The number 3 is left for future work.'
+excerpt: 
 date: 2010-10-01
-venue: 'Journal 1'
-paperurl: 'http://academicpages.github.io/files/paper2.pdf'
-citation: 'Your Name, You. (2010). &quot;Paper Title Number 2.&quot; <i>Journal 1</i>. 1(2).'
+venue: 'Engineering Optimization'
+paperurl: 'https://www-tandfonline-com.proxy.bu.dauphine.fr/doi/full/10.1080/0305215X.2022.2098283'
+citation: 
 ---
-This paper is about the number 2. The number 3 is left for future work.
-
-[Download paper here](http://academicpages.github.io/files/paper2.pdf)
-
-Recommended citation: Your Name, You. (2010). "Paper Title Number 2." <i>Journal 1</i>. 1(2).
