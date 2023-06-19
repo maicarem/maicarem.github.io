@@ -10,7 +10,7 @@ redirect_from:
 
 Welcome to my homepage! My full name is Anh Truong Tran Mai. 
 
-Currently, I am studying Master by Research in Modeling, Optimization, Decision and Organization [MODO](https://modo.dauphine.fr/en.html) at Paris-Dauphine, [PSL University](https://psl.eu/en) (#38 QS), France. I am currently under the guidance of Professor [André Rossi](https://www.lamsade.dauphine.fr/~arossi) and Professor [Sonia Toubaline](https://www.lamsade.dauphine.fr/fr/personnes/detail-cv/profile/sonia-toubaline.html).
+Currently, I am studying Master by Research in Modeling, Optimization, Decision and Organization [MODO](https://modo.dauphine.fr/en.html) at Paris-Dauphine, [PSL University](https://psl.eu/en) (#26 QS), France. I am currently under the guidance of Professor [André Rossi](https://www.lamsade.dauphine.fr/~arossi) and Professor [Sonia Toubaline](https://www.lamsade.dauphine.fr/fr/personnes/detail-cv/profile/sonia-toubaline.html).
 
 Previously, I earned my Bachelor's degree in [Industrial and Systems Engineering](https://iem.hcmiu.edu.vn) from [International University](https://hcmiu.edu.vn/en/), Vietnam National University Ho Chi Minh city, where I graduated as *valedictorian*. With the help of Associate Professor [Hop-Van Nguyen](https://scholar.google.com.vn/citations?user=WHGCW3MAAAAJ&hl=en), I worked on metaheuristics for solving large-scale supply chain problems (assembly line balancing problem, scheduling problem).
 
