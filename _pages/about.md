@@ -10,7 +10,9 @@ redirect_from:
 
 Welcome to my homepage! My full name is Anh Truong Tran Mai. 
 
-I am starting my Ph.D. in Industrial and Systems Engineering at [University of Florida](https://www.ise.ufl.edu/) in Fall 2023. I also pursue Master by Research in Modeling, Optimization, Decision and Organization [MODO](https://modo.dauphine.fr/en.html) at Paris-Dauphine, [PSL University](https://psl.eu/en) (#26 QS), France. My research was under the guidance of Professor [André Rossi](https://www.lamsade.dauphine.fr/~arossi) and Professor [Sonia Toubaline](https://www.lamsade.dauphine.fr/fr/personnes/detail-cv/profile/sonia-toubaline.html).
+I am starting my Ph.D. in Industrial and Systems Engineering at [University of Florida](https://www.ise.ufl.edu/) in Fall 2023. I am advised by Assoc. Prof. [Jorge Sefair](https://www.ise.ufl.edu/sefair/).
+
+I also pursue Master by Research in Modeling, Optimization, Decision and Organization [MODO](https://modo.dauphine.fr/en.html) at Paris-Dauphine, [PSL University](https://psl.eu/en) (#26 QS), France. My research about Ring Star Problem on Telecommunications Network was under the guidance of Professor [André Rossi](https://www.lamsade.dauphine.fr/~arossi) and Professor [Sonia Toubaline](https://www.lamsade.dauphine.fr/fr/personnes/detail-cv/profile/sonia-toubaline.html).
 
 Previously, I earned my Bachelor's degree in [Industrial and Systems Engineering](https://iem.hcmiu.edu.vn) from [International University](https://hcmiu.edu.vn/en/), Vietnam National University Ho Chi Minh city, where I graduated as *valedictorian*. With the help of Associate Professor [Hop-Van Nguyen](https://scholar.google.com.vn/citations?user=WHGCW3MAAAAJ&hl=en), I worked on metaheuristics for solving large-scale supply chain problems (assembly line balancing problem, scheduling problem). 
 
@@ -21,7 +23,7 @@ My research interest focuses on formulating mathematical modeling of real world 
 - **Aug, 2023**: I started my Ph.D. in Industrial and Systems Engineering at University of Florida, US.
 - **Oct, 2022**: I began my one-year study for a Master's degree in MODO at [PSL University](https://psl.eu/en)!
 - **Aug, 2022**: I achieved the distinction of *valedictorian* upon graduating with a Bachelor's degree in Industrial and Systems Engineering from International University, [VNU-HCM](https://hcmiu.edu.vn/en/).
-- **Aug, 2022**: Invited talk at Vietnam Operations Research Network 2023 ([VORN](https://viasm.edu.vn/en/hdkh/vorn-2022))
+<!-- - **Aug, 2022**: Invited talk at Vietnam Operations Research Network 2023 ([VORN](https://viasm.edu.vn/en/hdkh/vorn-2022)) -->
 - **May, 2022 - June 2022**: I was awarded the [*France Excellence*](https://www.vietnam.campusfrance.org/fr/les-bourses-d-excellence-de-l-ambassade-de-france) from the Embassy of France in Vietnam and the *PSL Fellowship* from MODO. These combined fellowships provide financial support for my studies in France.
 
 
