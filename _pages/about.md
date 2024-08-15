@@ -10,7 +10,7 @@ redirect_from:
 
 Welcome to my homepage! My full name is Anh Truong Tran Mai. 
 
-I am currently doing my Ph.D. in Industrial and Systems Engineering at [University of Florida](https://www.ise.ufl.edu/) in Fall 2023. I am advised by Assoc. Prof. [Jorge Sefair](https://www.ise.ufl.edu/sefair/). My research interest focuses on integer programming, bilevel programming and interdiction problem.
+I am a second-year Ph.D. student in Industrial and Systems Engineering at [University of Florida](https://www.ise.ufl.edu/). I am advised by Assoc. Prof. [Jorge Sefair](https://www.ise.ufl.edu/sefair/). My research interest focuses on integer programming, bilevel programming and interdiction problem.
 
 I pursued Master by Research in Modeling, Optimization, Decision and Organization [MODO](https://modo.dauphine.fr/en.html) at Paris-Dauphine, [PSL University](https://psl.eu/en) (#26 QS), France. My research about Ring Star Problem on Telecommunications Network was under the guidance of Professor [André Rossi](https://www.lamsade.dauphine.fr/~arossi) and Dr.[Sonia Toubaline](https://www.lamsade.dauphine.fr/fr/personnes/detail-cv/profile/sonia-toubaline.html). My thesis got 'tres bien' ('very good') grade (16/20).
 
