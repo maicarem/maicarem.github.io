@@ -26,7 +26,7 @@ My research interest focuses on formulating mathematical modeling of real world 
 - **Oct, 2022**: I began my one-year study for a Master's degree in MODO at [PSL University](https://psl.eu/en)!
 - **Aug, 2022**: I achieved the distinction of *valedictorian* upon graduating with a Bachelor's degree in Industrial and Systems Engineering from International University, [VNU-HCM](https://hcmiu.edu.vn/en/).
 <!-- - **Aug, 2022**: Invited talk at Vietnam Operations Research Network 2023 ([VORN](https://viasm.edu.vn/en/hdkh/vorn-2022)) -->
-- **May, 2022 - June 2022**: I was awarded the [*France Excellence*](https://www.vietnam.campusfrance.org/fr/les-bourses-d-excellence-de-l-ambassade-de-france) from the Embassy of France in Vietnam and the *PSL Fellowship* from MODO. These combined fellowships provide financial support for my studies in France.
+- **May, 2022 - June 2022**: I was awarded the [*France Excellence*](https://www.vietnam.campusfrance.org/fr/les-bourses-d-excellence-de-l-ambassade-de-france) from the Embassy of France in Vietnam and the [*PSL Fellowship*](https://psl.eu/en/scholarships-and-grants-graduate-students) from MODO. These combined fellowships provide financial support for my studies in France.
 
 
 <!-- Getting started
