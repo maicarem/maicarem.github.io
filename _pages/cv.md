@@ -6,7 +6,7 @@ author_profile: true
 redirect_from:
   - /resume
 ---
-You can find my CV for more information [here](https://drive.google.com/drive/folders/1eCOPx9FXgPfsF_BNX39ceCjh9q0MPHeD)
+You can find my CV for more information [here](https://drive.google.com/file/d/1_2Qx8N5ezxqpjLlaNaHtTZUSMajswG0B/view?usp=drive_link)
 
 <!-- 
 Education
