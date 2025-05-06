@@ -7,20 +7,20 @@
 # bluesky_url: # your bluesky URL
 # dblp_url: # your DBLP profile url
 # discord_id: # your discord id (18-digit unique numerical identifier)
-email: you@example.com # your email address
+email: truong.anh@ufl.edu # your email address
 # facebook_id: # your facebook id
 # flickr_id: # your flickr id
 # github_username: # your GitHub user name
 # gitlab_username: # your GitLab user name
 # ieee_id: # your ieeexplore.ieee.org/author/id
-inspirehep_id: 1010907 # Inspire HEP author ID
+# inspirehep_id: 1010907 # Inspire HEP author ID
 # instagram_id: # your instagram id
 # kaggle_id: # your kaggle id
 # keybase_username: # your keybase user name
 # lastfm_id: # your lastfm id
 # lattes_id: # your ID on Lattes (Brazilian Lattes CV)
 # leetcode_id: # your LeetCode id
-# linkedin_username: # your LinkedIn user name
+linkedin_username: maianhtruong1509 # your LinkedIn user name
 # mastodon_username: # your mastodon instance+username in the format instance.tld/@username
 # medium_username: # your Medium username
 # orcid_id: # your ORCID ID
@@ -30,7 +30,7 @@ inspirehep_id: 1010907 # Inspire HEP author ID
 # quora_username: # your Quora username
 # research_gate_profile: # your profile on ResearchGate
 rss_icon: true # set to true to show the RSS icon
-scholar_userid: qc6CJjYAAAAJ # your Google Scholar ID
+scholar_userid: GR-3OwkAAAAJ # your Google Scholar ID
 # scopus_id: # your profile on Scopus
 # semanticscholar_id: # your Semantic Scholar ID
 # spotify_id: # your spotify id
@@ -46,6 +46,6 @@ scholar_userid: qc6CJjYAAAAJ # your Google Scholar ID
 # youtube_id: # your youtube channel id (youtube.com/@<youtube_id>)
 # zotero_username: # your zotero username
 custom_social: # can be any name here other than the ones already defined above
-  logo: https://www.alberteinstein.com/wp-content/uploads/2024/03/cropped-favicon-192x192.png # can be png, svg, jpg
-  title: Custom Social
-  url: https://www.alberteinstein.com/
+  logo: https://scontent-mia3-2.xx.fbcdn.net/v/t1.15752-9/490067028_9496236753829147_2904549117326069959_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=9f807c&_nc_ohc=E62V-M0WM3IQ7kNvwHhE6u3&_nc_oc=AdlvmDxwyU-6vUJPRp2C7aVsXYhxJrDJdoRzzuasoNIzsZgZ6o5kCfmJOjLuDk-0cVY&_nc_zt=23&_nc_ht=scontent-mia3-2.xx&oh=03_Q7cD2AHO7B7KXRX1OHs3mQQCKUqREIWoq2fMfjzRHQA5_z8H2g&oe=681D5BAD
+  title: Anh Truong
+  url: https://www.linkedin.com/in/maianhtruong1509/

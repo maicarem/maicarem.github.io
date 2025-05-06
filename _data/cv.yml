@@ -2,96 +2,105 @@
   type: map
   contents:
     - name: Full Name
-      value: Albert Einstein
-    - name: Date of Birth
-      value: 14th March 1879
+      value: ANH T.M TRUONG
     - name: Languages
-      value: English, German
+      value: English
 
 - title: Education
   type: time_table
   contents:
-    - title: PhD
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1905
+    - title: PhD Student of Operations Research, ISE
+      institution: University of Florida
+      year: 2027 (Expected) 
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Federal teaching diploma
-      institution: Eidgenössische Technische Hochschule, Zurich, Switzerland
-      year: 1900
+        - Research Focus: Interdiction Game, Bilevel Optimization, Integer Programming. 
+        - Related Coursework: Smart Grids For Sustainable Energy, Mathematical Programming, Machine Learning, Stochastic Process, Stochastic Optimization, High-Dimensional Data Analytics, Algorithms
+    - title: Master of Computer Science
+      institution: Paris Sciences et Lettres University 
+      year: 2023 
       description:
-        - Description 1.
-        - Description 2.
+        - Thesis: Ring Star Problem under the failure of two hubs.
+        - Received combined fully-funded "PSL Fellowship" and "Excellence Scholarship" by French Embassy. 
+    - title: Bachelor of Industrial and Systems Engineering
+      institution: Vietnam National University, Ho Chi Minh city, Vietnam
+      year: 2022
+      description:
+        - Valedictorian (Class of 2022) (1/100), fully-funded scholarship, Ranked first in National Entrance Examination. 
+        - Received Vietnam Outstanding Female Student in Science and Technology (only 20 female students nationwide selected, featured in press). 
 
 - title: Experience
   type: time_table
   contents:
-    - title: Professor of Theoretical Physics
-      institution: Institute for Advanced Study, Princeton University
-      year: 1933 - 1955
+    - title: Reasearch Assistant Center for Applied Optimization
+      institution: University of Florida
+      year: 2023 - Present
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
+        - Advisor: Dr. Jorge. A. Sefair 
+        - title: Research topic 1 - Service Agent Transport Problem. 
           contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Visiting Professor
-      institution: California Institute of Technology, Pasadena, California, US
-      year: 1933
+            - Formulated a flow-based model for scheduling with multiple transport and service agents.
+            - Introduced branch-and-cut approach with critical path cuts.
+            - Proposed acceleration techniques (dynamic programming, greedy algorithm) to transform an approximate solution into a feasible one.
+            - Achieved 40% performance improvement and 60% time reduction over state-of-the-art.
+        - title: Research topic 2 - Generalized Network Interdiction Min-Cost Flow Problem. 
+          contents:
+            - Utilized the k-shortest path to predict the interdictor's behavior on solving interdiction.
+    - title: Research Intern
+      institution: Paris-Dauphine, PSL 
+      year: 2023 
       description:
-        - Description 1.
-        - Description 2.
-
-    - title: Director
-      institution: Kaiser Wilhelm Institute for Physics, Berlin, Germany.
-      year: 1917-1933
-
-    - title: Professor of Theoretical Physics
-      institution: Karl-Ferdinand University, Prague, Czechoslovakia
-      year: 1911 - 1917
+        - Advisor: Dr. André Rossi & Dr. Sonia Toubaline
+        - Research topic: Branch-and-Benders-Cut on network optimization subject to uncertainty.
+        - Proposed integer programming models for survivable network design, implemented by Julia and Gurobi.
+        - Devised and implemented accelerating techniques for the Branch-and-Benders-Cut approach, resulting in a faster convergence rate by 17%.
+    - title: Reasearch Assistant
+      institution: Vietnam National University
+      year: 2020 - 2022 
       description:
-
-    - title: Associate Professor of Theoretical Physics
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1909 - 1911
+        - Advisor: Dr. Hop Nguyen Van
+        - Research topic: Metaheuristics for supply chain problems (assembly line balancing, port scheduling problem, job shop scheduling).
+        - Implemented genetic algorithm and particle swarm optimization for research projects using Python, outperforming existing state-of-the-art solutions.
+    - title: Demand Planner
+      institution: Yes4All
+      year: 2022
+      description:
+        - Optimized SQL queries and visualized metrics using Apache Superset, enhancing data operations by 25%.
+        - Analyzed sales data with Python and SQL, reducing excess sporting goods inventory costs by 15%. 
+    - title: Engineering Intern
+      institution: Intel 
+      year: 2020 - 2021 
+      description:
+        - Implemented VBA automation to manage inventory records, increasing accuracy and efficiency. 
+        - Developed a PowerApps application to streamline headcount reporting at the factory. 
 
 - title: Open Source Projects
   type: time_table
   contents:
-    - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
-      year: 2015-now
-      description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
+    - title:
+      year:
+      description:
 
 - title: Honors and Awards
   type: time_table
   contents:
-    - year: 1921
+    - year: 2022
       items:
-        - Nobel Prize in Physics
-        - Matteucci Medal
-    - year: 2029
+        - Valedictorian (Class of 2022) (1/100), fully-funded scholarship, Ranked first in National Entrance Examination 
+        - Vietnam Outstanding Female Student in Science and Technology 
+    - year: 2023
       items:
-        - Max Planck Medal
+        - Combined fully-funded "PSL Fellowship" and "Excellence Scholarship" by French Embassy 
 
 - title: Academic Interests
   type: nested_list
   contents:
-    - title: Topic 1.
+    - title: Research Focus
       items:
-        - Description 1.
-        - Description 2.
-    - title: Topic 2.
-      items:
-        - Description 1.
-        - Description 2.
+        - Interdiction Game
+        - Bilevel Optimization 
+        - Integer Programming
 
 - title: Other Interests
   type: list
   contents:
-    - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.
+    - <u>Hobbies:</u>
