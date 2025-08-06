@@ -20,7 +20,7 @@ email: truong.anh@ufl.edu # your email address
 # lastfm_id: # your lastfm id
 # lattes_id: # your ID on Lattes (Brazilian Lattes CV)
 # leetcode_id: # your LeetCode id
-linkedin_username: maianhtruong1509 # your LinkedIn user name
+# linkedin_username: maianhtruong1509 # your LinkedIn user name
 # mastodon_username: # your mastodon instance+username in the format instance.tld/@username
 # medium_username: # your Medium username
 # orcid_id: # your ORCID ID
@@ -29,8 +29,8 @@ linkedin_username: maianhtruong1509 # your LinkedIn user name
 # publons_id: # your ID on Publons
 # quora_username: # your Quora username
 # research_gate_profile: # your profile on ResearchGate
-rss_icon: true # set to true to show the RSS icon
-scholar_userid: GR-3OwkAAAAJ # your Google Scholar ID
+# rss_icon: false # set to true to show the RSS icon
+# scholar_userid: GR-3OwkAAAAJ # your Google Scholar ID
 # scopus_id: # your profile on Scopus
 # semanticscholar_id: # your Semantic Scholar ID
 # spotify_id: # your spotify id
@@ -45,7 +45,7 @@ scholar_userid: GR-3OwkAAAAJ # your Google Scholar ID
 # x_username: # your X handle
 # youtube_id: # your youtube channel id (youtube.com/@<youtube_id>)
 # zotero_username: # your zotero username
-custom_social: # can be any name here other than the ones already defined above
-  logo: https://scontent-mia3-2.xx.fbcdn.net/v/t1.15752-9/490067028_9496236753829147_2904549117326069959_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=9f807c&_nc_ohc=E62V-M0WM3IQ7kNvwHhE6u3&_nc_oc=AdlvmDxwyU-6vUJPRp2C7aVsXYhxJrDJdoRzzuasoNIzsZgZ6o5kCfmJOjLuDk-0cVY&_nc_zt=23&_nc_ht=scontent-mia3-2.xx&oh=03_Q7cD2AHO7B7KXRX1OHs3mQQCKUqREIWoq2fMfjzRHQA5_z8H2g&oe=681D5BAD
-  title: Anh Truong
-  url: https://www.linkedin.com/in/maianhtruong1509/
+# custom_social: # can be any name here other than the ones already defined above
+#   logo: assets/img/canyon_img_anh.png
+#   title: Linkedin
+#   url: https://www.linkedin.com/in/maianhtruong1509/
