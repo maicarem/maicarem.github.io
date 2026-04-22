@@ -32,7 +32,9 @@ Hello, hello!
 
 I’m Anh Truong, currently pursuing a Ph.D. in Operations Research within the <a href='https://www.ise.ufl.edu/'>Industrial and Systems Engineering Department</a> at the University of Florida, expecting to graduate in May 2027, under the guidance of <a href='https://www.ise.ufl.edu/sefair/'>Dr. Jorge A. Sefair</a>.
 
-**Research** I am working on Interdiction Games, Bilevel Optimization, and Integer Programming. I am working on Generalized Network Interdiction Min-Cost Flow Problem, focusing on algorithmic approaches for finding optimal solutions in a sparse graph.
+**News** I will be doing Data Scientist, Algorithms and Optimization Internship at Lyft during Summer 2026. I am excited to apply my research skills in a real-world setting and contribute to Lyft's mission of improving ride-sharing efficiency.
+
+**Research** My research interests include Interdiction Games, Bilevel Optimization, and Integer Programming. I am working on Generalized Network Interdiction Min-Cost Flow Problem, focusing on algorithmic approaches for finding optimal solutions in a sparse graph.
 
 **Past Study** Before starting my Ph.D., I earned Master of Computer Science from <a href='https://psl.eu/en'>Paris Sciences et Lettres University</a>. I worked with <a href='https://www.lamsade.dauphine.fr/~arossi/'>Dr. André Rossi</a> and <a href='https://scholar.google.com/citations?user=cIKP9SMAAAAJ&hl=en'>Dr. Sonia Toubaline</a>. My thesis focused on the <a href='https://hal.science/hal-04493437/'>"Ring Star Problem under the failure of two hubs"</a> and I received the <a href='https://pginfo.ens.psl.eu/last/scholarship_grants_en.html'>"PSL Fellowship"</a> from PSL University and <a href='https://usth.edu.vn/en/call-for-application-for-france-excellence-scholarship-819/#:~:text=Along%20with%20the%20Eiffel%20Scholarship,and%2036%20months%20for%20PhD.'>"Excellence Scholarship"</a> from the French Embassy for funded study. 
 
