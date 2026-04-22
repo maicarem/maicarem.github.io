@@ -109,6 +109,12 @@ kramdown:
       line_numbers: false
       start_line: 1
 
+# Collections
+collections:
+  books:
+    output: true
+    permalink: /books/:name/
+
 # Includes & excludes
 include: ["_pages", "_scripts"]
 exclude:
@@ -164,6 +170,10 @@ defaults:
 
 sass:
   style: compressed
+  quiet_deps: true
+  silence_deprecations:
+    - import
+    - global-builtin
 
 # -----------------------------------------------------------------------------
 # Jekyll Minifier
@@ -287,7 +297,7 @@ external_links:
 # MAKE SURE imagemagick is installed and on your PATH before enabling imagemagick. In a terminal, run:
 #   convert -version
 imagemagick:
-  enabled: true # enables responsive images for your site (recommended, see https://github.com/alshedivat/al-folio/issues/537)
+  enabled: false # keep local builds quiet when ImageMagick is unavailable; CI enables this for deploys
   widths:
     - 480
     - 800

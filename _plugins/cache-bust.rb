@@ -25,8 +25,17 @@ module Jekyll
       end
 
       def file_content
-        local_file_name = file_name.slice((file_name.index('assets/')..-1))
+        return '' unless file_name.is_a?(String)
+
+        assets_index = file_name.index('assets/')
+        return '' if assets_index.nil?
+
+        local_file_name = file_name.slice((assets_index..-1))
+        return '' unless File.file?(local_file_name)
+
         File.read(local_file_name)
+      rescue StandardError
+        ''
       end
 
       def file_contents
