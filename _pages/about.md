@@ -32,7 +32,7 @@ Hello, hello!
 
 I’m Anh Truong, currently pursuing a Ph.D. in Operations Research within the <a href='https://www.ise.ufl.edu/'>Industrial and Systems Engineering Department</a> at the University of Florida, expecting to graduate in May 2027, under the guidance of <a href='https://www.ise.ufl.edu/sefair/'>Dr. Jorge A. Sefair</a>.
 
-**News** I will be doing Data Scientist, Algorithms and Optimization Internship at Lyft during Summer 2026. I am excited to apply my research skills in a real-world setting and contribute to Lyft's mission of improving ride-sharing efficiency.
+**[April 2026] News 🥳** I will be doing Data Scientist, Algorithms and Optimization Internship at Lyft, Inc. during Summer 2026. I am excited to apply my research skills in a real-world setting and contribute to Lyft's mission of improving ride-sharing efficiency. 
 
 **Research** My research interests include Interdiction Games, Bilevel Optimization, and Integer Programming. I am working on Generalized Network Interdiction Min-Cost Flow Problem, focusing on algorithmic approaches for finding optimal solutions in a sparse graph.
 
