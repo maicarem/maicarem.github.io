@@ -134,6 +134,8 @@ select.chip{padding:4px 8px;max-width:100%}
 .gprompt{font-size:20px;font-weight:600;line-height:1.4}
 .gbar{height:4px;background:var(--sunk);border-radius:4px;overflow:hidden}.gbar i{display:block;height:100%;background:var(--accent)}
 .ginput{font-family:var(--zh);font-size:22px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--sunk);color:var(--fg);width:100%}
+textarea.ginput{font-size:19px;line-height:1.5;resize:vertical;min-height:80px}
+.gprompt.long{font-size:16px;font-weight:500}
 .ginput:focus{outline:none;border-color:var(--accent)}
 .grow{display:flex;gap:8px;flex-wrap:wrap}
 .btn{border:0;background:var(--accent);color:var(--surface);border-radius:10px;padding:9px 18px;font-weight:700;font-size:14px}
@@ -561,6 +563,7 @@ document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)r
   if(t.getAttribute("role")==="tab"){showView(t.id.slice(4));return}
   if(t.dataset.prac){prac.src=t.dataset.prac;startGame();showView("prac");return}
   if(t.dataset.read){const b=document.getElementById("lb-"+t.dataset.read);if(b.hidden){const tp=BYID[t.dataset.read];b.innerHTML=tp.posts.map((p,pi)=>postHTML(p,tp,pi,"L")).join("")+quizHTML(tp,0,0)}b.hidden=!b.hidden;t.textContent=b.hidden?"Read posts":"Hide posts";return}
+  if(t.dataset.gwhat){prac.what=t.dataset.gwhat;store.set("gwhat",prac.what);startGame();return}
   if(t.dataset.gmode){prac.mode=t.dataset.gmode;store.set("gmode",prac.mode);startGame();return}
   if(t.id==="g-check"){checkAnswer();return}
   if(t.id==="g-next"){nextItem();return}
@@ -598,25 +601,32 @@ function renderLib(){const done=store.get("practiced",{});
    (dated.length?dated.join(""):"")+`<div class="daybar"><h2>Starter topics</h2></div>`+TOPICS.map(t=>row(t,"starter")).join("")}
 
 // Practice game: show Vietnamese, English or audio; the learner types the Chinese (characters or pinyin).
-const prac={src:store.get("gsrc","today"),mode:store.get("gmode","mix"),queue:[],cur:null,n:0,right:0,total:10,ans:null};
+const prac={src:store.get("gsrc","today"),mode:store.get("gmode","mix"),what:store.get("gwhat","all"),queue:[],cur:null,n:0,right:0,total:10,ans:null};
 function srcTopics(){if(prac.src==="today"){const d=dateKey(0);if(DAILY[d])return DAILY[d];const n=TOPICS.length,a=((2*TODAY)%n+n)%n;return [TOPICS[a],TOPICS[(a+1)%n]]}
   if(prac.src==="all")return [...pastDates().flatMap(d=>DAILY[d]),...TOPICS];if(prac.src==="saved")return [];return BYID[prac.src]?[BYID[prac.src]]:[]}
 function buildItems(){const items=[];const add=(w,tid)=>{items.push({k:"word",zh:w[0],py:w[1],en:w[2],vi:w[3],lvl:w[4],tid});items.push({k:"sent",zh:w[5],py:w[6],en:w[7],lvl:w[4],tid})};
   if(prac.src==="saved"){for(const k of Object.keys(state.saved)){const f=ALLWORDS.find(x=>x.key===k);if(f)add(f.w,k.split("_")[0])}}
   else srcTopics().forEach(t=>t.posts.forEach(p=>p.words.forEach(w=>{if(lvOk(w[4]))add(w,t.id)})));
-  if(prac.mode==="vi")return shuffle(items.filter(x=>x.k==="word"));return shuffle(items)}
+  if(prac.src!=="saved"&&prac.what!=="words")srcTopics().forEach(t=>t.posts.forEach(p=>{if(!lvOk(p.lvl))return;
+    items.push({k:"post",zh:p.zh,py:p.py,en:p.en,vi:p.vi,lvl:p.lvl,tid:t.id});
+    if(!canSpeak)return;const zs=p.zh.split(/(?<=[。！？])/).filter(x=>x.trim()),ps=p.py.split(/(?<=[.!?])\s+/);
+    if(zs.length===ps.length)zs.forEach((z,i)=>{if(z.length>=6)items.push({k:"psent",zh:z,py:ps[i],en:"",vi:"",lvl:p.lvl,tid:t.id})})}));
+  const keep=prac.what==="posts"?x=>x.k==="post"||x.k==="psent":prac.what==="words"?x=>x.k==="word"||x.k==="sent":()=>true;
+  const modeOk=prac.mode==="vi"?x=>x.k==="word"||x.k==="post":prac.mode==="en"?x=>x.k!=="psent":()=>true;
+  return shuffle(items.filter(keep).filter(modeOk))}
 function shuffle(items){for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]]}return items}
-function pickMode(it){let m=prac.mode;if(m==="audio"&&!canSpeak)m="mix";if(m==="vi"&&it.k==="sent")m="en";
-  if(m==="mix"){const ms=it.k==="word"?["vi","en"]:["en"];if(canSpeak)ms.push("audio");m=ms[Math.floor(Math.random()*ms.length)]}return m}
+function pickMode(it){if(it.k==="psent")return "audio";let m=prac.mode;if(m==="audio"&&!canSpeak)m="mix";if(m==="vi"&&(it.k==="sent"))m="en";
+  if(m==="mix"){const ms=it.k==="word"||it.k==="post"?["vi","en"]:["en"];if(canSpeak)ms.push("audio");m=ms[Math.floor(Math.random()*ms.length)]}return m}
 function srcOptions(){const o=[["today","Today's topics"],["all","All topics so far"],["saved","My saved words"]];
   const sel=BYID[prac.src]?[[prac.src,BYID[prac.src].zh+" "+BYID[prac.src].en]]:[];return sel.concat(o).map(([v,l])=>`<option value="${esc(v)}" ${v===prac.src?"selected":""}>${esc(l)}</option>`).join("")}
-function startGame(){store.set("gsrc",prac.src);prac.queue=buildItems().slice(0,prac.total);prac.n=0;prac.right=0;prac.cur=null;prac.total=10;
+function startGame(){store.set("gsrc",prac.src);{const all=buildItems();if(prac.what==="all"){const pp=all.filter(x=>x.k==="post"||x.k==="psent"),rest=all.filter(x=>x.k!=="post"&&x.k!=="psent");prac.queue=shuffle([...pp.slice(0,4),...rest.slice(0,6)])}else prac.queue=all.slice(0,10)}prac.n=0;prac.right=0;prac.cur=null;prac.total=10;
   pracEl.innerHTML=`<div class="daybar"><h2>Type the Chinese</h2></div>
   <div class="seg"><label for="g-src">Words from</label><select class="chip" id="g-src">${srcOptions()}</select></div>
   <div class="seg"><label>Show me</label>${[["mix","Mixed"],["vi","Tiếng Việt"],["en","English"],...(canSpeak?[["audio","Audio only"]]:[])].map(([v,l])=>`<button class="chip" data-gmode="${v}" aria-pressed="${prac.mode===v}">${l}</button>`).join("")}</div>
-  <div id="g-card"></div><p class="note">Type Chinese characters or pinyin. Tone marks and spaces don't matter for pinyin; punctuation never matters. Wrong answers come back again later in the round.</p>`;
+  <div class="seg"><label>Practice</label>${[["all","Everything"],["words","Words"],["posts","Posts"]].map(([v,l])=>`<button class="chip" data-gwhat="${v}" aria-pressed="${prac.what===v}">${l}</button>`).join("")}</div>
+  <div id="g-card"></div><p class="note">Type Chinese characters or pinyin. Tone marks and spaces don't matter for pinyin; punctuation never matters. Posts count as correct with up to about 10% wrong characters. Wrong answers come back later in the round.</p>`;
   document.getElementById("g-src").onchange=e=>{prac.src=e.target.value;startGame()};
-  if(!prac.queue.length){document.getElementById("g-card").innerHTML=`<div class="empty">${prac.src==="saved"?"No saved words yet. Tap Save on any key word to practice it here.":"No words to practice here with the current level filter."}</div>`;return}
+  if(!prac.queue.length){document.getElementById("g-card").innerHTML=`<div class="empty">${prac.src==="saved"?"No saved words yet. Tap Save on any key word to practice it here.":"Nothing to practice here with the current choices. Try another source, level or Practice setting."}</div>`;return}
   prac.total=prac.queue.length;nextItem()}
 function nextItem(){const card=document.getElementById("g-card");if(!card)return;
   if(!prac.queue.length){const pct=Math.round(100*prac.right/Math.max(prac.n,1));
@@ -626,24 +636,27 @@ function nextItem(){const card=document.getElementById("g-card");if(!card)return
   const label={vi:"Vietnamese → Chinese",en:"English → Chinese",audio:"Listen → Chinese"}[it.mode];
   const prompt=it.mode==="vi"?esc(it.vi):it.mode==="en"?esc(it.en):`<button class="btn ghost" id="g-say">${ICON.play.replace("<svg",'<svg style="width:18px;height:18px;vertical-align:-3px;fill:none;stroke:currentColor;stroke-width:2"')} Play again</button>`;
   const done=prac.n,tot=prac.total;
-  card.innerHTML=`<div class="game"><div class="gmeta"><span class="gkind">${label} · ${it.k==="word"?"word":"sentence"}</span><span>${prac.right} right · ${Math.min(done+1,tot)} of ${tot}</span></div>
+  card.innerHTML=`<div class="game"><div class="gmeta"><span class="gkind">${label} · ${({word:"word",sent:"example sentence",post:"full post",psent:"post sentence"})[it.k]}</span><span>${prac.right} right · ${Math.min(done+1,tot)} of ${tot}</span></div>
    <div class="gbar"><i style="width:${Math.round(100*done/tot)}%"></i></div>
-   <div class="gprompt">${prompt}</div>${it.mode!=="audio"&&canSpeak?"":""}
-   <input class="ginput" id="g-in" autocomplete="off" autocapitalize="off" spellcheck="false" lang="zh-CN" placeholder="${it.k==="word"?"e.g. 喜欢 or xihuan":"Type the sentence"}">
+   <div class="gprompt${it.k==="post"?" long":""}">${prompt}</div>
+   ${it.k==="post"||it.k==="psent"?`<textarea class="ginput" id="g-in" rows="${it.k==="post"?4:2}" autocomplete="off" autocapitalize="off" spellcheck="false" lang="zh-CN" placeholder="${it.k==="post"?"Type the whole post":"Type the sentence you hear"}"></textarea>`:`<input class="ginput" id="g-in" autocomplete="off" autocapitalize="off" spellcheck="false" lang="zh-CN" placeholder="${it.k==="word"?"e.g. 喜欢 or xihuan":"Type the sentence"}">`}
    <div class="ghint" id="g-hinttext" hidden>Pinyin: ${esc(it.py)}</div>
    <div class="grow"><button class="btn" id="g-check">Check</button><button class="btn ghost" id="g-hint">Hint</button><button class="btn ghost" id="g-skip">Show answer</button></div><div id="g-res"></div></div>`;
   const inp=document.getElementById("g-in");inp.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.isComposing){e.preventDefault();prac.ans===null?checkAnswer():nextItem()}});
   try{inp.focus({preventScroll:true})}catch(e){}
   if(it.mode==="audio")speak(it.zh)}
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let prev=Array.from({length:n+1},(_,i)=>i);for(let i=1;i<=m;i++){const cur=[i];for(let j=1;j<=n;j++)cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));prev=cur}return prev[n]}
 const normHz=s=>s.replace(/[\s，。！？、,.!?“”"'：:；;（）()…—\-]/g,"");
 const normPy=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/v/g,"u").replace(/[^a-z]/g,"");
 function checkAnswer(giveUp){const it=prac.cur;if(!it||prac.ans!==null)return;const raw=giveUp?"":document.getElementById("g-in").value.trim();
   if(!giveUp&&!raw)return;
-  const ok=!giveUp&&(normHz(raw)===normHz(it.zh)||(/[a-z]/i.test(raw)&&normPy(raw)===normPy(it.py)));prac.ans=ok;
+  const isPy=/[a-z]/i.test(raw),a=isPy?normPy(raw):normHz(raw),b=isPy?normPy(it.py):normHz(it.zh);
+  const exact=!giveUp&&b.length>0&&a===b;const near=!exact&&!giveUp&&(it.k==="post"||it.k==="psent")&&b.length>0&&lev(a,b)<=Math.floor(b.length*0.1);
+  const ok=exact||near;prac.ans=ok;
   if(it.tries===undefined){prac.n++;if(ok)prac.right++}it.tries=(it.tries||0)+1;
   if(!ok){prac.queue.splice(Math.min(3,prac.queue.length),0,it)}
   const typed=new Set(normHz(raw));const az=[...it.zh].map(c=>/[\u4e00-\u9fff]/.test(c)&&!typed.has(c)&&raw&&!/[a-z]/i.test(raw)?`<span class="miss">${esc(c)}</span>`:esc(c)).join("");
-  document.getElementById("g-res").innerHTML=`<div class="gres ${ok?"ok":"no"}"><b>${ok?"Correct!":giveUp?"Answer":"Not quite. It will come back later."}</b>
+  document.getElementById("g-res").innerHTML=`<div class="gres ${ok?"ok":"no"}"><b>${ok?(near?"Close enough! Check the small differences below.":"Correct!"):giveUp?"Answer":"Not quite. It will come back later."}</b>
    <span class="az">${az} ${canSpeak?`<button class="mini" data-say="${esc(it.zh)}" aria-label="Listen">${ICON.play}</button>`:""}</span><span class="ap">${esc(it.py)}</span><span>${esc(it.en)}${it.vi?" · "+esc(it.vi):""}</span>
    ${!ok&&raw?`<span class="ghint">You typed: ${esc(raw)}</span>`:""}</div><div class="grow" style="margin-top:8px"><button class="btn" id="g-next">Next</button></div>`;
   document.getElementById("g-check").disabled=true;try{document.getElementById("g-next").focus({preventScroll:true})}catch(e){}}
