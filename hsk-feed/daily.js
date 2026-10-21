@@ -1,0 +1,1 @@
+window.HSK_DAILY={};

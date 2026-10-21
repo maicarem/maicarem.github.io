@@ -150,6 +150,7 @@ details.vocab[open] summary::before{content:"−"}
   <div class="feed" id="saved" hidden></div>
 </main>
 
+<script src="daily.js"></script>
 <script>
 // Word rows: [hanzi, pinyin, English, Vietnamese, HSK level, example zh, example pinyin, example en]
 const TOPICS=[
@@ -425,10 +426,17 @@ const TOPICS=[
    ["负责","fùzé","to be responsible for","chịu trách nhiệm",4,"这件事由我负责。","Zhè jiàn shì yóu wǒ fùzé.","I'm in charge of this."]]}]}
 ];
 
-const ALLWORDS=[];TOPICS.forEach((t,ti)=>t.posts.forEach((p,pi)=>p.words.forEach((w,wi)=>ALLWORDS.push({w,key:ti+"-"+pi+"-"+wi}))));
+// Built-in topics rotate when no daily topics exist for a date; daily.js adds new dated topics.
+const DAILY=window.HSK_DAILY||{};
+TOPICS.forEach((t,i)=>t.id="p"+i);
+Object.keys(DAILY).forEach(d=>DAILY[d].forEach((t,i)=>t.id="d"+d+"-"+i));
+const BYID={};TOPICS.concat(...Object.values(DAILY)).forEach(t=>BYID[t.id]=t);
+const ALLWORDS=[];Object.values(BYID).forEach(t=>t.posts.forEach((p,pi)=>p.words.forEach((w,wi)=>ALLWORDS.push({w,key:t.id+"_"+pi+"_"+wi}))));
+const hash=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))|0;return Math.abs(h)};
 
 const store={get(k,d){try{const v=localStorage.getItem("shua:"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("shua:"+k,JSON.stringify(v))}catch(e){}}};
 const state={py:store.get("py",true),en:store.get("en",true),vi:store.get("vi",true),lv:store.get("lv","all"),likes:store.get("likes",{}),saved:store.get("saved",{}),offset:0};
+for(const k of ["likes","saved"]){const o=state[k];let ch=false;for(const key of Object.keys(o))if(/^\d+-/.test(key)){o["p"+key.replace(/-/g,"_")]=1;delete o[key];ch=true}if(ch)store.set(k,o)}
 const canSpeak=typeof window.speechSynthesis!=="undefined"&&typeof SpeechSynthesisUtterance!=="undefined";
 function speak(t){if(!canSpeak)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="zh-CN";u.rate=.8;speechSynthesis.speak(u)}catch(e){}}
 
@@ -462,7 +470,7 @@ function wordHTML(w,key){const sv=!!state.saved[key];
   <div class="wmean"><span class="t-en">${esc(w[2])}</span><span class="t-vi"> <i>·</i> ${esc(w[3])}</span></div>
   <div class="ex"><span class="ez">${esc(w[5])} ${canSpeak?`<button class="mini" data-say="${esc(w[5])}" aria-label="Listen to example">${ICON.play}</button>`:""}</span><span class="ep">${esc(w[6])}</span><span class="ee">${esc(w[7])}</span></div></div>`}
 
-function postHTML(p,ti,pi,off){const pid=ti+"-"+pi;const liked=!!state.likes[pid];const n=(ti*7+pi*13)%40+12+(liked?1:0);
+function postHTML(p,t,pi,off){const pid=t.id+"_"+pi;const liked=!!state.likes[pid];const n=hash(pid)%40+12+(liked?1:0);
   return `<article class="post" data-lvl="${p.lvl}">
   <div class="head"><div class="av" style="background:${p.c}">${esc([...p.who][0])}</div>
    <div class="who"><b>${esc(p.who)}</b><span>${esc(p.role)}</span></div><span class="lvl lv${p.lvl}">HSK${p.lvl}</span></div>
@@ -471,14 +479,14 @@ function postHTML(p,ti,pi,off){const pid=ti+"-"+pi;const liked=!!state.likes[pid
   <div class="tr"><span class="tag t-en">EN</span><span class="t-en">${esc(p.en)}</span><span class="tag t-vi">VI</span><span class="t-vi">${esc(p.vi)}</span></div>
   <div class="gloss" id="g-${pid}-${off}" hidden></div>
   ${p.g?`<div class="gram"><b>${esc(p.g[0])}</b> &nbsp;${esc(p.g[1])}</div>`:""}
-  <details class="vocab"><summary>Key words and examples (${p.words.length})</summary><div class="words">${p.words.map((w,wi)=>wordHTML(w,pid+"-"+wi)).join("")}</div></details>
+  <details class="vocab"><summary>Key words and examples (${p.words.length})</summary><div class="words">${p.words.map((w,wi)=>wordHTML(w,pid+"_"+wi)).join("")}</div></details>
   <div class="acts">
    <button class="act" data-like="${pid}" aria-pressed="${liked}">${ICON.heart}<span>${n}</span></button>
    ${canSpeak?`<button class="act" data-say="${esc(p.zh)}">${ICON.play}Listen</button>`:""}
    <button class="act" data-peek>${ICON.eye}Show help</button>
   </div></article>`}
 
-function quizHTML(ti,off){const t=TOPICS[ti];const r=rng((TODAY-off)*97+ti);const pool=t.posts.flatMap(p=>p.words).filter(w=>lvOk(w[4]));const src=pool.length?pool:t.posts.flatMap(p=>p.words);
+function quizHTML(t,k,off){const r=rng((TODAY-off)*97+k);const pool=t.posts.flatMap(p=>p.words).filter(w=>lvOk(w[4]));const src=pool.length?pool:t.posts.flatMap(p=>p.words);
   const w=src[Math.floor(r()*src.length)];const opts=[w[2]];
   while(opts.length<4){const o=ALLWORDS[Math.floor(r()*ALLWORDS.length)].w[2];if(!opts.includes(o))opts.push(o)}
   opts.sort(()=>r()-.5);
@@ -486,11 +494,12 @@ function quizHTML(ti,off){const t=TOPICS[ti];const r=rng((TODAY-off)*97+ti);cons
    <span class="eyebrow">Quick check · HSK${w[4]}</span><div class="qh">${esc(w[0])}</div><div>What does this word mean?</div>
    <div class="opts">${opts.map(o=>`<button class="opt">${esc(o)}</button>`).join("")}</div><div class="qres" hidden></div></section>`}
 
-function dayHTML(off){const d=TODAY-off;const n=TOPICS.length;const a=((2*d)%n+n)%n,b=(a+1)%n;
+function dateKey(off){const d=new Date(today);d.setDate(d.getDate()-off);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function dayHTML(off){const d=TODAY-off;const n=TOPICS.length;const a=((2*d)%n+n)%n,b=(a+1)%n;const list=DAILY[dateKey(off)]||[TOPICS[a],TOPICS[b]];
   let h=`<div class="daybar"><h2>${dateLabel(off)}</h2>${off===0?`<span class="streak" id="streak"></span>`:""}</div>`;
-  for(const ti of [a,b]){const t=TOPICS[ti];const posts=t.posts.map((p,pi)=>[p,pi]).filter(([p])=>lvOk(p.lvl));if(!posts.length)continue;
-    h+=`<section class="topic"><span class="eyebrow">Today's debate · ${t.posts.length} viewpoints</span><div class="q">${esc(t.zh)}</div><div class="qpy py">${esc(t.py)}</div><div class="qtr"><span class="t-en">${esc(t.en)}</span><span class="t-vi"> · ${esc(t.vi)}</span></div></section>`;
-    h+=posts.map(([p,pi])=>postHTML(p,ti,pi,off)).join("");h+=quizHTML(ti,off)}
+  list.forEach((t,k)=>{const posts=t.posts.map((p,pi)=>[p,pi]).filter(([p])=>lvOk(p.lvl));if(!posts.length)return;
+    h+=`<section class="topic"><span class="eyebrow">${t.id[0]==="d"?"New debate":"Debate"} · ${t.posts.length} viewpoints</span><div class="q">${esc(t.zh)}</div><div class="qpy py">${esc(t.py)}</div><div class="qtr"><span class="t-en">${esc(t.en)}</span><span class="t-vi"> · ${esc(t.vi)}</span></div></section>`;
+    h+=posts.map(([p,pi])=>postHTML(p,t,pi,off)).join("");h+=quizHTML(t,k,off)});
   return h}
 
 const feed=document.getElementById("feed"),savedEl=document.getElementById("saved");
@@ -502,7 +511,7 @@ function loadMore(){state.offset++;document.getElementById("days").insertAdjacen
   const s=document.getElementById("more");if(io&&s){io.unobserve(s);io.observe(s)}}
 function renderFeed(){let h=`<div id="days" style="display:grid;grid-template-columns:minmax(0,1fr);gap:14px">`;for(let o=0;o<=state.offset;o++)h+=dayHTML(o);
   h+=`</div><button class="more" id="more">Load older posts</button>
-  <p class="note">New debates every day, cycling through ${TOPICS.length} topics. Posts are generated practice content, not real news. HSK levels follow the HSK 2.0 word lists as best I know them; check an official list if a level matters.</p>`;
+  <p class="note">New debates are added every day. Days without new ones reuse ${TOPICS.length} starter topics. Posts are AI-written practice content, not real news. HSK levels follow the HSK 2.0 word lists as best I know them; check an official list if a level matters.</p>`;
   feed.innerHTML=h;const more=document.getElementById("more");more.onclick=loadMore;if(io){io.disconnect();io.observe(more)}
   const visits=store.get("visits",[]);if(!visits.includes(TODAY)){visits.push(TODAY);store.set("visits",visits)}
   let s=0;while(visits.includes(TODAY-s))s++;const st=document.getElementById("streak");if(st)st.textContent=s>1?`${s}-day streak`:"Day 1 · welcome back";
@@ -522,7 +531,7 @@ document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)r
     document.querySelectorAll(`[data-save="${k}"]`).forEach(b=>{const on=!!state.saved[k];b.setAttribute("aria-pressed",on);b.lastChild.textContent=on?"Saved":"Save"});updateSavedN();return}
   if(t.hasAttribute("data-peek")){const post=t.closest(".post");const open=!post.classList.contains("peek");post.classList.toggle("peek",open);
     post.querySelectorAll(".py,.t-en,.t-vi,.ep,.ee").forEach(el=>el.style.display=open?"revert":"");post.querySelector("details").open=open;t.lastChild.textContent=open?"Hide help":"Show help";return}
-  if(t.classList.contains("w")){const post=t.closest(".post");const [ti,pi]=t.dataset.p.split("-").map(Number);const w=TOPICS[ti].posts[pi].words[+t.dataset.w];
+  if(t.classList.contains("w")){const post=t.closest(".post");const [tid,pi]=t.dataset.p.split("_");const w=BYID[tid].posts[+pi].words[+t.dataset.w];
     const g=post.querySelector(".gloss");const was=t.classList.contains("on");post.querySelectorAll(".w.on").forEach(x=>x.classList.remove("on"));
     if(was){g.hidden=true;return}t.classList.add("on");g.hidden=false;
     g.innerHTML=`<b>${esc(w[0])}</b> <span style="color:var(--accent)">${esc(w[1])}</span> <span class="lvl lv${w[4]}">HSK${w[4]}</span><br>${esc(w[2])} <span style="color:var(--muted)">·</span> ${esc(w[3])}`;speak(w[0]);return}
