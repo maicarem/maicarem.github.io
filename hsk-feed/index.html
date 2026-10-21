@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>刷汉语 Feed</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;700&display=swap">
+<style>
+/* Layout: one phone-width column of posts under a sticky bar, like a social app timeline. */
+:root{
+  --bg:#eef2f0; --surface:#ffffff; --sunk:#f5f8f6; --fg:#16201c; --muted:#5a6a63; --line:#d9e2de;
+  --accent:#0f6e5c; --accent-soft:#dcefe9; --seal:#b8362a; --seal-soft:#f8e3df;
+  --l1:#2f7d32; --l2:#0f7a7a; --l3:#2d5fa8; --l4:#a86512; --l5:#b8362a;
+  --hl:#fff1b8;
+  --zh:"Noto Serif SC","Songti SC","SimSun",serif;
+  --ui:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1513; --surface:#18201d; --sunk:#131a17; --fg:#e6eeea; --muted:#9aaba3; --line:#2a3632;
+  --accent:#4cc3a6; --accent-soft:#183a32; --seal:#f0796b; --seal-soft:#3a1f1b;
+  --l1:#7cc97f; --l2:#5cc6c6; --l3:#86aef0; --l4:#e6a85a; --l5:#f0796b; --hl:#4a4119; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1513; --surface:#18201d; --sunk:#131a17; --fg:#e6eeea; --muted:#9aaba3; --line:#2a3632;
+  --accent:#4cc3a6; --accent-soft:#183a32; --seal:#f0796b; --seal-soft:#3a1f1b;
+  --l1:#7cc97f; --l2:#5cc6c6; --l3:#86aef0; --l4:#e6a85a; --l5:#f0796b; --hl:#4a4119; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--ui);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px}
+.top-in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.brand{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px}
+.seal{font-family:var(--zh);background:var(--seal);color:var(--surface);width:32px;height:32px;border-radius:6px;display:grid;place-items:center;font-size:18px}
+.logo small{font-weight:500;color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:4px;background:var(--sunk);padding:3px;border-radius:999px}
+.tabs button{border:0;background:none;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:500;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.sep{width:1px;height:18px;background:var(--line)}
+main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 48px}
+.feed{max-width:640px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.daybar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:4px 2px}
+.daybar h2{margin:0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.streak{font-size:13px;color:var(--seal);font-weight:600}
+.topic{background:var(--accent);color:#fff;border-radius:14px;padding:16px 18px;display:grid;gap:4px}
+:root[data-theme="dark"] .topic{color:#08201a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .topic{color:#08201a}}
+.topic .eyebrow{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;font-weight:600}
+.topic .q{font-family:var(--zh);font-size:24px;font-weight:700;text-wrap:balance}
+.topic .qpy{font-size:13px;opacity:.9}
+.topic .py{color:inherit}
+.topic .qtr{font-size:13.5px;opacity:.95}
+.post{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:10px;min-width:0}
+.head{display:flex;gap:10px;align-items:center}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--zh);font-weight:700;font-size:17px;flex:none;color:#fff}
+.who{min-width:0;flex:1}
+.who b{display:block;font-size:14.5px}
+.who span{font-size:12.5px;color:var(--muted)}
+.lvl{font-size:11px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap}
+.lv1{color:var(--l1)}.lv2{color:var(--l2)}.lv3{color:var(--l3)}.lv4{color:var(--l4)}.lv5{color:var(--l5)}
+.zh{font-family:var(--zh);font-size:21px;line-height:1.75;font-weight:500;margin:0}
+.zh .w{background:none;border:0;padding:0;font:inherit;border-bottom:2px dotted var(--accent);color:inherit;line-height:1.2}
+.zh .w.on{background:var(--hl)}
+.py{color:var(--accent);font-size:14px;margin:0}
+.tr{margin:0;font-size:14.5px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 8px}
+.tr .tag{font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.06em;padding-top:3px}
+.gloss{background:var(--sunk);border-radius:10px;padding:8px 12px;font-size:14px}
+.gloss b{font-family:var(--zh);font-size:17px}
+.gram{font-size:13.5px;border-left:3px solid var(--seal);padding:2px 0 2px 10px;color:var(--fg)}
+.gram b{font-family:var(--zh);color:var(--seal)}
+details.vocab{border-top:1px solid var(--line);padding-top:8px}
+details.vocab summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);list-style:none;display:flex;align-items:center;gap:6px}
+details.vocab summary::-webkit-details-marker{display:none}
+details.vocab summary::before{content:"+";font-weight:700;width:14px;text-align:center}
+details.vocab[open] summary::before{content:"−"}
+.words{display:grid;gap:10px;margin-top:10px}
+.word{display:grid;gap:4px;background:var(--sunk);border-radius:10px;padding:10px 12px;min-width:0}
+.word.flash{outline:2px solid var(--accent)}
+.wtop{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.wtop .h{font-family:var(--zh);font-size:20px;font-weight:700}
+.wtop .p{color:var(--accent);font-size:14px}
+.wtop .lvl{margin-left:auto}
+.wmean{font-size:13.5px}
+.wmean i{color:var(--muted);font-style:normal}
+.ex{font-size:13.5px;border-top:1px dashed var(--line);padding-top:6px;display:grid;gap:1px}
+.ex .ez{font-family:var(--zh);font-size:16px}
+.ex .ep{color:var(--accent)}
+.ex .ee{color:var(--muted)}
+.acts{display:flex;gap:4px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:8px;margin-top:2px}
+.act{border:0;background:none;display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--muted);padding:4px 8px;border-radius:8px}
+.act:hover{background:var(--sunk)}
+.act svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2}
+.act[aria-pressed="true"]{color:var(--seal)}
+.act[aria-pressed="true"] svg{fill:currentColor}
+.mini{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:1px 8px;font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
+.mini svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2}
+.mini[aria-pressed="true"]{color:var(--seal);border-color:var(--seal)}
+.quiz{background:var(--seal-soft);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:10px}
+.quiz .eyebrow{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--seal);font-weight:700}
+.quiz .qh{font-family:var(--zh);font-size:26px;font-weight:700}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:420px){.opts{grid-template-columns:1fr}}
+.opt{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;text-align:left;font-size:14px}
+.opt.ok{border-color:var(--l1);color:var(--l1);font-weight:600}
+.opt.no{border-color:var(--l5);color:var(--l5);text-decoration:line-through}
+.qres{font-size:13.5px}
+.more{justify-self:center;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 18px;font-weight:600;font-size:14px}
+.note{font-size:12px;color:var(--muted);text-align:center;max-width:520px;justify-self:center}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:24px;text-align:center;color:var(--muted)}
+.hide-py .py,.hide-py .ep{display:none}
+.hide-en .t-en,.hide-en .ee{display:none}
+.hide-vi .t-vi{display:none}
+@media (prefers-reduced-motion:no-preference){.post,.quiz,.topic{animation:up .3s ease-out both}@keyframes up{from{transform:translateY(6px)}to{transform:none}}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <div class="logo"><span class="seal">刷</span>刷汉语 <small>shuā Hànyǔ</small></div>
+      <div class="tabs" role="tablist">
+        <button id="tab-feed" role="tab" aria-selected="true">Feed</button>
+        <button id="tab-saved" role="tab" aria-selected="false">Saved <span id="savedN">0</span></button>
+      </div>
+    </div>
+    <div class="chips">
+      <button class="chip" id="t-py" aria-pressed="true">Pinyin</button>
+      <button class="chip" id="t-en" aria-pressed="true">English</button>
+      <button class="chip" id="t-vi" aria-pressed="true">Tiếng Việt</button>
+      <span class="sep"></span>
+      <button class="chip lvf" data-l="all" aria-pressed="true">All levels</button>
+      <button class="chip lvf" data-l="low" aria-pressed="false">HSK1-3</button>
+      <button class="chip lvf" data-l="high" aria-pressed="false">HSK4-5</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="feed" id="feed"></div>
+  <div class="feed" id="saved" hidden></div>
+</main>
+
+<script>
+// Word rows: [hanzi, pinyin, English, Vietnamese, HSK level, example zh, example pinyin, example en]
+const TOPICS=[
+{zh:"喝咖啡还是喝茶？",py:"Hē kāfēi háishi hē chá?",en:"Coffee or tea?",vi:"Uống cà phê hay uống trà?",posts:[
+ {who:"小明",role:"College student · 大学生",lvl:2,c:"#2d5fa8",
+  zh:"我每天早上都喝咖啡。不喝咖啡，我上课的时候很想睡觉。咖啡很好喝！",
+  py:"Wǒ měi tiān zǎoshang dōu hē kāfēi. Bù hē kāfēi, wǒ shàngkè de shíhou hěn xiǎng shuìjiào. Kāfēi hěn hǎohē!",
+  en:"I drink coffee every morning. Without coffee, I really want to sleep in class. Coffee is delicious!",
+  vi:"Sáng nào tôi cũng uống cà phê. Không uống cà phê thì lúc lên lớp tôi rất buồn ngủ. Cà phê ngon lắm!",
+  words:[["每天","měi tiān","every day","mỗi ngày",2,"我每天八点起床。","Wǒ měi tiān bā diǎn qǐchuáng.","I get up at eight every day."],
+   ["睡觉","shuìjiào","to sleep","ngủ",1,"我昨天晚上十一点睡觉。","Wǒ zuótiān wǎnshang shíyī diǎn shuìjiào.","I went to bed at eleven last night."],
+   ["咖啡","kāfēi","coffee","cà phê",2,"这杯咖啡太热了。","Zhè bēi kāfēi tài rè le.","This cup of coffee is too hot."]]},
+ {who:"王阿姨",role:"Retired teacher · 退休老师",lvl:3,c:"#2f7d32",
+  zh:"我觉得喝茶比喝咖啡健康。我习惯每天下午喝一杯绿茶，喝完以后觉得很舒服。",
+  py:"Wǒ juéde hē chá bǐ hē kāfēi jiànkāng. Wǒ xíguàn měi tiān xiàwǔ hē yì bēi lǜchá, hē wán yǐhòu juéde hěn shūfu.",
+  en:"I think drinking tea is healthier than drinking coffee. I'm used to a cup of green tea every afternoon, and afterwards I feel very comfortable.",
+  vi:"Tôi thấy uống trà tốt cho sức khỏe hơn uống cà phê. Tôi có thói quen chiều nào cũng uống một ly trà xanh, uống xong thấy rất dễ chịu.",
+  g:["A 比 B + adj.","A is more [adj.] than B: 喝茶比喝咖啡健康"],
+  words:[["健康","jiànkāng","healthy; health","khỏe mạnh; sức khỏe",3,"多吃水果对身体健康很好。","Duō chī shuǐguǒ duì shēntǐ jiànkāng hěn hǎo.","Eating more fruit is good for your health."],
+   ["习惯","xíguàn","be used to; habit","quen; thói quen",3,"我还不习惯这里的天气。","Wǒ hái bù xíguàn zhèlǐ de tiānqì.","I'm still not used to the weather here."],
+   ["舒服","shūfu","comfortable","dễ chịu, thoải mái",3,"这把椅子坐着很舒服。","Zhè bǎ yǐzi zuò zhe hěn shūfu.","This chair is comfortable to sit on."]]},
+ {who:"陈经理",role:"Company manager · 公司经理",lvl:4,c:"#a86512",
+  zh:"其实喝什么不重要，重要的是别喝太多。咖啡能提高工作效率，但是喝多了晚上会睡不着，第二天反而更累。",
+  py:"Qíshí hē shénme bú zhòngyào, zhòngyào de shì bié hē tài duō. Kāfēi néng tígāo gōngzuò xiàolǜ, dànshì hē duō le wǎnshang huì shuì bu zháo, dì-èr tiān fǎn'ér gèng lèi.",
+  en:"Actually, what you drink isn't important; what matters is not drinking too much. Coffee can raise work efficiency, but drink too much and you can't sleep at night, so the next day you're even more tired.",
+  vi:"Thật ra uống gì không quan trọng, quan trọng là đừng uống quá nhiều. Cà phê có thể nâng cao hiệu suất làm việc, nhưng uống nhiều thì tối sẽ mất ngủ, hôm sau lại càng mệt hơn.",
+  words:[["提高","tígāo","to raise, improve","nâng cao",4,"多听多说能提高你的汉语水平。","Duō tīng duō shuō néng tígāo nǐ de Hànyǔ shuǐpíng.","Listening and speaking more can improve your Chinese."],
+   ["效率","xiàolǜ","efficiency","hiệu suất",5,"早上我的学习效率最高。","Zǎoshang wǒ de xuéxí xiàolǜ zuì gāo.","My study efficiency is highest in the morning."],
+   ["反而","fǎn'ér","on the contrary, instead","ngược lại",5,"吃了药，他的病反而更重了。","Chī le yào, tā de bìng fǎn'ér gèng zhòng le.","After taking the medicine, his illness actually got worse."]]}]},
+
+{zh:"在家工作好不好？",py:"Zài jiā gōngzuò hǎo bu hǎo?",en:"Is working from home good?",vi:"Làm việc ở nhà có tốt không?",posts:[
+ {who:"小李",role:"Programmer · 程序员",lvl:2,c:"#0f7a7a",
+  zh:"我很喜欢在家工作。不用坐公共汽车上班，早上可以多睡一个小时。",
+  py:"Wǒ hěn xǐhuan zài jiā gōngzuò. Búyòng zuò gōnggòng qìchē shàngbān, zǎoshang kěyǐ duō shuì yí ge xiǎoshí.",
+  en:"I really like working from home. I don't have to take the bus to work, so I can sleep an extra hour in the morning.",
+  vi:"Tôi rất thích làm việc ở nhà. Không cần đi xe buýt đi làm, buổi sáng có thể ngủ thêm một tiếng.",
+  words:[["上班","shàngbān","to go to work","đi làm",2,"我爸爸每天坐地铁上班。","Wǒ bàba měi tiān zuò dìtiě shàngbān.","My dad takes the subway to work every day."],
+   ["公共汽车","gōnggòng qìchē","bus","xe buýt",2,"公共汽车站在学校旁边。","Gōnggòng qìchē zhàn zài xuéxiào pángbiān.","The bus stop is next to the school."],
+   ["小时","xiǎoshí","hour","tiếng, giờ",2,"我每天学习两个小时汉语。","Wǒ měi tiān xuéxí liǎng ge xiǎoshí Hànyǔ.","I study Chinese for two hours every day."]]},
+ {who:"阿芳",role:"Designer · 设计师",lvl:3,c:"#b8362a",
+  zh:"在家工作虽然方便，但是我一个人在家，没有同事跟我说话，有时候觉得很无聊。我还是喜欢去办公室。",
+  py:"Zài jiā gōngzuò suīrán fāngbiàn, dànshì wǒ yí ge rén zài jiā, méiyǒu tóngshì gēn wǒ shuōhuà, yǒu shíhou juéde hěn wúliáo. Wǒ háishi xǐhuan qù bàngōngshì.",
+  en:"Working from home is convenient, but I'm alone at home with no coworkers to talk to, and sometimes I get bored. I still prefer going to the office.",
+  vi:"Làm việc ở nhà tuy tiện, nhưng tôi ở nhà một mình, không có đồng nghiệp nói chuyện cùng, đôi khi thấy rất chán. Tôi vẫn thích đến văn phòng hơn.",
+  g:["虽然…但是…","although… (but)…: 虽然方便，但是…"],
+  words:[["方便","fāngbiàn","convenient","tiện lợi",3,"住在地铁站附近很方便。","Zhù zài dìtiě zhàn fùjìn hěn fāngbiàn.","Living near a subway station is very convenient."],
+   ["同事","tóngshì","coworker","đồng nghiệp",3,"我和同事一起吃午饭。","Wǒ hé tóngshì yìqǐ chī wǔfàn.","I eat lunch with my coworkers."],
+   ["办公室","bàngōngshì","office","văn phòng",3,"经理现在不在办公室。","Jīnglǐ xiànzài bú zài bàngōngshì.","The manager isn't in the office right now."]]},
+ {who:"张老板",role:"Small business owner · 小公司老板",lvl:4,c:"#2d5fa8",
+  zh:"我觉得最好的办法是一个星期在家工作两天，去公司三天。这样既能减少堵车的时间，又能和同事保持交流。",
+  py:"Wǒ juéde zuì hǎo de bànfǎ shì yí ge xīngqī zài jiā gōngzuò liǎng tiān, qù gōngsī sān tiān. Zhèyàng jì néng jiǎnshǎo dǔchē de shíjiān, yòu néng hé tóngshì bǎochí jiāoliú.",
+  en:"I think the best approach is two days a week at home and three days at the office. That way you spend less time stuck in traffic and still stay in touch with coworkers.",
+  vi:"Tôi nghĩ cách tốt nhất là mỗi tuần làm ở nhà hai ngày, đến công ty ba ngày. Như vậy vừa giảm được thời gian kẹt xe, vừa giữ được sự giao lưu với đồng nghiệp.",
+  g:["既…又…","both… and…: 既能减少堵车，又能保持交流"],
+  words:[["减少","jiǎnshǎo","to reduce","giảm bớt",4,"多坐地铁可以减少堵车。","Duō zuò dìtiě kěyǐ jiǎnshǎo dǔchē.","Taking the subway more can reduce traffic jams."],
+   ["堵车","dǔchē","traffic jam","kẹt xe",4,"下班的时候路上经常堵车。","Xiàbān de shíhou lù shang jīngcháng dǔchē.","There are often traffic jams when people get off work."],
+   ["交流","jiāoliú","to communicate, exchange","giao lưu, trao đổi",4,"我想多和中国朋友交流。","Wǒ xiǎng duō hé Zhōngguó péngyou jiāoliú.","I want to talk more with Chinese friends."]]}]},
+
+{zh:"我们用手机用得太多了吗？",py:"Wǒmen yòng shǒujī yòng de tài duō le ma?",en:"Do we use our phones too much?",vi:"Chúng ta dùng điện thoại quá nhiều không?",posts:[
+ {who:"刘妈妈",role:"Mother of two · 两个孩子的妈妈",lvl:2,c:"#a86512",
+  zh:"我的孩子每天都看手机，吃饭的时候也看。我跟他说话，他不听。我真的很不高兴。",
+  py:"Wǒ de háizi měi tiān dōu kàn shǒujī, chīfàn de shíhou yě kàn. Wǒ gēn tā shuōhuà, tā bù tīng. Wǒ zhēn de hěn bù gāoxìng.",
+  en:"My kid looks at his phone every day, even while eating. When I talk to him, he doesn't listen. I'm really unhappy about it.",
+  vi:"Con tôi ngày nào cũng xem điện thoại, lúc ăn cơm cũng xem. Tôi nói chuyện với nó, nó không nghe. Tôi thật sự không vui chút nào.",
+  g:["…的时候","when…: 吃饭的时候 = while eating"],
+  words:[["手机","shǒujī","mobile phone","điện thoại di động",2,"我的手机在桌子上。","Wǒ de shǒujī zài zhuōzi shang.","My phone is on the table."],
+   ["孩子","háizi","child","con, trẻ em",2,"他们有两个孩子。","Tāmen yǒu liǎng ge háizi.","They have two children."],
+   ["时候","shíhou","time, moment","lúc, khi",1,"你什么时候回家？","Nǐ shénme shíhou huí jiā?","When are you going home?"]]},
+ {who:"小刚",role:"High school student · 高中生",lvl:3,c:"#0f7a7a",
+  zh:"手机不只是用来玩的！我用手机查词典、看新闻、练习听力。如果没有手机，我的学习会更难。",
+  py:"Shǒujī bù zhǐ shì yònglái wán de! Wǒ yòng shǒujī chá cídiǎn, kàn xīnwén, liànxí tīnglì. Rúguǒ méiyǒu shǒujī, wǒ de xuéxí huì gèng nán.",
+  en:"Phones aren't just for playing! I use mine to look things up in the dictionary, read the news, and practice listening. Without a phone, studying would be harder.",
+  vi:"Điện thoại không chỉ để chơi! Tôi dùng điện thoại để tra từ điển, đọc tin tức, luyện nghe. Nếu không có điện thoại, việc học của tôi sẽ khó hơn.",
+  words:[["新闻","xīnwén","news","tin tức",3,"爷爷每天晚上看新闻。","Yéye měi tiān wǎnshang kàn xīnwén.","Grandpa watches the news every evening."],
+   ["练习","liànxí","to practice","luyện tập",3,"你要多练习写汉字。","Nǐ yào duō liànxí xiě Hànzì.","You should practice writing characters more."],
+   ["如果","rúguǒ","if","nếu",3,"如果明天下雨，我们就不去了。","Rúguǒ míngtiān xià yǔ, wǒmen jiù bú qù le.","If it rains tomorrow, we won't go."]]},
+ {who:"刘医生",role:"Doctor · 医生",lvl:5,c:"#2f7d32",
+  zh:"问题不在手机本身，而在于我们怎么用。很多年轻人晚上躺在床上玩手机，经常熬夜，这对眼睛和精神都有很大的影响。",
+  py:"Wèntí bú zài shǒujī běnshēn, ér zàiyú wǒmen zěnme yòng. Hěn duō niánqīng rén wǎnshang tǎng zài chuáng shang wán shǒujī, jīngcháng áoyè, zhè duì yǎnjing hé jīngshén dōu yǒu hěn dà de yǐngxiǎng.",
+  en:"The problem isn't the phone itself but how we use it. Many young people lie in bed on their phones at night and often stay up late, which has a big effect on their eyes and their mind.",
+  vi:"Vấn đề không nằm ở bản thân điện thoại, mà ở cách chúng ta dùng nó. Nhiều người trẻ buổi tối nằm trên giường chơi điện thoại, thường xuyên thức khuya, điều này ảnh hưởng rất lớn đến mắt và tinh thần.",
+  g:["不在…而在于…","it's not about… but about…"],
+  words:[["熬夜","áoyè","to stay up late","thức khuya",5,"考试前他熬夜复习。","Kǎoshì qián tā áoyè fùxí.","He stayed up late reviewing before the exam."],
+   ["影响","yǐngxiǎng","influence, to affect","ảnh hưởng",3,"天气会影响我的心情。","Tiānqì huì yǐngxiǎng wǒ de xīnqíng.","The weather affects my mood."],
+   ["精神","jīngshén","spirit, mind","tinh thần",4,"工作压力大会影响人的精神健康。","Gōngzuò yālì dà huì yǐngxiǎng rén de jīngshén jiànkāng.","Heavy work pressure can affect people's mental health."]]}]},
+
+{zh:"住在大城市还是小城市？",py:"Zhù zài dà chéngshì háishi xiǎo chéngshì?",en:"Big city or small town?",vi:"Sống ở thành phố lớn hay thành phố nhỏ?",posts:[
+ {who:"小美",role:"New graduate · 刚毕业",lvl:2,c:"#b8362a",
+  zh:"我想去北京工作。北京很大，有很多公司，也有很多好吃的饭馆。星期六我可以和朋友一起去玩。",
+  py:"Wǒ xiǎng qù Běijīng gōngzuò. Běijīng hěn dà, yǒu hěn duō gōngsī, yě yǒu hěn duō hǎochī de fànguǎn. Xīngqīliù wǒ kěyǐ hé péngyou yìqǐ qù wán.",
+  en:"I want to go work in Beijing. Beijing is big, with lots of companies and lots of good restaurants. On Saturdays I can go out with friends.",
+  vi:"Tôi muốn đến Bắc Kinh làm việc. Bắc Kinh rất lớn, có nhiều công ty, cũng có nhiều nhà hàng ngon. Thứ bảy tôi có thể đi chơi cùng bạn bè.",
+  words:[["公司","gōngsī","company","công ty",2,"他在一家电脑公司工作。","Tā zài yì jiā diànnǎo gōngsī gōngzuò.","He works at a computer company."],
+   ["饭馆","fànguǎn","restaurant","nhà hàng, quán ăn",1,"学校旁边有一个小饭馆。","Xuéxiào pángbiān yǒu yí ge xiǎo fànguǎn.","There's a small restaurant next to the school."],
+   ["一起","yìqǐ","together","cùng nhau",2,"我们一起去看电影吧。","Wǒmen yìqǐ qù kàn diànyǐng ba.","Let's go see a movie together."]]},
+ {who:"老周",role:"Engineer, moved home · 工程师",lvl:3,c:"#2d5fa8",
+  zh:"我以前在上海工作了五年，后来决定回老家。这里的环境好，房子也便宜，每天下班以后还能和家人一起吃晚饭。",
+  py:"Wǒ yǐqián zài Shànghǎi gōngzuò le wǔ nián, hòulái juédìng huí lǎojiā. Zhèlǐ de huánjìng hǎo, fángzi yě piányi, měi tiān xiàbān yǐhòu hái néng hé jiārén yìqǐ chī wǎnfàn.",
+  en:"I worked in Shanghai for five years, then decided to move back to my hometown. The environment here is good, housing is cheap, and after work every day I can still have dinner with my family.",
+  vi:"Trước đây tôi làm việc ở Thượng Hải năm năm, sau đó quyết định về quê. Môi trường ở đây tốt, nhà cũng rẻ, ngày nào tan làm cũng có thể ăn tối cùng gia đình.",
+  words:[["决定","juédìng","to decide","quyết định",3,"我决定明年去中国留学。","Wǒ juédìng míngnián qù Zhōngguó liúxué.","I've decided to study in China next year."],
+   ["环境","huánjìng","environment","môi trường",3,"这个公园的环境很安静。","Zhège gōngyuán de huánjìng hěn ānjìng.","This park is a very quiet place."],
+   ["便宜","piányi","cheap","rẻ",2,"这件衣服很便宜，才五十块。","Zhè jiàn yīfu hěn piányi, cái wǔshí kuài.","This piece of clothing is cheap, only fifty yuan."]]},
+ {who:"Linh",role:"Vietnamese, works in Guangzhou · 在广州工作",lvl:4,c:"#0f7a7a",
+  zh:"大城市机会多，但是压力也大，房租几乎占了我收入的一半。我觉得年轻的时候应该去大城市积累经验，以后再考虑要不要回去。",
+  py:"Dà chéngshì jīhuì duō, dànshì yālì yě dà, fángzū jīhū zhàn le wǒ shōurù de yíbàn. Wǒ juéde niánqīng de shíhou yīnggāi qù dà chéngshì jīlěi jīngyàn, yǐhòu zài kǎolǜ yào bu yào huíqù.",
+  en:"Big cities have more opportunities but more pressure too; rent takes almost half my income. I think while you're young you should go to a big city to build experience, and decide later whether to go back.",
+  vi:"Thành phố lớn nhiều cơ hội, nhưng áp lực cũng lớn, tiền thuê nhà gần như chiếm một nửa thu nhập của tôi. Tôi nghĩ khi còn trẻ nên đến thành phố lớn tích lũy kinh nghiệm, sau này hãy cân nhắc có nên quay về hay không.",
+  words:[["压力","yālì","pressure, stress","áp lực",4,"快考试了，我的压力很大。","Kuài kǎoshì le, wǒ de yālì hěn dà.","The exam is coming and I'm very stressed."],
+   ["经验","jīngyàn","experience","kinh nghiệm",4,"他有十年的工作经验。","Tā yǒu shí nián de gōngzuò jīngyàn.","He has ten years of work experience."],
+   ["考虑","kǎolǜ","to consider","cân nhắc",4,"这件事你再考虑一下吧。","Zhè jiàn shì nǐ zài kǎolǜ yíxià ba.","Think this over a bit more."]]}]},
+
+{zh:"学外语：用App还是去上课？",py:"Xué wàiyǔ: yòng App háishi qù shàngkè?",en:"Learning a language: app or class?",vi:"Học ngoại ngữ: dùng app hay đi học lớp?",posts:[
+ {who:"Tom",role:"From the UK · 英国人",lvl:2,c:"#2f7d32",
+  zh:"我每天用手机学二十分钟汉语。很有意思，也不累。等公共汽车的时候也可以学。",
+  py:"Wǒ měi tiān yòng shǒujī xué èrshí fēnzhōng Hànyǔ. Hěn yǒu yìsi, yě bú lèi. Děng gōnggòng qìchē de shíhou yě kěyǐ xué.",
+  en:"Every day I study Chinese on my phone for twenty minutes. It's interesting and not tiring. I can even study while waiting for the bus.",
+  vi:"Mỗi ngày tôi học tiếng Trung trên điện thoại hai mươi phút. Rất thú vị, cũng không mệt. Lúc chờ xe buýt cũng học được.",
+  words:[["有意思","yǒu yìsi","interesting","thú vị",2,"这本书很有意思。","Zhè běn shū hěn yǒu yìsi.","This book is very interesting."],
+   ["等","děng","to wait","chờ, đợi",2,"请等一下，我马上来。","Qǐng děng yíxià, wǒ mǎshàng lái.","Please wait a moment, I'm coming right away."],
+   ["累","lèi","tired","mệt",2,"今天工作太多了，我很累。","Jīntiān gōngzuò tài duō le, wǒ hěn lèi.","There was too much work today; I'm tired."]]},
+ {who:"李老师",role:"Chinese teacher · 汉语老师",lvl:3,c:"#b8362a",
+  zh:"App可以帮你记生词，但是要学会说，还是需要跟人练习。上课的时候，老师能马上发现你的问题。",
+  py:"App kěyǐ bāng nǐ jì shēngcí, dànshì yào xuéhuì shuō, háishi xūyào gēn rén liànxí. Shàngkè de shíhou, lǎoshī néng mǎshàng fāxiàn nǐ de wèntí.",
+  en:"Apps can help you memorize new words, but to learn to speak you still need to practice with people. In class, the teacher can spot your problems right away.",
+  vi:"App có thể giúp bạn nhớ từ mới, nhưng muốn biết nói thì vẫn cần luyện với người thật. Khi lên lớp, giáo viên có thể phát hiện ngay vấn đề của bạn.",
+  words:[["需要","xūyào","to need","cần",3,"你需要帮助吗？","Nǐ xūyào bāngzhù ma?","Do you need help?"],
+   ["发现","fāxiàn","to discover, notice","phát hiện",3,"我发现他今天不太高兴。","Wǒ fāxiàn tā jīntiān bú tài gāoxìng.","I noticed he's not very happy today."],
+   ["马上","mǎshàng","right away","ngay lập tức",3,"电影马上就要开始了。","Diànyǐng mǎshàng jiù yào kāishǐ le.","The movie is about to start."]]},
+ {who:"Minh",role:"Learned Chinese for 5 years · 学了五年汉语",lvl:5,c:"#a86512",
+  zh:"我的经验是两种方法都要用。App适合利用坐车的时间复习，上课则更适合系统地学习语法。最关键的是坚持，每天进步一点点。",
+  py:"Wǒ de jīngyàn shì liǎng zhǒng fāngfǎ dōu yào yòng. App shìhé lìyòng zuò chē de shíjiān fùxí, shàngkè zé gèng shìhé xìtǒng de xuéxí yǔfǎ. Zuì guānjiàn de shì jiānchí, měi tiān jìnbù yì diǎndiǎn.",
+  en:"In my experience you should use both. Apps are good for reviewing during your commute, while classes are better for learning grammar systematically. The key is to keep at it and improve a little every day.",
+  vi:"Kinh nghiệm của tôi là nên dùng cả hai cách. App phù hợp để tận dụng thời gian đi xe ôn bài, còn lên lớp thì phù hợp hơn để học ngữ pháp có hệ thống. Quan trọng nhất là kiên trì, mỗi ngày tiến bộ một chút.",
+  words:[["利用","lìyòng","to make use of","tận dụng",5,"他利用周末的时间学做饭。","Tā lìyòng zhōumò de shíjiān xué zuò fàn.","He uses his weekends to learn to cook."],
+   ["关键","guānjiàn","key, crucial","then chốt, mấu chốt",5,"学好汉语的关键是多说。","Xué hǎo Hànyǔ de guānjiàn shì duō shuō.","The key to learning Chinese well is speaking a lot."],
+   ["坚持","jiānchí","to persist, keep at","kiên trì",4,"他坚持每天跑步，已经三年了。","Tā jiānchí měi tiān pǎobù, yǐjīng sān nián le.","He has kept up running every day for three years now."]]}]},
+
+{zh:"早起还是晚睡？",py:"Zǎo qǐ háishi wǎn shuì?",en:"Early bird or night owl?",vi:"Dậy sớm hay thức khuya?",posts:[
+ {who:"张爷爷",role:"Age 70 · 七十岁",lvl:2,c:"#2d5fa8",
+  zh:"我每天早上五点起床，去外面跑步。我已经七十岁了，但是身体非常好！",
+  py:"Wǒ měi tiān zǎoshang wǔ diǎn qǐchuáng, qù wàimiàn pǎobù. Wǒ yǐjīng qīshí suì le, dànshì shēntǐ fēicháng hǎo!",
+  en:"I get up at five every morning and go out for a run. I'm already seventy, but my health is excellent!",
+  vi:"Sáng nào tôi cũng dậy lúc năm giờ, ra ngoài chạy bộ. Tôi đã bảy mươi tuổi rồi, nhưng sức khỏe vẫn rất tốt!",
+  words:[["起床","qǐchuáng","to get up","thức dậy",2,"明天我要早一点起床。","Míngtiān wǒ yào zǎo yìdiǎn qǐchuáng.","Tomorrow I need to get up a bit earlier."],
+   ["跑步","pǎobù","to run, jog","chạy bộ",2,"我喜欢下班以后去跑步。","Wǒ xǐhuan xiàbān yǐhòu qù pǎobù.","I like to go running after work."],
+   ["已经","yǐjīng","already","đã, rồi",2,"我已经吃饭了。","Wǒ yǐjīng chī fàn le.","I've already eaten."]]},
+ {who:"小雨",role:"Writer · 作家",lvl:3,c:"#0f7a7a",
+  zh:"我是一个“夜猫子”。晚上很安静，没有人找我，我的想法也特别多。所以我一般一点以后才睡觉。",
+  py:"Wǒ shì yí ge “yèmāozi”. Wǎnshang hěn ānjìng, méiyǒu rén zhǎo wǒ, wǒ de xiǎngfǎ yě tèbié duō. Suǒyǐ wǒ yìbān yì diǎn yǐhòu cái shuìjiào.",
+  en:"I'm a night owl (夜猫子, literally \"night cat\"). Nights are quiet, nobody needs me, and I have lots of ideas. So I usually don't sleep until after 1 a.m.",
+  vi:"Tôi là một \"cú đêm\". Buổi tối rất yên tĩnh, không ai tìm tôi, ý tưởng của tôi cũng đặc biệt nhiều. Vì vậy tôi thường sau một giờ sáng mới đi ngủ.",
+  g:["…才…","not until…: 一点以后才睡觉 = don't sleep until after 1"],
+  words:[["安静","ānjìng","quiet","yên tĩnh",3,"图书馆里很安静。","Túshūguǎn lǐ hěn ānjìng.","It's quiet in the library."],
+   ["特别","tèbié","especially","đặc biệt",3,"今天特别冷，多穿点衣服。","Jīntiān tèbié lěng, duō chuān diǎn yīfu.","It's especially cold today; wear more clothes."],
+   ["一般","yìbān","usually, ordinary","thường, bình thường",3,"我周末一般在家休息。","Wǒ zhōumò yìbān zài jiā xiūxi.","On weekends I usually rest at home."]]},
+ {who:"王医生",role:"Sleep doctor · 医生",lvl:4,c:"#b8362a",
+  zh:"早起还是晚起并没有标准答案，每个人的习惯不一样。真正重要的是睡眠时间要足够，而且要有规律，否则身体很容易出问题。",
+  py:"Zǎo qǐ háishi wǎn qǐ bìng méiyǒu biāozhǔn dá'àn, měi ge rén de xíguàn bù yíyàng. Zhēnzhèng zhòngyào de shì shuìmián shíjiān yào zúgòu, érqiě yào yǒu guīlǜ, fǒuzé shēntǐ hěn róngyì chū wèntí.",
+  en:"There's no standard answer to early versus late rising; everyone's habits differ. What really matters is getting enough sleep on a regular schedule; otherwise your body easily runs into problems.",
+  vi:"Dậy sớm hay dậy muộn không có đáp án chuẩn, thói quen mỗi người không giống nhau. Điều thực sự quan trọng là ngủ đủ giấc và có quy luật, nếu không cơ thể rất dễ gặp vấn đề.",
+  words:[["标准","biāozhǔn","standard","tiêu chuẩn, chuẩn",4,"他的普通话很标准。","Tā de pǔtōnghuà hěn biāozhǔn.","His Mandarin is very standard."],
+   ["否则","fǒuzé","otherwise","nếu không",4,"快走吧，否则要迟到了。","Kuài zǒu ba, fǒuzé yào chídào le.","Hurry up, otherwise we'll be late."],
+   ["规律","guīlǜ","regular pattern","quy luật",5,"他的生活很有规律。","Tā de shēnghuó hěn yǒu guīlǜ.","He lives a very regular life."]]}]},
+
+{zh:"自己做饭还是叫外卖？",py:"Zìjǐ zuò fàn háishi jiào wàimài?",en:"Cook at home or order delivery?",vi:"Tự nấu ăn hay gọi đồ ăn ngoài?",posts:[
+ {who:"小林",role:"Office worker · 上班族",lvl:2,c:"#a86512",
+  zh:"我下班很晚，回家以后太累了，不想做饭。叫外卖很快，三十分钟就到了。",
+  py:"Wǒ xiàbān hěn wǎn, huí jiā yǐhòu tài lèi le, bù xiǎng zuò fàn. Jiào wàimài hěn kuài, sānshí fēnzhōng jiù dào le.",
+  en:"I get off work late, and when I get home I'm too tired to cook. Ordering delivery is fast; it arrives in thirty minutes.",
+  vi:"Tôi tan làm rất muộn, về nhà mệt quá, không muốn nấu cơm. Gọi đồ ăn ngoài rất nhanh, ba mươi phút là tới.",
+  g:["…就…","as early/soon as: 三十分钟就到了 = there in just 30 min"],
+  words:[["做饭","zuò fàn","to cook","nấu cơm",1,"我妈妈做饭做得很好吃。","Wǒ māma zuò fàn zuò de hěn hǎochī.","My mom's cooking is delicious."],
+   ["晚","wǎn","late","muộn",2,"对不起，我来晚了。","Duìbuqǐ, wǒ lái wǎn le.","Sorry, I'm late."],
+   ["快","kuài","fast","nhanh",2,"他跑得非常快。","Tā pǎo de fēicháng kuài.","He runs very fast."]]},
+ {who:"Lan",role:"Vietnamese mom in Shenzhen · 越南妈妈",lvl:3,c:"#2f7d32",
+  zh:"我觉得自己做饭更干净，也更健康。外卖的菜一般又油又咸。周末我常常给家人做越南菜。",
+  py:"Wǒ juéde zìjǐ zuò fàn gèng gānjìng, yě gèng jiànkāng. Wàimài de cài yìbān yòu yóu yòu xián. Zhōumò wǒ chángcháng gěi jiārén zuò Yuènán cài.",
+  en:"I think home cooking is cleaner and healthier. Delivery food is usually oily and salty. On weekends I often cook Vietnamese food for my family.",
+  vi:"Tôi thấy tự nấu ăn sạch sẽ hơn, cũng tốt cho sức khỏe hơn. Đồ ăn ngoài thường vừa nhiều dầu mỡ vừa mặn. Cuối tuần tôi hay nấu món Việt cho cả nhà.",
+  g:["又…又…","both… and…: 又油又咸 = oily and salty"],
+  words:[["干净","gānjìng","clean","sạch sẽ",3,"房间打扫得很干净。","Fángjiān dǎsǎo de hěn gānjìng.","The room has been cleaned very well."],
+   ["自己","zìjǐ","oneself","tự mình",3,"这件事我想自己做。","Zhè jiàn shì wǒ xiǎng zìjǐ zuò.","I want to do this myself."],
+   ["周末","zhōumò","weekend","cuối tuần",3,"这个周末你有什么打算？","Zhège zhōumò nǐ yǒu shénme dǎsuàn?","What are your plans this weekend?"]]},
+ {who:"赵教授",role:"Economics professor · 经济学教授",lvl:5,c:"#2d5fa8",
+  zh:"外卖之所以这么受欢迎，是因为它节省了时间。不过从长远来看，经常点外卖不仅花钱多，还会产生大量塑料垃圾，对环境不利。",
+  py:"Wàimài zhīsuǒyǐ zhème shòu huānyíng, shì yīnwèi tā jiéshěng le shíjiān. Búguò cóng chángyuǎn lái kàn, jīngcháng diǎn wàimài bùjǐn huā qián duō, hái huì chǎnshēng dàliàng sùliào lājī, duì huánjìng búlì.",
+  en:"Delivery is so popular because it saves time. But in the long run, ordering often not only costs more, it also creates lots of plastic waste, which is bad for the environment.",
+  vi:"Sở dĩ đồ ăn ngoài được ưa chuộng như vậy là vì nó tiết kiệm thời gian. Tuy nhiên về lâu dài, thường xuyên gọi đồ ăn ngoài không chỉ tốn tiền mà còn tạo ra nhiều rác thải nhựa, không có lợi cho môi trường.",
+  g:["之所以…是因为…","the reason why… is that…"],
+  words:[["节省","jiéshěng","to save (time, money)","tiết kiệm",5,"坐地铁可以节省很多时间。","Zuò dìtiě kěyǐ jiéshěng hěn duō shíjiān.","Taking the subway can save a lot of time."],
+   ["产生","chǎnshēng","to produce, arise","tạo ra, nảy sinh",5,"他对中国文化产生了兴趣。","Tā duì Zhōngguó wénhuà chǎnshēng le xìngqù.","He developed an interest in Chinese culture."],
+   ["垃圾","lājī","garbage","rác",4,"请把垃圾扔到垃圾桶里。","Qǐng bǎ lājī rēng dào lājītǒng lǐ.","Please throw the garbage in the trash can."]]}]},
+
+{zh:"一个人旅行还是跟朋友一起？",py:"Yí ge rén lǚxíng háishi gēn péngyou yìqǐ?",en:"Travel solo or with friends?",vi:"Du lịch một mình hay cùng bạn bè?",posts:[
+ {who:"小红",role:"Student · 学生",lvl:2,c:"#b8362a",
+  zh:"我喜欢跟朋友一起去旅游。我们一起吃好吃的东西，一起唱歌，非常快乐！",
+  py:"Wǒ xǐhuan gēn péngyou yìqǐ qù lǚyóu. Wǒmen yìqǐ chī hǎochī de dōngxi, yìqǐ chàng gē, fēicháng kuàilè!",
+  en:"I like traveling with friends. We eat tasty food together and sing together. It's so much fun!",
+  vi:"Tôi thích đi du lịch cùng bạn bè. Chúng tôi cùng ăn đồ ngon, cùng hát, vui lắm!",
+  words:[["旅游","lǚyóu","to travel, tour","du lịch",2,"你去过哪些国家旅游？","Nǐ qù guo nǎxiē guójiā lǚyóu?","Which countries have you traveled to?"],
+   ["快乐","kuàilè","happy","vui vẻ",2,"祝你生日快乐！","Zhù nǐ shēngrì kuàilè!","Happy birthday!"],
+   ["非常","fēicháng","very, extremely","rất",2,"这儿的冬天非常冷。","Zhèr de dōngtiān fēicháng lěng.","Winters here are very cold."]]},
+ {who:"阿杰",role:"Photographer · 摄影师",lvl:3,c:"#0f7a7a",
+  zh:"我更喜欢一个人旅行。想去哪儿就去哪儿，想几点起床就几点起床，很自由。而且一个人更容易认识当地人。",
+  py:"Wǒ gèng xǐhuan yí ge rén lǚxíng. Xiǎng qù nǎr jiù qù nǎr, xiǎng jǐ diǎn qǐchuáng jiù jǐ diǎn qǐchuáng, hěn zìyóu. Érqiě yí ge rén gèng róngyì rènshi dāngdì rén.",
+  en:"I prefer traveling alone. I go wherever I want and get up whenever I want; it's very free. Also, alone it's easier to meet locals.",
+  vi:"Tôi thích đi du lịch một mình hơn. Muốn đi đâu thì đi đó, muốn mấy giờ dậy thì mấy giờ dậy, rất tự do. Hơn nữa, đi một mình dễ làm quen với người địa phương hơn.",
+  g:["想 + Q-word + 就 + Q-word","whatever/wherever you want: 想去哪儿就去哪儿"],
+  words:[["而且","érqiě","moreover, also","hơn nữa",3,"这家店的菜很好吃，而且很便宜。","Zhè jiā diàn de cài hěn hǎochī, érqiě hěn piányi.","This restaurant's food is tasty, and cheap too."],
+   ["容易","róngyì","easy","dễ",3,"这个问题很容易回答。","Zhège wèntí hěn róngyì huídá.","This question is easy to answer."],
+   ["认识","rènshi","to know, meet","quen biết",1,"很高兴认识你！","Hěn gāoxìng rènshi nǐ!","Nice to meet you!"]]},
+ {who:"Hoa",role:"Tour guide · 导游",lvl:4,c:"#a86512",
+  zh:"做导游这么多年，我发现两种方式各有优点和缺点。跟朋友出去比较安全，还能一起分担费用；一个人旅行虽然孤单，却能更好地了解自己。",
+  py:"Zuò dǎoyóu zhème duō nián, wǒ fāxiàn liǎng zhǒng fāngshì gè yǒu yōudiǎn hé quēdiǎn. Gēn péngyou chūqù bǐjiào ānquán, hái néng yìqǐ fēndān fèiyong; yí ge rén lǚxíng suīrán gūdān, què néng gèng hǎo de liǎojiě zìjǐ.",
+  en:"After so many years as a tour guide, I've found both ways have pros and cons. Going with friends is safer and you can split costs; traveling alone can be lonely, but it helps you understand yourself better.",
+  vi:"Làm hướng dẫn viên bao nhiêu năm, tôi nhận thấy hai cách đều có ưu điểm và nhược điểm. Đi cùng bạn bè an toàn hơn, còn có thể chia sẻ chi phí; đi một mình tuy cô đơn, nhưng lại hiểu bản thân mình hơn.",
+  words:[["优点","yōudiǎn","strength, merit","ưu điểm",4,"他最大的优点是很认真。","Tā zuì dà de yōudiǎn shì hěn rènzhēn.","His greatest strength is how conscientious he is."],
+   ["缺点","quēdiǎn","shortcoming","nhược điểm",4,"每个人都有缺点。","Měi ge rén dōu yǒu quēdiǎn.","Everyone has shortcomings."],
+   ["却","què","but, yet","nhưng lại",4,"他很累，却不想休息。","Tā hěn lèi, què bù xiǎng xiūxi.","He's tired, yet doesn't want to rest."]]}]},
+
+{zh:"送礼物：送钱还是送东西？",py:"Sòng lǐwù: sòng qián háishi sòng dōngxi?",en:"Gifts: money or things?",vi:"Tặng quà: tặng tiền hay tặng đồ?",posts:[
+ {who:"小东",role:"Age 10 · 十岁",lvl:2,c:"#2f7d32",
+  zh:"过生日的时候，我希望大家送我钱！我可以自己去商店买喜欢的东西。",
+  py:"Guò shēngrì de shíhou, wǒ xīwàng dàjiā sòng wǒ qián! Wǒ kěyǐ zìjǐ qù shāngdiàn mǎi xǐhuan de dōngxi.",
+  en:"On my birthday, I hope everyone gives me money! Then I can go to the store myself and buy things I like.",
+  vi:"Vào sinh nhật, em mong mọi người tặng em tiền! Em có thể tự đi cửa hàng mua đồ mình thích.",
+  words:[["生日","shēngrì","birthday","sinh nhật",2,"今天是我妈妈的生日。","Jīntiān shì wǒ māma de shēngrì.","Today is my mom's birthday."],
+   ["希望","xīwàng","to hope","hy vọng, mong",2,"我希望明天是晴天。","Wǒ xīwàng míngtiān shì qíngtiān.","I hope it's sunny tomorrow."],
+   ["送","sòng","to give (a gift)","tặng",2,"朋友送了我一本书。","Péngyou sòng le wǒ yì běn shū.","A friend gave me a book."]]},
+ {who:"奶奶",role:"Grandma · 退休",lvl:3,c:"#b8362a",
+  zh:"春节的时候，我们给孩子发红包，这是中国的传统。但是给朋友送礼物，我觉得还是送东西更有意义，因为你花了时间去选择。",
+  py:"Chūnjié de shíhou, wǒmen gěi háizi fā hóngbāo, zhè shì Zhōngguó de chuántǒng. Dànshì gěi péngyou sòng lǐwù, wǒ juéde háishi sòng dōngxi gèng yǒu yìyì, yīnwèi nǐ huā le shíjiān qù xuǎnzé.",
+  en:"At Spring Festival we give children red envelopes; it's a Chinese tradition. But for gifts to friends, I think giving an object means more, because you spent time choosing it.",
+  vi:"Dịp Tết, chúng tôi lì xì cho trẻ con, đây là truyền thống của Trung Quốc. Nhưng tặng quà cho bạn bè thì tôi thấy tặng đồ vẫn ý nghĩa hơn, vì bạn đã bỏ thời gian để chọn.",
+  words:[["礼物","lǐwù","gift","quà",3,"这是我送给你的礼物。","Zhè shì wǒ sòng gěi nǐ de lǐwù.","This is a gift for you."],
+   ["选择","xuǎnzé","to choose","lựa chọn",3,"这两件衣服，你选择哪一件？","Zhè liǎng jiàn yīfu, nǐ xuǎnzé nǎ yí jiàn?","Of these two pieces of clothing, which do you choose?"],
+   ["春节","Chūnjié","Spring Festival","Tết Nguyên Đán",3,"春节我们全家一起吃饺子。","Chūnjié wǒmen quánjiā yìqǐ chī jiǎozi.","At Spring Festival our whole family eats dumplings together."]]},
+ {who:"Quang",role:"Vietnamese, works in Shanghai · 在上海工作",lvl:5,c:"#2d5fa8",
+  zh:"越南和中国一样，过年也有发红包的习惯。说实话，送钱最实用，对方可以买自己真正需要的东西。不过礼物的价值不在于价格，而在于心意。",
+  py:"Yuènán hé Zhōngguó yíyàng, guònián yě yǒu fā hóngbāo de xíguàn. Shuō shíhuà, sòng qián zuì shíyòng, duìfāng kěyǐ mǎi zìjǐ zhēnzhèng xūyào de dōngxi. Búguò lǐwù de jiàzhí bú zàiyú jiàgé, ér zàiyú xīnyì.",
+  en:"Like China, Vietnam also gives red envelopes at New Year. Honestly, money is the most practical gift; the other person can buy what they really need. Still, a gift's value isn't in its price but in the thought behind it.",
+  vi:"Việt Nam cũng giống Trung Quốc, ngày Tết cũng có thói quen lì xì. Nói thật, tặng tiền là thiết thực nhất, người nhận có thể mua thứ mình thực sự cần. Tuy nhiên, giá trị của món quà không nằm ở giá cả, mà ở tấm lòng.",
+  g:["A 和 B 一样","A is the same as B: 越南和中国一样"],
+  words:[["实用","shíyòng","practical","thiết thực",5,"这个包虽然不漂亮，但是很实用。","Zhège bāo suīrán bú piàoliang, dànshì hěn shíyòng.","This bag isn't pretty, but it's very practical."],
+   ["对方","duìfāng","the other person","đối phương, người kia",5,"说话的时候要注意对方的感受。","Shuōhuà de shíhou yào zhùyì duìfāng de gǎnshòu.","When talking, pay attention to how the other person feels."],
+   ["价格","jiàgé","price","giá cả",4,"这里的水果价格很便宜。","Zhèlǐ de shuǐguǒ jiàgé hěn piányi.","Fruit prices here are low."]]}]},
+
+{zh:"养猫还是养狗？",py:"Yǎng māo háishi yǎng gǒu?",en:"Cat or dog?",vi:"Nuôi mèo hay nuôi chó?",posts:[
+ {who:"小白",role:"Primary schooler · 小学生",lvl:1,c:"#0f7a7a",
+  zh:"我家有一只小狗。它很漂亮，我很喜欢它。我们每天一起玩。",
+  py:"Wǒ jiā yǒu yì zhī xiǎo gǒu. Tā hěn piàoliang, wǒ hěn xǐhuan tā. Wǒmen měi tiān yìqǐ wán.",
+  en:"My family has a little dog. It's very pretty, and I like it a lot. We play together every day.",
+  vi:"Nhà em có một chú chó nhỏ. Nó rất đẹp, em rất thích nó. Ngày nào chúng em cũng chơi cùng nhau.",
+  words:[["狗","gǒu","dog","chó",1,"那只狗很大。","Nà zhī gǒu hěn dà.","That dog is very big."],
+   ["漂亮","piàoliang","pretty","đẹp",1,"你的衣服真漂亮！","Nǐ de yīfu zhēn piàoliang!","Your clothes are really pretty!"],
+   ["喜欢","xǐhuan","to like","thích",1,"我喜欢喝茶。","Wǒ xǐhuan hē chá.","I like drinking tea."]]},
+ {who:"小周",role:"Office worker · 公司职员",lvl:3,c:"#a86512",
+  zh:"我选择养猫，因为我工作很忙，经常很晚才回家。猫比较安静，不需要每天带出去。",
+  py:"Wǒ xuǎnzé yǎng māo, yīnwèi wǒ gōngzuò hěn máng, jīngcháng hěn wǎn cái huí jiā. Māo bǐjiào ānjìng, bù xūyào měi tiān dài chūqù.",
+  en:"I chose a cat because I'm busy at work and often get home late. Cats are fairly quiet and don't need to be taken out every day.",
+  vi:"Tôi chọn nuôi mèo, vì công việc bận rộn, thường về nhà rất muộn. Mèo khá yên tĩnh, không cần ngày nào cũng dắt ra ngoài.",
+  words:[["经常","jīngcháng","often","thường xuyên",3,"我经常去那家咖啡店。","Wǒ jīngcháng qù nà jiā kāfēi diàn.","I often go to that coffee shop."],
+   ["比较","bǐjiào","fairly, rather","khá, tương đối",3,"今天比较热。","Jīntiān bǐjiào rè.","It's fairly hot today."],
+   ["带","dài","to take, bring","mang, dắt",3,"出门别忘了带伞。","Chūmén bié wàng le dài sǎn.","Don't forget your umbrella when you go out."]]},
+ {who:"孙阿姨",role:"Vet · 宠物医生",lvl:4,c:"#2f7d32",
+  zh:"养宠物之前一定要想清楚：你有没有足够的时间和耐心照顾它？宠物不是玩具，它是家庭的一员，需要你负责它的一生。",
+  py:"Yǎng chǒngwù zhīqián yídìng yào xiǎng qīngchu: nǐ yǒu méiyǒu zúgòu de shíjiān hé nàixīn zhàogù tā? Chǒngwù bú shì wánjù, tā shì jiātíng de yì yuán, xūyào nǐ fùzé tā de yìshēng.",
+  en:"Before getting a pet, think it through: do you have enough time and patience to look after it? A pet isn't a toy; it's a member of the family, and you're responsible for its whole life.",
+  vi:"Trước khi nuôi thú cưng nhất định phải nghĩ cho kỹ: bạn có đủ thời gian và kiên nhẫn để chăm sóc nó không? Thú cưng không phải đồ chơi, nó là một thành viên trong gia đình, bạn phải chịu trách nhiệm cả đời nó.",
+  words:[["耐心","nàixīn","patience, patient","kiên nhẫn",4,"李老师对学生很有耐心。","Lǐ lǎoshī duì xuésheng hěn yǒu nàixīn.","Teacher Li is very patient with students."],
+   ["照顾","zhàogù","to take care of","chăm sóc",3,"姐姐在家照顾生病的妈妈。","Jiějie zài jiā zhàogù shēngbìng de māma.","My older sister is at home looking after our sick mom."],
+   ["负责","fùzé","to be responsible for","chịu trách nhiệm",4,"这件事由我负责。","Zhè jiàn shì yóu wǒ fùzé.","I'm in charge of this."]]}]}
+];
+
+const ALLWORDS=[];TOPICS.forEach((t,ti)=>t.posts.forEach((p,pi)=>p.words.forEach((w,wi)=>ALLWORDS.push({w,key:ti+"-"+pi+"-"+wi}))));
+
+const store={get(k,d){try{const v=localStorage.getItem("shua:"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("shua:"+k,JSON.stringify(v))}catch(e){}}};
+const state={py:store.get("py",true),en:store.get("en",true),vi:store.get("vi",true),lv:store.get("lv","all"),likes:store.get("likes",{}),saved:store.get("saved",{}),offset:0};
+const canSpeak=typeof window.speechSynthesis!=="undefined"&&typeof SpeechSynthesisUtterance!=="undefined";
+function speak(t){if(!canSpeak)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="zh-CN";u.rate=.8;speechSynthesis.speak(u)}catch(e){}}
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ICON={
+  heart:'<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
+  play:'<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg>',
+  save:'<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+  eye:'<svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>'
+};
+const dayNum=d=>Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5);
+const today=new Date();const TODAY=dayNum(today);
+function dateLabel(off){const d=new Date(today);d.setDate(d.getDate()-off);
+  if(off===0)return "Today · "+d.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"short"});
+  if(off===1)return "Yesterday · "+d.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"short"});
+  return d.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"short"})}
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const lvOk=l=>state.lv==="all"||(state.lv==="low"?l<=3:l>=4);
+
+// Mark vocab words inside the post text, longest match first.
+function markZh(zh,words,pid){let out="",i=0;const list=words.map((w,wi)=>[w[0],wi]).sort((a,b)=>b[0].length-a[0].length);const used=new Set();
+  while(i<zh.length){let hit=null;for(const [h,wi] of list){if(!used.has(wi)&&zh.startsWith(h,i)){hit=[h,wi];break}}
+    if(hit){used.add(hit[1]);out+=`<button class="w" data-p="${pid}" data-w="${hit[1]}">${esc(hit[0])}</button>`;i+=hit[0].length}else{out+=esc(zh[i]);i++}}
+  return out}
+
+function wordHTML(w,key){const sv=!!state.saved[key];
+  return `<div class="word" id="w-${key}"><div class="wtop"><span class="h">${esc(w[0])}</span><span class="p">${esc(w[1])}</span>
+  ${canSpeak?`<button class="mini" data-say="${esc(w[0])}" aria-label="Listen">${ICON.play}</button>`:""}
+  <button class="mini" data-save="${key}" aria-pressed="${sv}">${ICON.save}${sv?"Saved":"Save"}</button>
+  <span class="lvl lv${w[4]}">HSK${w[4]}</span></div>
+  <div class="wmean"><span class="t-en">${esc(w[2])}</span><span class="t-vi"> <i>·</i> ${esc(w[3])}</span></div>
+  <div class="ex"><span class="ez">${esc(w[5])} ${canSpeak?`<button class="mini" data-say="${esc(w[5])}" aria-label="Listen to example">${ICON.play}</button>`:""}</span><span class="ep">${esc(w[6])}</span><span class="ee">${esc(w[7])}</span></div></div>`}
+
+function postHTML(p,ti,pi,off){const pid=ti+"-"+pi;const liked=!!state.likes[pid];const n=(ti*7+pi*13)%40+12+(liked?1:0);
+  return `<article class="post" data-lvl="${p.lvl}">
+  <div class="head"><div class="av" style="background:${p.c}">${esc([...p.who][0])}</div>
+   <div class="who"><b>${esc(p.who)}</b><span>${esc(p.role)}</span></div><span class="lvl lv${p.lvl}">HSK${p.lvl}</span></div>
+  <p class="zh">${markZh(p.zh,p.words,pid)}</p>
+  <p class="py">${esc(p.py)}</p>
+  <div class="tr"><span class="tag t-en">EN</span><span class="t-en">${esc(p.en)}</span><span class="tag t-vi">VI</span><span class="t-vi">${esc(p.vi)}</span></div>
+  <div class="gloss" id="g-${pid}-${off}" hidden></div>
+  ${p.g?`<div class="gram"><b>${esc(p.g[0])}</b> &nbsp;${esc(p.g[1])}</div>`:""}
+  <details class="vocab"><summary>Key words and examples (${p.words.length})</summary><div class="words">${p.words.map((w,wi)=>wordHTML(w,pid+"-"+wi)).join("")}</div></details>
+  <div class="acts">
+   <button class="act" data-like="${pid}" aria-pressed="${liked}">${ICON.heart}<span>${n}</span></button>
+   ${canSpeak?`<button class="act" data-say="${esc(p.zh)}">${ICON.play}Listen</button>`:""}
+   <button class="act" data-peek>${ICON.eye}Show help</button>
+  </div></article>`}
+
+function quizHTML(ti,off){const t=TOPICS[ti];const r=rng((TODAY-off)*97+ti);const pool=t.posts.flatMap(p=>p.words).filter(w=>lvOk(w[4]));const src=pool.length?pool:t.posts.flatMap(p=>p.words);
+  const w=src[Math.floor(r()*src.length)];const opts=[w[2]];
+  while(opts.length<4){const o=ALLWORDS[Math.floor(r()*ALLWORDS.length)].w[2];if(!opts.includes(o))opts.push(o)}
+  opts.sort(()=>r()-.5);
+  return `<section class="quiz" data-ans="${esc(w[2])}" data-info="${esc(w[0]+" "+w[1]+" · "+w[2]+" · "+w[3])}">
+   <span class="eyebrow">Quick check · HSK${w[4]}</span><div class="qh">${esc(w[0])}</div><div>What does this word mean?</div>
+   <div class="opts">${opts.map(o=>`<button class="opt">${esc(o)}</button>`).join("")}</div><div class="qres" hidden></div></section>`}
+
+function dayHTML(off){const d=TODAY-off;const n=TOPICS.length;const a=((2*d)%n+n)%n,b=(a+1)%n;
+  let h=`<div class="daybar"><h2>${dateLabel(off)}</h2>${off===0?`<span class="streak" id="streak"></span>`:""}</div>`;
+  for(const ti of [a,b]){const t=TOPICS[ti];const posts=t.posts.map((p,pi)=>[p,pi]).filter(([p])=>lvOk(p.lvl));if(!posts.length)continue;
+    h+=`<section class="topic"><span class="eyebrow">Today's debate · ${t.posts.length} viewpoints</span><div class="q">${esc(t.zh)}</div><div class="qpy py">${esc(t.py)}</div><div class="qtr"><span class="t-en">${esc(t.en)}</span><span class="t-vi"> · ${esc(t.vi)}</span></div></section>`;
+    h+=posts.map(([p,pi])=>postHTML(p,ti,pi,off)).join("");h+=quizHTML(ti,off)}
+  return h}
+
+const feed=document.getElementById("feed"),savedEl=document.getElementById("saved");
+function applyToggles(){document.body.classList.toggle("hide-py",!state.py);document.body.classList.toggle("hide-en",!state.en);document.body.classList.toggle("hide-vi",!state.vi);
+  [["t-py","py"],["t-en","en"],["t-vi","vi"]].forEach(([id,k])=>document.getElementById(id).setAttribute("aria-pressed",state[k]));
+  document.querySelectorAll(".lvf").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===state.lv))}
+const io="IntersectionObserver" in window?new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)&&!feed.hidden)loadMore()},{rootMargin:"1200px 0px"}):null;
+function loadMore(){state.offset++;document.getElementById("days").insertAdjacentHTML("beforeend",dayHTML(state.offset));
+  const s=document.getElementById("more");if(io&&s){io.unobserve(s);io.observe(s)}}
+function renderFeed(){let h=`<div id="days" style="display:grid;grid-template-columns:minmax(0,1fr);gap:14px">`;for(let o=0;o<=state.offset;o++)h+=dayHTML(o);
+  h+=`</div><button class="more" id="more">Load older posts</button>
+  <p class="note">New debates every day, cycling through ${TOPICS.length} topics. Posts are generated practice content, not real news. HSK levels follow the HSK 2.0 word lists as best I know them; check an official list if a level matters.</p>`;
+  feed.innerHTML=h;const more=document.getElementById("more");more.onclick=loadMore;if(io){io.disconnect();io.observe(more)}
+  const visits=store.get("visits",[]);if(!visits.includes(TODAY)){visits.push(TODAY);store.set("visits",visits)}
+  let s=0;while(visits.includes(TODAY-s))s++;const st=document.getElementById("streak");if(st)st.textContent=s>1?`${s}-day streak`:"Day 1 · welcome back";
+  updateSavedN()}
+function updateSavedN(){document.getElementById("savedN").textContent=Object.keys(state.saved).length}
+function renderSaved(){const keys=Object.keys(state.saved);
+  savedEl.innerHTML=keys.length?`<div class="daybar"><h2>Your word bank · ${keys.length}</h2></div>`+keys.map(k=>{const f=ALLWORDS.find(x=>x.key===k);return f?wordHTML(f.w,k):""}).join("")
+   :`<div class="empty">No saved words yet. Open "Key words" on any post and tap Save to collect words here for review.</div>`}
+
+document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;
+  if(t.id==="t-py"||t.id==="t-en"||t.id==="t-vi"){const k=t.id.slice(2);state[k]=!state[k];store.set(k,state[k]);applyToggles();return}
+  if(t.classList.contains("lvf")){state.lv=t.dataset.l;store.set("lv",state.lv);applyToggles();renderFeed();return}
+  if(t.id==="tab-feed"||t.id==="tab-saved"){const s=t.id==="tab-saved";document.getElementById("tab-feed").setAttribute("aria-selected",!s);document.getElementById("tab-saved").setAttribute("aria-selected",s);feed.hidden=s;savedEl.hidden=!s;if(s)renderSaved();scrollTo(0,0);return}
+  if(t.dataset.say){speak(t.dataset.say);return}
+  if(t.dataset.like){const k=t.dataset.like;if(state.likes[k])delete state.likes[k];else state.likes[k]=1;store.set("likes",state.likes);const on=!!state.likes[k];t.setAttribute("aria-pressed",on);const sp=t.querySelector("span");sp.textContent=+sp.textContent+(on?1:-1);return}
+  if(t.dataset.save){const k=t.dataset.save;if(state.saved[k])delete state.saved[k];else state.saved[k]=1;store.set("saved",state.saved);
+    document.querySelectorAll(`[data-save="${k}"]`).forEach(b=>{const on=!!state.saved[k];b.setAttribute("aria-pressed",on);b.lastChild.textContent=on?"Saved":"Save"});updateSavedN();return}
+  if(t.hasAttribute("data-peek")){const post=t.closest(".post");const open=!post.classList.contains("peek");post.classList.toggle("peek",open);
+    post.querySelectorAll(".py,.t-en,.t-vi,.ep,.ee").forEach(el=>el.style.display=open?"revert":"");post.querySelector("details").open=open;t.lastChild.textContent=open?"Hide help":"Show help";return}
+  if(t.classList.contains("w")){const post=t.closest(".post");const [ti,pi]=t.dataset.p.split("-").map(Number);const w=TOPICS[ti].posts[pi].words[+t.dataset.w];
+    const g=post.querySelector(".gloss");const was=t.classList.contains("on");post.querySelectorAll(".w.on").forEach(x=>x.classList.remove("on"));
+    if(was){g.hidden=true;return}t.classList.add("on");g.hidden=false;
+    g.innerHTML=`<b>${esc(w[0])}</b> <span style="color:var(--accent)">${esc(w[1])}</span> <span class="lvl lv${w[4]}">HSK${w[4]}</span><br>${esc(w[2])} <span style="color:var(--muted)">·</span> ${esc(w[3])}`;speak(w[0]);return}
+  if(t.classList.contains("opt")){const q=t.closest(".quiz");if(q.dataset.done)return;q.dataset.done=1;const ans=q.dataset.ans;
+    q.querySelectorAll(".opt").forEach(o=>{if(o.textContent===ans)o.classList.add("ok");else if(o===t)o.classList.add("no")});
+    const r=q.querySelector(".qres");r.hidden=false;r.textContent=(t.textContent===ans?"Correct! ":"Not quite. ")+q.dataset.info;return}
+});
+// Hiding English/Vietnamese/pinyin is the "test yourself" mode; "Show help" reveals them on one post.
+applyToggles();renderFeed();
+</script>
+</body>
+</html>
