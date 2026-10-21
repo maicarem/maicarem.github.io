@@ -115,6 +115,36 @@ details.vocab[open] summary::before{content:"−"}
 .qres{font-size:13.5px}
 .more{justify-self:center;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 18px;font-weight:600;font-size:14px}
 .note{font-size:12px;color:var(--muted);text-align:center;max-width:520px;justify-self:center}
+.topic .tact{justify-self:start;margin-top:6px;border:1px solid currentColor;background:none;color:inherit;border-radius:999px;padding:3px 12px;font-size:12.5px;font-weight:600}
+.lib-row{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:6px;min-width:0}
+.lib-top{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.lib-top .q{font-family:var(--zh);font-size:18px;font-weight:700}
+.lib-top .d{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.lib-sub{font-size:13.5px;color:var(--muted)}
+.pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.pill.done{background:var(--accent-soft);color:var(--accent)}
+.lib-btns{display:flex;gap:6px;flex-wrap:wrap}
+.lib-body{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:6px}
+.seg{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.seg label{font-size:12.5px;color:var(--muted);font-weight:600;margin-right:2px}
+select.chip{padding:4px 8px;max-width:100%}
+.game{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 16px;display:grid;gap:12px;min-width:0}
+.gmeta{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted);flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.gkind{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--seal)}
+.gprompt{font-size:20px;font-weight:600;line-height:1.4}
+.gbar{height:4px;background:var(--sunk);border-radius:4px;overflow:hidden}.gbar i{display:block;height:100%;background:var(--accent)}
+.ginput{font-family:var(--zh);font-size:22px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--sunk);color:var(--fg);width:100%}
+.ginput:focus{outline:none;border-color:var(--accent)}
+.grow{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;background:var(--accent);color:var(--surface);border-radius:10px;padding:9px 18px;font-weight:700;font-size:14px}
+.btn.ghost{background:var(--sunk);color:var(--fg)}
+.gres{border-radius:10px;padding:10px 12px;display:grid;gap:3px;font-size:14px}
+.gres.ok{background:var(--accent-soft)}.gres.no{background:var(--seal-soft)}
+.gres b{font-size:15px}
+.gres .az{font-family:var(--zh);font-size:22px}
+.gres .az .miss{color:var(--seal);text-decoration:underline}
+.gres .ap{color:var(--accent)}
+.ghint{font-size:13px;color:var(--muted)}
 .empty{background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:24px;text-align:center;color:var(--muted)}
 .hide-py .py,.hide-py .ep{display:none}
 .hide-en .t-en,.hide-en .ee{display:none}
@@ -130,6 +160,8 @@ details.vocab[open] summary::before{content:"−"}
       <div class="logo"><span class="seal">刷</span>刷汉语 <small>shuā Hànyǔ</small></div>
       <div class="tabs" role="tablist">
         <button id="tab-feed" role="tab" aria-selected="true">Feed</button>
+        <button id="tab-lib" role="tab" aria-selected="false">Library</button>
+        <button id="tab-prac" role="tab" aria-selected="false">Practice</button>
         <button id="tab-saved" role="tab" aria-selected="false">Saved <span id="savedN">0</span></button>
       </div>
     </div>
@@ -148,6 +180,8 @@ details.vocab[open] summary::before{content:"−"}
 <main>
   <div class="feed" id="feed"></div>
   <div class="feed" id="saved" hidden></div>
+  <div class="feed" id="lib" hidden></div>
+  <div class="feed" id="prac" hidden></div>
 </main>
 
 <script src="daily.js"></script>
@@ -498,7 +532,7 @@ function dateKey(off){const d=new Date(today);d.setDate(d.getDate()-off);return 
 function dayHTML(off){const d=TODAY-off;const n=TOPICS.length;const a=((2*d)%n+n)%n,b=(a+1)%n;const list=DAILY[dateKey(off)]||[TOPICS[a],TOPICS[b]];
   let h=`<div class="daybar"><h2>${dateLabel(off)}</h2>${off===0?`<span class="streak" id="streak"></span>`:""}</div>`;
   list.forEach((t,k)=>{const posts=t.posts.map((p,pi)=>[p,pi]).filter(([p])=>lvOk(p.lvl));if(!posts.length)return;
-    h+=`<section class="topic"><span class="eyebrow">${t.id[0]==="d"?"New debate":"Debate"} · ${t.posts.length} viewpoints</span><div class="q">${esc(t.zh)}</div><div class="qpy py">${esc(t.py)}</div><div class="qtr"><span class="t-en">${esc(t.en)}</span><span class="t-vi"> · ${esc(t.vi)}</span></div></section>`;
+    h+=`<section class="topic"><span class="eyebrow">${t.id[0]==="d"?"New debate":"Debate"} · ${t.posts.length} viewpoints</span><div class="q">${esc(t.zh)}</div><div class="qpy py">${esc(t.py)}</div><div class="qtr"><span class="t-en">${esc(t.en)}</span><span class="t-vi"> · ${esc(t.vi)}</span></div><button class="tact" data-prac="${t.id}">Practice this topic</button></section>`;
     h+=posts.map(([p,pi])=>postHTML(p,t,pi,off)).join("");h+=quizHTML(t,k,off)});
   return h}
 
@@ -524,7 +558,16 @@ function renderSaved(){const keys=Object.keys(state.saved);
 document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;
   if(t.id==="t-py"||t.id==="t-en"||t.id==="t-vi"){const k=t.id.slice(2);state[k]=!state[k];store.set(k,state[k]);applyToggles();return}
   if(t.classList.contains("lvf")){state.lv=t.dataset.l;store.set("lv",state.lv);applyToggles();renderFeed();return}
-  if(t.id==="tab-feed"||t.id==="tab-saved"){const s=t.id==="tab-saved";document.getElementById("tab-feed").setAttribute("aria-selected",!s);document.getElementById("tab-saved").setAttribute("aria-selected",s);feed.hidden=s;savedEl.hidden=!s;if(s)renderSaved();scrollTo(0,0);return}
+  if(t.getAttribute("role")==="tab"){showView(t.id.slice(4));return}
+  if(t.dataset.prac){prac.src=t.dataset.prac;startGame();showView("prac");return}
+  if(t.dataset.read){const b=document.getElementById("lb-"+t.dataset.read);if(b.hidden){const tp=BYID[t.dataset.read];b.innerHTML=tp.posts.map((p,pi)=>postHTML(p,tp,pi,"L")).join("")+quizHTML(tp,0,0)}b.hidden=!b.hidden;t.textContent=b.hidden?"Read posts":"Hide posts";return}
+  if(t.dataset.gmode){prac.mode=t.dataset.gmode;store.set("gmode",prac.mode);startGame();return}
+  if(t.id==="g-check"){checkAnswer();return}
+  if(t.id==="g-next"){nextItem();return}
+  if(t.id==="g-hint"){const h=document.getElementById("g-hinttext");h.hidden=false;return}
+  if(t.id==="g-say"){speak(prac.cur.zh);return}
+  if(t.id==="g-skip"){prac.ans=null;checkAnswer(true);return}
+  if(t.id==="g-again"){startGame();return}
   if(t.dataset.say){speak(t.dataset.say);return}
   if(t.dataset.like){const k=t.dataset.like;if(state.likes[k])delete state.likes[k];else state.likes[k]=1;store.set("likes",state.likes);const on=!!state.likes[k];t.setAttribute("aria-pressed",on);const sp=t.querySelector("span");sp.textContent=+sp.textContent+(on?1:-1);return}
   if(t.dataset.save){const k=t.dataset.save;if(state.saved[k])delete state.saved[k];else state.saved[k]=1;store.set("saved",state.saved);
@@ -539,6 +582,72 @@ document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)r
     q.querySelectorAll(".opt").forEach(o=>{if(o.textContent===ans)o.classList.add("ok");else if(o===t)o.classList.add("no")});
     const r=q.querySelector(".qres");r.hidden=false;r.textContent=(t.textContent===ans?"Correct! ":"Not quite. ")+q.dataset.info;return}
 });
+// Library: every topic shown so far (dated ones up to today) plus the starter topics.
+const libEl=document.getElementById("lib"),pracEl=document.getElementById("prac");
+const VIEWS={feed,saved:savedEl,lib:libEl,prac:pracEl};
+function showView(v){for(const k in VIEWS){VIEWS[k].hidden=k!==v;const b=document.getElementById("tab-"+k);if(b)b.setAttribute("aria-selected",k===v)}
+  if(v==="saved")renderSaved();if(v==="lib")renderLib();if(v==="prac"&&!prac.cur)startGame();scrollTo(0,0)}
+const pastDates=()=>Object.keys(DAILY).filter(d=>d<=dateKey(0)).sort().reverse();
+function renderLib(){const done=store.get("practiced",{});
+  const row=(t,label)=>{const n=done[t.id]||0;return `<div class="lib-row"><div class="lib-top"><span class="q">${esc(t.zh)}</span><span class="pill ${n?"done":""}">${n?"Practiced "+n+"×":"Not practiced"}</span><span class="d">${label}</span></div>
+   <div class="lib-sub">${esc(t.en)} · ${esc(t.vi)}</div><div class="lib-btns"><button class="chip" data-read="${t.id}">Read posts</button><button class="chip" data-prac="${t.id}" aria-pressed="true">Practice</button></div>
+   <div class="lib-body" id="lb-${t.id}" hidden></div></div>`};
+  const dated=pastDates().flatMap(d=>DAILY[d].map(t=>row(t,d)));
+  const todo=[...pastDates().flatMap(d=>DAILY[d]),...TOPICS].filter(t=>!done[t.id]).length;
+  libEl.innerHTML=`<div class="daybar"><h2>Library · ${todo} topics not practiced yet</h2></div>`+
+   (dated.length?dated.join(""):"")+`<div class="daybar"><h2>Starter topics</h2></div>`+TOPICS.map(t=>row(t,"starter")).join("")}
+
+// Practice game: show Vietnamese, English or audio; the learner types the Chinese (characters or pinyin).
+const prac={src:store.get("gsrc","today"),mode:store.get("gmode","mix"),queue:[],cur:null,n:0,right:0,total:10,ans:null};
+function srcTopics(){if(prac.src==="today"){const d=dateKey(0);if(DAILY[d])return DAILY[d];const n=TOPICS.length,a=((2*TODAY)%n+n)%n;return [TOPICS[a],TOPICS[(a+1)%n]]}
+  if(prac.src==="all")return [...pastDates().flatMap(d=>DAILY[d]),...TOPICS];if(prac.src==="saved")return [];return BYID[prac.src]?[BYID[prac.src]]:[]}
+function buildItems(){const items=[];const add=(w,tid)=>{items.push({k:"word",zh:w[0],py:w[1],en:w[2],vi:w[3],lvl:w[4],tid});items.push({k:"sent",zh:w[5],py:w[6],en:w[7],lvl:w[4],tid})};
+  if(prac.src==="saved"){for(const k of Object.keys(state.saved)){const f=ALLWORDS.find(x=>x.key===k);if(f)add(f.w,k.split("_")[0])}}
+  else srcTopics().forEach(t=>t.posts.forEach(p=>p.words.forEach(w=>{if(lvOk(w[4]))add(w,t.id)})));
+  if(prac.mode==="vi")return shuffle(items.filter(x=>x.k==="word"));return shuffle(items)}
+function shuffle(items){for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]]}return items}
+function pickMode(it){let m=prac.mode;if(m==="audio"&&!canSpeak)m="mix";if(m==="vi"&&it.k==="sent")m="en";
+  if(m==="mix"){const ms=it.k==="word"?["vi","en"]:["en"];if(canSpeak)ms.push("audio");m=ms[Math.floor(Math.random()*ms.length)]}return m}
+function srcOptions(){const o=[["today","Today's topics"],["all","All topics so far"],["saved","My saved words"]];
+  const sel=BYID[prac.src]?[[prac.src,BYID[prac.src].zh+" "+BYID[prac.src].en]]:[];return sel.concat(o).map(([v,l])=>`<option value="${esc(v)}" ${v===prac.src?"selected":""}>${esc(l)}</option>`).join("")}
+function startGame(){store.set("gsrc",prac.src);prac.queue=buildItems().slice(0,prac.total);prac.n=0;prac.right=0;prac.cur=null;prac.total=10;
+  pracEl.innerHTML=`<div class="daybar"><h2>Type the Chinese</h2></div>
+  <div class="seg"><label for="g-src">Words from</label><select class="chip" id="g-src">${srcOptions()}</select></div>
+  <div class="seg"><label>Show me</label>${[["mix","Mixed"],["vi","Tiếng Việt"],["en","English"],...(canSpeak?[["audio","Audio only"]]:[])].map(([v,l])=>`<button class="chip" data-gmode="${v}" aria-pressed="${prac.mode===v}">${l}</button>`).join("")}</div>
+  <div id="g-card"></div><p class="note">Type Chinese characters or pinyin. Tone marks and spaces don't matter for pinyin; punctuation never matters. Wrong answers come back again later in the round.</p>`;
+  document.getElementById("g-src").onchange=e=>{prac.src=e.target.value;startGame()};
+  if(!prac.queue.length){document.getElementById("g-card").innerHTML=`<div class="empty">${prac.src==="saved"?"No saved words yet. Tap Save on any key word to practice it here.":"No words to practice here with the current level filter."}</div>`;return}
+  prac.total=prac.queue.length;nextItem()}
+function nextItem(){const card=document.getElementById("g-card");if(!card)return;
+  if(!prac.queue.length){const pct=Math.round(100*prac.right/Math.max(prac.n,1));
+    card.innerHTML=`<div class="game"><div class="gkind">Round finished</div><div class="gprompt">${prac.right} of ${prac.n} right on the first try (${pct}%)</div><div class="grow"><button class="btn" id="g-again">New round</button></div></div>`;
+    if(BYID[prac.src]||prac.src==="today"){const done=store.get("practiced",{});srcTopics().forEach(t=>done[t.id]=(done[t.id]||0)+1);store.set("practiced",done)}return}
+  const it=prac.queue.shift();prac.cur=it;it.mode=it.mode||pickMode(it);prac.ans=null;
+  const label={vi:"Vietnamese → Chinese",en:"English → Chinese",audio:"Listen → Chinese"}[it.mode];
+  const prompt=it.mode==="vi"?esc(it.vi):it.mode==="en"?esc(it.en):`<button class="btn ghost" id="g-say">${ICON.play.replace("<svg",'<svg style="width:18px;height:18px;vertical-align:-3px;fill:none;stroke:currentColor;stroke-width:2"')} Play again</button>`;
+  const done=prac.n,tot=prac.total;
+  card.innerHTML=`<div class="game"><div class="gmeta"><span class="gkind">${label} · ${it.k==="word"?"word":"sentence"}</span><span>${prac.right} right · ${Math.min(done+1,tot)} of ${tot}</span></div>
+   <div class="gbar"><i style="width:${Math.round(100*done/tot)}%"></i></div>
+   <div class="gprompt">${prompt}</div>${it.mode!=="audio"&&canSpeak?"":""}
+   <input class="ginput" id="g-in" autocomplete="off" autocapitalize="off" spellcheck="false" lang="zh-CN" placeholder="${it.k==="word"?"e.g. 喜欢 or xihuan":"Type the sentence"}">
+   <div class="ghint" id="g-hinttext" hidden>Pinyin: ${esc(it.py)}</div>
+   <div class="grow"><button class="btn" id="g-check">Check</button><button class="btn ghost" id="g-hint">Hint</button><button class="btn ghost" id="g-skip">Show answer</button></div><div id="g-res"></div></div>`;
+  const inp=document.getElementById("g-in");inp.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.isComposing){e.preventDefault();prac.ans===null?checkAnswer():nextItem()}});
+  try{inp.focus({preventScroll:true})}catch(e){}
+  if(it.mode==="audio")speak(it.zh)}
+const normHz=s=>s.replace(/[\s，。！？、,.!?“”"'：:；;（）()…—\-]/g,"");
+const normPy=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/v/g,"u").replace(/[^a-z]/g,"");
+function checkAnswer(giveUp){const it=prac.cur;if(!it||prac.ans!==null)return;const raw=giveUp?"":document.getElementById("g-in").value.trim();
+  if(!giveUp&&!raw)return;
+  const ok=!giveUp&&(normHz(raw)===normHz(it.zh)||(/[a-z]/i.test(raw)&&normPy(raw)===normPy(it.py)));prac.ans=ok;
+  if(it.tries===undefined){prac.n++;if(ok)prac.right++}it.tries=(it.tries||0)+1;
+  if(!ok){prac.queue.splice(Math.min(3,prac.queue.length),0,it)}
+  const typed=new Set(normHz(raw));const az=[...it.zh].map(c=>/[\u4e00-\u9fff]/.test(c)&&!typed.has(c)&&raw&&!/[a-z]/i.test(raw)?`<span class="miss">${esc(c)}</span>`:esc(c)).join("");
+  document.getElementById("g-res").innerHTML=`<div class="gres ${ok?"ok":"no"}"><b>${ok?"Correct!":giveUp?"Answer":"Not quite. It will come back later."}</b>
+   <span class="az">${az} ${canSpeak?`<button class="mini" data-say="${esc(it.zh)}" aria-label="Listen">${ICON.play}</button>`:""}</span><span class="ap">${esc(it.py)}</span><span>${esc(it.en)}${it.vi?" · "+esc(it.vi):""}</span>
+   ${!ok&&raw?`<span class="ghint">You typed: ${esc(raw)}</span>`:""}</div><div class="grow" style="margin-top:8px"><button class="btn" id="g-next">Next</button></div>`;
+  document.getElementById("g-check").disabled=true;try{document.getElementById("g-next").focus({preventScroll:true})}catch(e){}}
+
 // Hiding English/Vietnamese/pinyin is the "test yourself" mode; "Show help" reveals them on one post.
 applyToggles();renderFeed();
 </script>
