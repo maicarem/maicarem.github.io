@@ -531,7 +531,7 @@ function quizHTML(t,k,off){const r=rng((TODAY-off)*97+k);const pool=t.posts.flat
    <div class="opts">${opts.map(o=>`<button class="opt">${esc(o)}</button>`).join("")}</div><div class="qres" hidden></div></section>`}
 
 function dateKey(off){const d=new Date(today);d.setDate(d.getDate()-off);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function dayHTML(off){const d=TODAY-off;const n=TOPICS.length;const a=((2*d)%n+n)%n,b=(a+1)%n;const list=DAILY[dateKey(off)]||[TOPICS[a],TOPICS[b]];
+function dayHTML(off){const d=TODAY-off;const n=TOPICS.length;const a=((2*d)%n+n)%n,b=(a+1)%n;const list=DAILY[dateKey(off)]||[TOPICS[a]];
   let h=`<div class="daybar"><h2>${dateLabel(off)}</h2>${off===0?`<span class="streak" id="streak"></span>`:""}</div>`;
   list.forEach((t,k)=>{const posts=t.posts.map((p,pi)=>[p,pi]).filter(([p])=>lvOk(p.lvl));if(!posts.length)return;
     h+=`<section class="topic"><span class="eyebrow">${t.id[0]==="d"?"New debate":"Debate"} · ${t.posts.length} viewpoints</span><div class="q">${esc(t.zh)}</div><div class="qpy py">${esc(t.py)}</div><div class="qtr"><span class="t-en">${esc(t.en)}</span><span class="t-vi"> · ${esc(t.vi)}</span></div><button class="tact" data-prac="${t.id}">Practice this topic</button></section>`;
@@ -547,7 +547,7 @@ function loadMore(){state.offset++;document.getElementById("days").insertAdjacen
   const s=document.getElementById("more");if(io&&s){io.unobserve(s);io.observe(s)}}
 function renderFeed(){let h=`<div id="days" style="display:grid;grid-template-columns:minmax(0,1fr);gap:14px">`;for(let o=0;o<=state.offset;o++)h+=dayHTML(o);
   h+=`</div><button class="more" id="more">Load older posts</button>
-  <p class="note">New debates are added every day. Days without new ones reuse ${TOPICS.length} starter topics. Posts are AI-written practice content, not real news. HSK levels follow the HSK 2.0 word lists as best I know them; check an official list if a level matters.</p>`;
+  <p class="note">One new debate with four viewpoints is added every day. Days without new ones reuse ${TOPICS.length} starter topics. Posts are AI-written practice content, not real news. HSK levels follow the HSK 2.0 word lists as best I know them; check an official list if a level matters.</p>`;
   feed.innerHTML=h;const more=document.getElementById("more");more.onclick=loadMore;if(io){io.disconnect();io.observe(more)}
   const visits=store.get("visits",[]);if(!visits.includes(TODAY)){visits.push(TODAY);store.set("visits",visits)}
   let s=0;while(visits.includes(TODAY-s))s++;const st=document.getElementById("streak");if(st)st.textContent=s>1?`${s}-day streak`:"Day 1 · welcome back";
@@ -602,7 +602,7 @@ function renderLib(){const done=store.get("practiced",{});
 
 // Practice game: show Vietnamese, English or audio; the learner types the Chinese (characters or pinyin).
 const prac={src:store.get("gsrc","today"),mode:store.get("gmode","mix"),what:store.get("gwhat","all"),queue:[],cur:null,n:0,right:0,total:10,ans:null};
-function srcTopics(){if(prac.src==="today"){const d=dateKey(0);if(DAILY[d])return DAILY[d];const n=TOPICS.length,a=((2*TODAY)%n+n)%n;return [TOPICS[a],TOPICS[(a+1)%n]]}
+function srcTopics(){if(prac.src==="today"){const d=dateKey(0);if(DAILY[d])return DAILY[d];const n=TOPICS.length,a=((2*TODAY)%n+n)%n;return [TOPICS[a]]}
   if(prac.src==="all")return [...pastDates().flatMap(d=>DAILY[d]),...TOPICS];if(prac.src==="saved")return [];return BYID[prac.src]?[BYID[prac.src]]:[]}
 function buildItems(){const items=[];const add=(w,tid)=>{items.push({k:"word",zh:w[0],py:w[1],en:w[2],vi:w[3],lvl:w[4],tid});items.push({k:"sent",zh:w[5],py:w[6],en:w[7],lvl:w[4],tid})};
   if(prac.src==="saved"){for(const k of Object.keys(state.saved)){const f=ALLWORDS.find(x=>x.key===k);if(f)add(f.w,k.split("_")[0])}}
