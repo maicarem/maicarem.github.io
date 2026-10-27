@@ -369,5 +369,45 @@ window.HSK_DAILY = {
    ["压力","yālì","pressure, stress","áp lực",4,"考试以前，我的压力很大。","Kǎoshì yǐqián, wǒ de yālì hěn dà.","Before exams I am under a lot of pressure."],
    ["浪费","làngfèi","to waste","lãng phí",4,"不要浪费时间，快点儿做作业吧。","Bú yào làngfèi shíjiān, kuài diǎnr zuò zuòyè ba.","Don't waste time, hurry up and do your homework."]]}
 ]}
+],
+"2026-10-29":[
+{zh:"用手机付款还是用现金？",py:"Yòng shǒujī fùkuǎn háishi yòng xiànjīn?",en:"Pay by phone or with cash?",vi:"Thanh toán bằng điện thoại hay bằng tiền mặt?",posts:[
+ {who:"小李",role:"University student · 大学生",lvl:2,c:"#2d5fa8",
+  zh:"我喜欢用手机买东西。出去玩的时候，我不用带钱，很方便。买完以后，我马上就能看到花了多少钱。",
+  py:"Wǒ xǐhuan yòng shǒujī mǎi dōngxi. Chūqù wán de shíhou, wǒ bú yòng dài qián, hěn fāngbiàn. Mǎi wán yǐhòu, wǒ mǎshàng jiù néng kàn dào huā le duōshao qián.",
+  en:"I like using my phone to buy things. When I go out to have fun, I don't need to carry money, which is very convenient. After buying, I can see right away how much I spent.",
+  vi:"Tôi thích dùng điện thoại để mua đồ. Khi đi chơi, tôi không cần mang tiền, rất tiện. Mua xong, tôi có thể xem ngay mình đã tiêu bao nhiêu tiền.",
+  g:["……的时候","when...: 出去玩的时候，我不用带钱"],
+  words:[["手机","shǒujī","mobile phone","điện thoại di động",2,"我的手机在桌子上。","Wǒ de shǒujī zài zhuōzi shàng.","My phone is on the table."],
+   ["带","dài","to carry, to bring","mang, đem theo",3,"不要忘了带书。","Bú yào wàng le dài shū.","Don't forget to bring your book."],
+   ["方便","fāngbiàn","convenient","tiện lợi",3,"这里离超市很近，买东西很方便。","Zhèlǐ lí chāoshì hěn jìn, mǎi dōngxi hěn fāngbiàn.","It's close to the supermarket here, so shopping is very convenient."]]},
+ {who:"阮阿姨",role:"Fruit seller · 水果摊主",lvl:3,c:"#2f7d32",
+  zh:"我在市场卖水果，我还是习惯用现金。有些老人不会用手机，他们给我现金，我马上就可以找钱。而且，手机没电了就很麻烦。",
+  py:"Wǒ zài shìchǎng mài shuǐguǒ, wǒ háishi xíguàn yòng xiànjīn. Yǒuxiē lǎorén bú huì yòng shǒujī, tāmen gěi wǒ xiànjīn, wǒ mǎshàng jiù kěyǐ zhǎo qián. Érqiě, shǒujī méi diàn le jiù hěn máfan.",
+  en:"I sell fruit at the market, and I'm still used to using cash. Some older people can't use a phone; they give me cash and I can give change right away. Besides, it's a hassle when the phone has run out of battery.",
+  vi:"Tôi bán trái cây ở chợ, tôi vẫn quen dùng tiền mặt. Có một số người lớn tuổi không biết dùng điện thoại, họ đưa tiền mặt cho tôi, tôi có thể thối tiền ngay. Hơn nữa, điện thoại hết pin thì rất phiền.",
+  g:["有些……","some...: 有些老人不会用手机"],
+  words:[["现金","xiànjīn","cash","tiền mặt",4,"这家小店只收现金。","Zhè jiā xiǎo diàn zhǐ shōu xiànjīn.","This little shop only accepts cash."],
+   ["习惯","xíguàn","to be used to; habit","quen; thói quen",3,"我已经习惯了这里的天气。","Wǒ yǐjīng xíguàn le zhèlǐ de tiānqì.","I'm already used to the weather here."],
+   ["麻烦","máfan","troublesome; to bother","phiền phức; làm phiền",4,"对不起，麻烦你了。","Duìbuqǐ, máfan nǐ le.","Sorry to trouble you."]]},
+ {who:"张经理",role:"Store manager · 商店经理",lvl:4,c:"#a86512",
+  zh:"作为商店经理，我觉得两种方式都需要。用手机付款既快又安全，顾客不用排队。可是网络有问题的时候，手机就不能用了，所以我们一定要准备一些现金。",
+  py:"Zuòwéi shāngdiàn jīnglǐ, wǒ juéde liǎng zhǒng fāngshì dōu xūyào. Yòng shǒujī fùkuǎn jì kuài yòu ānquán, gùkè bù yòng páiduì. Kěshì wǎngluò yǒu wèntí de shíhou, shǒujī jiù bù néng yòng le, suǒyǐ wǒmen yídìng yào zhǔnbèi yìxiē xiànjīn.",
+  en:"As a store manager, I think we need both ways. Paying by phone is both fast and safe, and customers don't have to queue. But when there's a network problem the phone can't be used, so we must have some cash ready.",
+  vi:"Là quản lý cửa hàng, tôi thấy cần cả hai cách. Thanh toán bằng điện thoại vừa nhanh vừa an toàn, khách hàng không phải xếp hàng. Nhưng khi mạng có vấn đề thì điện thoại không dùng được, nên chúng tôi nhất định phải chuẩn bị một ít tiền mặt.",
+  g:["既……又……","both...and...: 既快又安全"],
+  words:[["网络","wǎngluò","network, internet","mạng, internet",4,"这里的网络很快。","Zhèlǐ de wǎngluò hěn kuài.","The internet here is very fast."],
+   ["安全","ānquán","safe; safety","an toàn",4,"过马路要注意安全。","Guò mǎlù yào zhùyì ānquán.","Be careful about safety when crossing the road."],
+   ["准备","zhǔnbèi","to prepare","chuẩn bị",3,"明天考试，你准备好了吗？","Míngtiān kǎoshì, nǐ zhǔnbèi hǎo le ma?","There's an exam tomorrow. Are you prepared?"]]},
+ {who:"陈教授",role:"Sociology professor · 社会学教授",lvl:5,c:"#0f7a7a",
+  zh:"无论用现金还是用手机，每个人都应该有选择的自由。如果完全取消现金，老人就会遇到很多困难。另外，手机支付让我们更容易花钱，所以大家要注意控制自己的消费。",
+  py:"Wúlùn yòng xiànjīn háishi yòng shǒujī, měi ge rén dōu yīnggāi yǒu xuǎnzé de zìyóu. Rúguǒ wánquán qǔxiāo xiànjīn, lǎorén jiù huì yùdào hěn duō kùnnan. Lìngwài, shǒujī zhīfù ràng wǒmen gèng róngyì huā qián, suǒyǐ dàjiā yào zhùyì kòngzhì zìjǐ de xiāofèi.",
+  en:"Whether we use cash or a phone, everyone should have the freedom to choose. If cash were abolished completely, older people would run into many difficulties. Also, mobile payment makes it easier for us to spend money, so everyone should pay attention to controlling their own spending.",
+  vi:"Dù dùng tiền mặt hay điện thoại, ai cũng nên có quyền tự do lựa chọn. Nếu bỏ hẳn tiền mặt, người lớn tuổi sẽ gặp rất nhiều khó khăn. Ngoài ra, thanh toán bằng điện thoại khiến chúng ta dễ tiêu tiền hơn, nên mọi người cần chú ý kiểm soát chi tiêu của mình.",
+  g:["无论……都……","no matter whether...: 无论现金还是手机，每个人都……"],
+  words:[["取消","qǔxiāo","to cancel, to abolish","hủy bỏ",5,"因为下雨，比赛取消了。","Yīnwèi xià yǔ, bǐsài qǔxiāo le.","The match was cancelled because of rain."],
+   ["控制","kòngzhì","to control","kiểm soát",5,"他很难控制自己的脾气。","Tā hěn nán kòngzhì zìjǐ de píqi.","It's hard for him to control his temper."],
+   ["消费","xiāofèi","consumption; to spend","chi tiêu, tiêu dùng",5,"过年的时候，大家的消费会增加。","Guò nián de shíhou, dàjiā de xiāofèi huì zēngjiā.","Around the New Year, everyone's spending goes up."]]}
+]}
 ]
 };
