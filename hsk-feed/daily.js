@@ -409,5 +409,45 @@ window.HSK_DAILY = {
    ["控制","kòngzhì","to control","kiểm soát",5,"他很难控制自己的脾气。","Tā hěn nán kòngzhì zìjǐ de píqi.","It's hard for him to control his temper."],
    ["消费","xiāofèi","consumption; to spend","chi tiêu, tiêu dùng",5,"过年的时候，大家的消费会增加。","Guò nián de shíhou, dàjiā de xiāofèi huì zēngjiā.","Around the New Year, everyone's spending goes up."]]}
 ]}
+],
+"2026-10-30":[
+{zh:"做志愿者有意义吗？",py:"Zuò zhìyuànzhě yǒu yìyì ma?",en:"Is volunteering worthwhile?",vi:"Làm tình nguyện có ý nghĩa không?",posts:[
+ {who:"小李",role:"Student · 学生",lvl:2,c:"#2d5fa8",
+  zh:"我喜欢帮助别人。每个星期六，我去医院帮助老人。他们很高兴，我也很快乐。",
+  py:"Wǒ xǐhuan bāngzhù biérén. Měi gè xīngqīliù, wǒ qù yīyuàn bāngzhù lǎorén. Tāmen hěn gāoxìng, wǒ yě hěn kuàilè.",
+  en:"I like helping others. Every Saturday I go to the hospital to help the elderly. They are very happy, and I'm happy too.",
+  vi:"Tôi thích giúp đỡ người khác. Thứ Bảy nào tôi cũng đến bệnh viện giúp các cụ già. Họ rất vui, tôi cũng rất hạnh phúc.",
+  g:["每 + 量词 + 时间","every …: 每个星期六 = every Saturday"],
+  words:[["帮助","bāngzhù","to help","giúp đỡ",2,"谢谢你帮助我学汉语。","Xièxie nǐ bāngzhù wǒ xué Hànyǔ.","Thank you for helping me learn Chinese."],
+   ["高兴","gāoxìng","happy, glad","vui, vui mừng",1,"认识你我很高兴。","Rènshi nǐ wǒ hěn gāoxìng.","I'm very happy to meet you."],
+   ["快乐","kuàilè","happy, joyful","vui vẻ, hạnh phúc",2,"祝你生日快乐！","Zhù nǐ shēngrì kuàilè!","Happy birthday to you!"]]},
+ {who:"阮小姐",role:"Teacher · Giáo viên",lvl:3,c:"#2f7d32",
+  zh:"帮助别人很好，不过要看时间。我每天工作很累，周末只想休息。如果每个周末都去，我会太累。",
+  py:"Bāngzhù biérén hěn hǎo, búguò yào kàn shíjiān. Wǒ měi tiān gōngzuò hěn lèi, zhōumò zhǐ xiǎng xiūxi. Rúguǒ měi gè zhōumò dōu qù, wǒ huì tài lèi.",
+  en:"Helping others is good, but it depends on time. I am tired from work every day, and on weekends I just want to rest. If I went every weekend, I would be too tired.",
+  vi:"Giúp đỡ người khác rất tốt, nhưng còn tùy thời gian. Ngày nào tôi cũng đi làm rất mệt, cuối tuần chỉ muốn nghỉ ngơi. Nếu tuần nào cũng đi, tôi sẽ quá mệt.",
+  g:["如果…，会…","if…, then (it) would…: 如果每个周末都去，我会太累"],
+  words:[["周末","zhōumò","weekend","cuối tuần",3,"我周末常常看电影。","Wǒ zhōumò chángcháng kàn diànyǐng.","I often watch movies on weekends."],
+   ["如果","rúguǒ","if","nếu",3,"如果明天下雨，我们就不去公园了。","Rúguǒ míngtiān xià yǔ, wǒmen jiù bú qù gōngyuán le.","If it rains tomorrow, we won't go to the park."],
+   ["累","lèi","tired","mệt",3,"我今天走了很多路，很累。","Wǒ jīntiān zǒule hěn duō lù, hěn lèi.","I walked a lot today and I'm very tired."]]},
+ {who:"陈经理",role:"Manager · 经理",lvl:4,c:"#a86512",
+  zh:"我们公司每个月组织一次帮助别人的活动，我觉得很有价值。大家一起做事，不但能增加同事之间的交流，还能让年轻人得到工作经验。",
+  py:"Wǒmen gōngsī měi gè yuè zǔzhī yí cì bāngzhù biérén de huódòng, wǒ juéde hěn yǒu jiàzhí. Dàjiā yìqǐ zuò shì, búdàn néng zēngjiā tóngshì zhījiān de jiāoliú, hái néng ràng niánqīngrén dédào gōngzuò jīngyàn.",
+  en:"Our company organizes an activity to help others once a month, and I think it is very valuable. Doing things together not only increases communication between colleagues, but also lets young people gain work experience.",
+  vi:"Mỗi tháng công ty chúng tôi tổ chức một hoạt động giúp đỡ người khác, tôi thấy rất có giá trị. Mọi người cùng làm việc, không những tăng sự giao lưu giữa các đồng nghiệp mà còn giúp người trẻ có được kinh nghiệm làm việc.",
+  g:["不但…，还…","not only…, but also…: 不但能增加交流，还能得到经验"],
+  words:[["组织","zǔzhī","to organize","tổ chức",5,"老师组织我们去公园玩儿。","Lǎoshī zǔzhī wǒmen qù gōngyuán wánr.","The teacher organized for us to go play in the park."],
+   ["交流","jiāoliú","to communicate, exchange","giao lưu, trao đổi",4,"我喜欢和外国朋友交流。","Wǒ xǐhuan hé wàiguó péngyou jiāoliú.","I like communicating with foreign friends."],
+   ["经验","jīngyàn","experience","kinh nghiệm",4,"他有很多教书的经验。","Tā yǒu hěn duō jiāoshū de jīngyàn.","He has a lot of teaching experience."]]},
+ {who:"老赵",role:"Retired teacher · 退休教师",lvl:5,c:"#b8362a",
+  zh:"有些人做好事只是为了发朋友圈，或者让简历好看，我觉得这样不对。真正的帮助不需要别人看见。与其拍照给大家看，不如认真做一件小事。",
+  py:"Yǒuxiē rén zuò hǎoshì zhǐshì wèile fā péngyouquān, huòzhě ràng jiǎnlì hǎokàn, wǒ juéde zhèyàng bú duì. Zhēnzhèng de bāngzhù bù xūyào biérén kànjiàn. Yǔqí pāizhào gěi dàjiā kàn, bùrú rènzhēn zuò yí jiàn xiǎoshì.",
+  en:"Some people do good deeds only to post on social media, or to make their résumé look good, and I think that's wrong. Real help doesn't need others to see it. Rather than take photos for everyone to look at, it's better to seriously do one small thing.",
+  vi:"Có người làm việc tốt chỉ để đăng lên mạng xã hội, hoặc để hồ sơ xin việc trông đẹp hơn, tôi thấy như vậy là không đúng. Sự giúp đỡ thật sự không cần người khác nhìn thấy. Thay vì chụp ảnh cho mọi người xem, chi bằng nghiêm túc làm một việc nhỏ.",
+  g:["与其 A，不如 B","rather than A, better B: 与其拍照给大家看，不如认真做一件小事"],
+  words:[["简历","jiǎnlì","résumé, CV","sơ yếu lý lịch, hồ sơ xin việc",5,"我正在写找工作的简历。","Wǒ zhèngzài xiě zhǎo gōngzuò de jiǎnlì.","I'm writing my résumé to look for a job."],
+   ["认真","rènzhēn","serious, conscientious","nghiêm túc, chăm chỉ",3,"他学习汉语很认真。","Tā xuéxí Hànyǔ hěn rènzhēn.","He studies Chinese very seriously."],
+   ["真正","zhēnzhèng","real, genuine","thật sự, chân chính",4,"真正的朋友会在你难过的时候陪着你。","Zhēnzhèng de péngyou huì zài nǐ nánguò de shíhou péizhe nǐ.","A true friend stays with you when you're sad."]]}
+]}
 ]
 };
