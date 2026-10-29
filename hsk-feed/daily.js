@@ -449,5 +449,44 @@ window.HSK_DAILY = {
    ["认真","rènzhēn","serious, conscientious","nghiêm túc, chăm chỉ",3,"他学习汉语很认真。","Tā xuéxí Hànyǔ hěn rènzhēn.","He studies Chinese very seriously."],
    ["真正","zhēnzhèng","real, genuine","thật sự, chân chính",4,"真正的朋友会在你难过的时候陪着你。","Zhēnzhèng de péngyou huì zài nǐ nánguò de shíhou péizhe nǐ.","A true friend stays with you when you're sad."]]}
 ]}
+],
+"2026-10-31":[
+{zh:"看电影：去电影院还是在家看？",py:"Kàn diànyǐng: qù diànyǐngyuàn háishi zài jiā kàn?",en:"Movies: cinema or at home?",vi:"Xem phim: đi rạp hay xem ở nhà?",posts:[
+ {who:"小李",role:"Student · 大学生",lvl:2,c:"#2d5fa8",
+  zh:"我喜欢去电影院看电影。电影院里的声音很好听。我常常和朋友一起去，看完电影，我们还可以一起吃饭。",
+  py:"Wǒ xǐhuan qù diànyǐngyuàn kàn diànyǐng. Diànyǐngyuàn lǐ de shēngyīn hěn hǎotīng. Wǒ chángcháng hé péngyou yìqǐ qù, kàn wán diànyǐng, wǒmen hái kěyǐ yìqǐ chī fàn.",
+  en:"I like going to the cinema to watch movies. The sound in the cinema is very pleasant. I often go with friends, and after the movie we can also eat together.",
+  vi:"Tôi thích đến rạp chiếu phim xem phim. Âm thanh trong rạp rất hay. Tôi thường đi cùng bạn bè, xem phim xong chúng tôi còn có thể cùng đi ăn.",
+  words:[["好听","hǎotīng","pleasant to hear","nghe hay, êm tai",2,"这首歌很好听。","Zhè shǒu gē hěn hǎotīng.","This song sounds great."],
+   ["常常","chángcháng","often","thường",2,"我常常在家看书。","Wǒ chángcháng zài jiā kàn shū.","I often read at home."],
+   ["一起","yìqǐ","together","cùng nhau",2,"我们一起去吃饭吧。","Wǒmen yìqǐ qù chī fàn ba.","Let's go eat together."]]},
+ {who:"阮女士",role:"Mother of two · 两个孩子的妈妈",lvl:3,c:"#2f7d32",
+  zh:"我觉得在家看电影更方便。我家有两个孩子，我们一家四口去电影院，要买四张票，还要花很多钱。在家看的话，可以一边吃水果一边看，想休息就休息。",
+  py:"Wǒ juéde zài jiā kàn diànyǐng gèng fāngbiàn. Wǒ jiā yǒu liǎng ge háizi, wǒmen yì jiā sì kǒu qù diànyǐngyuàn, yào mǎi sì zhāng piào, hái yào huā hěn duō qián. Zài jiā kàn de huà, kěyǐ yìbiān chī shuǐguǒ yìbiān kàn, xiǎng xiūxi jiù xiūxi.",
+  en:"I think watching movies at home is more convenient. We have two children, and if the four of us go to the cinema, we have to buy four tickets and spend a lot of money. If we watch at home, we can eat fruit while watching, and rest whenever we want.",
+  vi:"Tôi thấy xem phim ở nhà tiện hơn. Nhà tôi có hai đứa con, cả nhà bốn người đi rạp phải mua bốn vé, lại tốn rất nhiều tiền. Xem ở nhà thì vừa ăn trái cây vừa xem, muốn nghỉ thì nghỉ.",
+  g:["一边…一边…","doing two things at the same time: 一边吃水果一边看"],
+  words:[["方便","fāngbiàn","convenient","tiện lợi",3,"这里坐地铁很方便。","Zhèlǐ zuò dìtiě hěn fāngbiàn.","Taking the subway here is very convenient."],
+   ["花","huā","to spend (money/time)","tiêu, tốn",3,"她花了两个小时做饭。","Tā huā le liǎng ge xiǎoshí zuò fàn.","She spent two hours cooking."],
+   ["票","piào","ticket","vé",3,"我买了两张电影票。","Wǒ mǎi le liǎng zhāng diànyǐng piào.","I bought two movie tickets."]]},
+ {who:"老陈",role:"Movie lover · 电影爱好者",lvl:4,c:"#a86512",
+  zh:"我特别爱看电影，我认为电影一定要在电影院看。在家看的时候，我常常一边看一边玩儿手机，很容易忘记电影讲了什么。可是在电影院里，灯一关，周围就安静下来，我会完全进入故事，感受也更深。",
+  py:"Wǒ tèbié ài kàn diànyǐng, wǒ rènwéi diànyǐng yídìng yào zài diànyǐngyuàn kàn. Zài jiā kàn de shíhou, wǒ chángcháng yìbiān kàn yìbiān wánr shǒujī, hěn róngyì wàngjì diànyǐng jiǎng le shénme. Kěshì zài diànyǐngyuàn lǐ, dēng yì guān, zhōuwéi jiù ānjìng xiàlái, wǒ huì wánquán jìnrù gùshi, gǎnshòu yě gèng shēn.",
+  en:"I love movies, and I believe films must be watched in a cinema. When I watch at home, I often play with my phone while watching and easily forget what the movie was about. But in the cinema, as soon as the lights go off, the surroundings quiet down, and I get completely absorbed in the story, and the feeling is deeper.",
+  vi:"Tôi rất thích xem phim, tôi cho rằng phim nhất định phải xem ở rạp. Khi xem ở nhà, tôi thường vừa xem vừa nghịch điện thoại, rất dễ quên phim kể chuyện gì. Nhưng ở rạp, đèn vừa tắt, xung quanh liền yên tĩnh lại, tôi sẽ hoàn toàn đắm chìm vào câu chuyện, cảm nhận cũng sâu sắc hơn.",
+  g:["一…就…","as soon as…, then…: 灯一关，周围就安静下来"],
+  words:[["安静","ānjìng","quiet","yên tĩnh",4,"图书馆里很安静。","Túshūguǎn lǐ hěn ānjìng.","The library is very quiet."],
+   ["周围","zhōuwéi","surroundings, around","xung quanh",4,"学校周围有很多饭馆。","Xuéxiào zhōuwéi yǒu hěn duō fànguǎn.","There are many restaurants around the school."],
+   ["容易","róngyì","easy; easily","dễ",3,"汉字不太容易写。","Hànzì bú tài róngyì xiě.","Chinese characters are not very easy to write."]]},
+ {who:"黎先生",role:"Cinema employee · 影院工作人员",lvl:5,c:"#b8362a",
+  zh:"我在电影院工作了十年，这要看是什么电影。很热闹的大电影，在电影院看效果最好，气氛也不一样。至于普通的家庭故事，在家看也完全可以。不过，如果大家都不去电影院，电影院就会关门，所以我希望大家有时候也来支持一下。",
+  py:"Wǒ zài diànyǐngyuàn gōngzuò le shí nián, zhè yào kàn shì shénme diànyǐng. Hěn rènao de dà diànyǐng, zài diànyǐngyuàn kàn xiàoguǒ zuì hǎo, qìfēn yě bù yíyàng. Zhìyú pǔtōng de jiātíng gùshi, zài jiā kàn yě wánquán kěyǐ. Bùguò, rúguǒ dàjiā dōu bú qù diànyǐngyuàn, diànyǐngyuàn jiù huì guānmén, suǒyǐ wǒ xīwàng dàjiā yǒu shíhou yě lái zhīchí yíxià.",
+  en:"I've worked in a cinema for ten years, and I think it depends on the film. For big, lively movies, the effect is best in a cinema, and the atmosphere is different. As for ordinary family stories, watching at home is perfectly fine. However, if everyone stops going to the cinema, cinemas will close, so I hope people will come and show some support now and then.",
+  vi:"Tôi làm việc ở rạp chiếu phim đã mười năm, theo tôi điều này còn tùy xem là phim gì. Những bộ phim lớn rất sôi động thì xem ở rạp có hiệu quả tốt nhất, không khí cũng khác. Còn những câu chuyện gia đình bình thường thì xem ở nhà cũng hoàn toàn được. Có điều, nếu mọi người đều không đến rạp thì rạp sẽ đóng cửa, nên tôi mong thỉnh thoảng mọi người cũng đến ủng hộ một chút.",
+  g:["至于","as for / when it comes to: 至于普通的家庭故事，在家看也完全可以"],
+  words:[["效果","xiàoguǒ","effect, result","hiệu quả, kết quả",5,"这种药的效果很好。","Zhè zhǒng yào de xiàoguǒ hěn hǎo.","This medicine works very well."],
+   ["气氛","qìfēn","atmosphere","không khí, bầu không khí",5,"聚会的气氛很热闹。","Jùhuì de qìfēn hěn rènao.","The atmosphere at the party was lively."],
+   ["至于","zhìyú","as for, as to","còn về, đến mức",5,"我同意你的看法，至于价格，我们以后再谈。","Wǒ tóngyì nǐ de kànfǎ, zhìyú jiàgé, wǒmen yǐhòu zài tán.","I agree with your view; as for the price, we'll talk about it later."]]}
+]}
 ]
 };
