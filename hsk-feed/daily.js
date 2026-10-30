@@ -488,5 +488,45 @@ window.HSK_DAILY = {
    ["气氛","qìfēn","atmosphere","không khí, bầu không khí",5,"聚会的气氛很热闹。","Jùhuì de qìfēn hěn rènao.","The atmosphere at the party was lively."],
    ["至于","zhìyú","as for, as to","còn về, đến mức",5,"我同意你的看法，至于价格，我们以后再谈。","Wǒ tóngyì nǐ de kànfǎ, zhìyú jiàgé, wǒmen yǐhòu zài tán.","I agree with your view; as for the price, we'll talk about it later."]]}
 ]}
+],
+"2026-11-01":[
+{zh:"工作以后，和父母住还是自己住？",py:"Gōngzuò yǐhòu, hé fùmǔ zhù háishi zìjǐ zhù?",en:"After starting work: live with parents or on your own?",vi:"Sau khi đi làm: sống với bố mẹ hay ở riêng?",posts:[
+ {who:"小美",role:"Intern · 实习生",lvl:2,c:"#2d5fa8",
+  zh:"我跟爸爸妈妈住在一起。我们家离公司很近，我不用坐车。妈妈每天做饭，我觉得非常好。",
+  py:"Wǒ gēn bàba māma zhù zài yìqǐ. Wǒmen jiā lí gōngsī hěn jìn, wǒ bú yòng zuò chē. Māma měi tiān zuòfàn, wǒ juéde fēicháng hǎo.",
+  en:"I live with my parents. Our home is very close to my company, so I don't need to take a bus. Mom cooks every day, and I think that's great.",
+  vi:"Tôi sống cùng bố mẹ. Nhà tôi rất gần công ty nên tôi không cần đi xe buýt. Mẹ nấu cơm mỗi ngày, tôi thấy như vậy rất tuyệt.",
+  g:["A 离 B + adj","A is far from / close to B: 我们家离公司很近"],
+  words:[["离","lí","away from (distance)","cách",2,"学校离我家很远。","Xuéxiào lí wǒ jiā hěn yuǎn.","The school is far from my home."],
+   ["近","jìn","near, close","gần",2,"超市离这儿很近。","Chāoshì lí zhèr hěn jìn.","The supermarket is very close to here."],
+   ["非常","fēicháng","very, extremely","rất",2,"今天非常热。","Jīntiān fēicháng rè.","It's extremely hot today."]]},
+ {who:"阮明",role:"Designer · 设计师",lvl:3,c:"#2f7d32",
+  zh:"我想自己住。我常常加班，回家很晚，爸妈总是很担心我。自己住的话，我可以自己安排时间，也能学会照顾自己。可是房租有点儿贵，所以我打算跟朋友一起租房子。",
+  py:"Wǒ xiǎng zìjǐ zhù. Wǒ chángcháng jiābān, huí jiā hěn wǎn, bàmā zǒngshì hěn dānxīn wǒ. Zìjǐ zhù de huà, wǒ kěyǐ zìjǐ ānpái shíjiān, yě néng xuéhuì zhàogù zìjǐ. Kěshì fángzū yǒudiǎnr guì, suǒyǐ wǒ dǎsuàn gēn péngyou yìqǐ zū fángzi.",
+  en:"I want to live on my own. I often work overtime and get home late, and my parents are always worried about me. If I live alone, I can plan my own time and learn to look after myself. But the rent is a bit expensive, so I plan to rent a place with friends.",
+  vi:"Tôi muốn sống một mình. Tôi thường xuyên tăng ca, về nhà rất muộn, bố mẹ lúc nào cũng lo cho tôi. Nếu sống một mình, tôi có thể tự sắp xếp thời gian và cũng học được cách chăm sóc bản thân. Nhưng tiền thuê nhà hơi đắt, nên tôi định thuê nhà cùng bạn bè.",
+  g:["……的话","if (it is the case that…): 自己住的话，我可以自己安排时间"],
+  words:[["担心","dānxīn","to worry","lo lắng",3,"妈妈很担心我的身体。","Māma hěn dānxīn wǒ de shēntǐ.","Mom worries a lot about my health."],
+   ["照顾","zhàogù","to take care of","chăm sóc",3,"她每天照顾生病的奶奶。","Tā měi tiān zhàogù shēngbìng de nǎinai.","She takes care of her sick grandmother every day."],
+   ["安排","ānpái","to arrange, plan","sắp xếp",4,"周末的事情我已经安排好了。","Zhōumò de shìqing wǒ yǐjīng ānpái hǎo le.","I've already arranged what's happening this weekend."]]},
+ {who:"陈阿姨",role:"Teacher & mother · 老师和妈妈",lvl:4,c:"#b8362a",
+  zh:"我是两个孩子的妈妈，我希望孩子们工作以后继续住在家里。现在房价和房租都很高，如果搬出去，每个月的生活费会给年轻人带来很大的压力。住在家里不但能省钱，一家人还可以互相照顾，感情也会更好。",
+  py:"Wǒ shì liǎng ge háizi de māma, wǒ xīwàng háizimen gōngzuò yǐhòu jìxù zhù zài jiā lǐ. Xiànzài fángjià hé fángzū dōu hěn gāo, rúguǒ bān chūqù, měi ge yuè de shēnghuófèi huì gěi niánqīngrén dàilái hěn dà de yālì. Zhù zài jiā lǐ búdàn néng shěng qián, yìjiārén hái kěyǐ hùxiāng zhàogù, gǎnqíng yě huì gèng hǎo.",
+  en:"I'm a mother of two, and I hope my children will keep living at home after they start working. Housing prices and rents are both high now, and if they move out, the monthly living expenses will put great pressure on young people. Living at home not only saves money; the family can also look after one another, and the bond will be even stronger.",
+  vi:"Tôi là mẹ của hai đứa con, tôi mong các con sau khi đi làm vẫn tiếp tục sống ở nhà. Hiện nay giá nhà và tiền thuê nhà đều rất cao, nếu dọn ra ngoài thì chi phí sinh hoạt hằng tháng sẽ tạo áp lực rất lớn cho người trẻ. Sống ở nhà không chỉ tiết kiệm tiền mà cả nhà còn có thể chăm sóc lẫn nhau, tình cảm cũng sẽ gắn bó hơn.",
+  g:["不但……还……","not only … but also …: 不但能省钱，一家人还可以互相照顾"],
+  words:[["继续","jìxù","to continue","tiếp tục",4,"休息一下，然后我们继续工作。","Xiūxi yíxià, ránhòu wǒmen jìxù gōngzuò.","Let's take a break, and then continue working."],
+   ["压力","yālì","pressure","áp lực",4,"考试前，学生们的压力很大。","Kǎoshì qián, xuéshengmen de yālì hěn dà.","Before exams, students are under a lot of pressure."],
+   ["互相","hùxiāng","each other, mutually","lẫn nhau",4,"朋友之间应该互相帮助。","Péngyou zhījiān yīnggāi hùxiāng bāngzhù.","Friends should help each other."]]},
+ {who:"周先生",role:"HR manager · 人事经理",lvl:5,c:"#0f7a7a",
+  zh:"我觉得关键不是住在哪儿，而是能不能互相尊重。我二十五岁搬出去住，虽然生活很辛苦，但是我学会了独立。后来我每个周末都回家看父母，反而比以前更了解他们。如果住在一起，大家必须尊重彼此的生活习惯，否则很容易吵架。",
+  py:"Wǒ juéde guānjiàn bú shì zhù zài nǎr, ér shì néng bu néng hùxiāng zūnzhòng. Wǒ èrshíwǔ suì bān chūqù zhù, suīrán shēnghuó hěn xīnkǔ, dànshì wǒ xuéhuì le dúlì. Hòulái wǒ měi ge zhōumò dōu huí jiā kàn fùmǔ, fǎn'ér bǐ yǐqián gèng liǎojiě tāmen. Rúguǒ zhù zài yìqǐ, dàjiā bìxū zūnzhòng bǐcǐ de shēnghuó xíguàn, fǒuzé hěn róngyì chǎojià.",
+  en:"I think the key isn't where you live but whether you can respect each other. I moved out at twenty-five, and although life was hard, I learned to be independent. Later I went home every weekend to see my parents, and I actually came to understand them better than before. If you live together, everyone has to respect each other's habits, otherwise it's easy to end up arguing.",
+  vi:"Tôi nghĩ mấu chốt không phải là sống ở đâu mà là có biết tôn trọng lẫn nhau hay không. Tôi dọn ra ở riêng năm hai mươi lăm tuổi, tuy cuộc sống rất vất vả nhưng tôi đã học được cách sống tự lập. Về sau cuối tuần nào tôi cũng về thăm bố mẹ, ngược lại còn hiểu họ hơn trước. Nếu sống chung, mọi người phải tôn trọng thói quen sinh hoạt của nhau, nếu không thì rất dễ cãi nhau.",
+  g:["不是……而是……","not … but rather …: 关键不是住在哪儿，而是能不能互相尊重"],
+  words:[["尊重","zūnzhòng","to respect","tôn trọng",5,"我们应该尊重老人。","Wǒmen yīnggāi zūnzhòng lǎorén.","We should respect the elderly."],
+   ["独立","dúlì","independent; to be independent","tự lập, độc lập",5,"孩子长大了，应该学会独立。","Háizi zhǎngdà le, yīnggāi xuéhuì dúlì.","Once children grow up, they should learn to be independent."],
+   ["否则","fǒuzé","otherwise","nếu không thì",5,"快点儿走，否则我们要迟到了。","Kuài diǎnr zǒu, fǒuzé wǒmen yào chídào le.","Hurry up, otherwise we'll be late."]]}
+]}
 ]
 };
