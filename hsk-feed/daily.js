@@ -528,5 +528,45 @@ window.HSK_DAILY = {
    ["独立","dúlì","independent; to be independent","tự lập, độc lập",5,"孩子长大了，应该学会独立。","Háizi zhǎngdà le, yīnggāi xuéhuì dúlì.","Once children grow up, they should learn to be independent."],
    ["否则","fǒuzé","otherwise","nếu không thì",5,"快点儿走，否则我们要迟到了。","Kuài diǎnr zǒu, fǒuzé wǒmen yào chídào le.","Hurry up, otherwise we'll be late."]]}
 ]}
+],
+"2026-11-02":[
+{zh:"垃圾分类太麻烦了，还要继续做吗？",py:"Lājī fēnlèi tài máfan le, hái yào jìxù zuò ma?",en:"Is sorting garbage too much trouble, or should we keep doing it?",vi:"Phân loại rác quá phiền phức, có nên tiếp tục làm không?",posts:[
+ {who:"小林",role:"Student · 学生",lvl:2,c:"#2d5fa8",
+  zh:"我觉得垃圾分类很好。我们学校里有四个垃圾桶，同学们都会放对。这样学校会很干净。",
+  py:"Wǒ juéde lājī fēnlèi hěn hǎo. Wǒmen xuéxiào lǐ yǒu sì ge lājītǒng, tóngxuémen dōu huì fàng duì. Zhèyàng xuéxiào huì hěn gānjìng.",
+  en:"I think sorting garbage is great. There are four garbage bins at our school, and all the students know how to put things in the right one. This way the school stays very clean.",
+  vi:"Tôi thấy phân loại rác rất tốt. Trường chúng tôi có bốn thùng rác, các bạn đều biết bỏ đúng thùng. Như vậy trường sẽ rất sạch sẽ.",
+  g:["会 + verb","can / know how to: 同学们都会放对"],
+  words:[["觉得","juéde","to think, to feel","thấy, cảm thấy",2,"我觉得这个电影很有意思。","Wǒ juéde zhège diànyǐng hěn yǒu yìsi.","I think this movie is interesting."],
+   ["放","fàng","to put, to place","để, bỏ",3,"请把书放在桌子上。","Qǐng bǎ shū fàng zài zhuōzi shàng.","Please put the book on the table."],
+   ["干净","gānjìng","clean","sạch sẽ",3,"房间很干净。","Fángjiān hěn gānjìng.","The room is very clean."]]},
+ {who:"阮氏兰",role:"Housewife · 家庭主妇",lvl:3,c:"#2f7d32",
+  zh:"我知道垃圾分类对环境好，可是真的太麻烦了。每天做饭以后，我要把湿的和干的垃圾分开，还要洗袋子。有时候我不知道一个东西应该放在哪个桶里，只好问邻居。",
+  py:"Wǒ zhīdào lājī fēnlèi duì huánjìng hǎo, kěshì zhēn de tài máfan le. Měi tiān zuòfàn yǐhòu, wǒ yào bǎ shī de hé gān de lājī fēnkāi, hái yào xǐ dàizi. Yǒu shíhou wǒ bù zhīdào yí ge dōngxi yīnggāi fàng zài nǎ ge tǒng lǐ, zhǐhǎo wèn línjū.",
+  en:"I know sorting garbage is good for the environment, but it really is too much trouble. After cooking every day, I have to separate wet and dry garbage, and I also have to wash the bags. Sometimes I don't know which bin something should go in, so I have no choice but to ask my neighbor.",
+  vi:"Tôi biết phân loại rác tốt cho môi trường, nhưng thật sự quá phiền phức. Mỗi ngày nấu ăn xong, tôi phải tách rác ướt và rác khô, còn phải rửa túi. Có lúc tôi không biết một món đồ nên bỏ vào thùng nào, đành phải hỏi hàng xóm.",
+  g:["把 sentence","把 + object + verb + result: 我要把湿的和干的垃圾分开"],
+  words:[["麻烦","máfan","troublesome; trouble","phiền phức, rắc rối",4,"这件事有点儿麻烦。","Zhè jiàn shì yǒudiǎnr máfan.","This matter is a bit troublesome."],
+   ["环境","huánjìng","environment","môi trường",4,"这里的环境很安静。","Zhèlǐ de huánjìng hěn ānjìng.","The environment here is very quiet."],
+   ["只好","zhǐhǎo","to have no choice but to","đành phải",4,"下雨了，我们只好在家看电影。","Xià yǔ le, wǒmen zhǐhǎo zài jiā kàn diànyǐng.","It rained, so we had no choice but to watch a movie at home."]]},
+ {who:"陈志强",role:"Environmental volunteer · 环保志愿者",lvl:4,c:"#a86512",
+  zh:"我做环保志愿者已经三年了。刚开始的时候，很多人觉得垃圾分类没有用，但是现在大家的习惯慢慢改变了。垃圾越来越多，地方却越来越少，所以我们必须减少浪费。如果大家都愿意努力，我们的城市一定会更干净。",
+  py:"Wǒ zuò huánbǎo zhìyuànzhě yǐjīng sān nián le. Gāng kāishǐ de shíhou, hěn duō rén juéde lājī fēnlèi méiyǒu yòng, dànshì xiànzài dàjiā de xíguàn mànmàn gǎibiàn le. Lājī yuè lái yuè duō, dìfang què yuè lái yuè shǎo, suǒyǐ wǒmen bìxū jiǎnshǎo làngfèi. Rúguǒ dàjiā dōu yuànyì nǔlì, wǒmen de chéngshì yídìng huì gèng gānjìng.",
+  en:"I've been an environmental volunteer for three years. At first, many people thought sorting garbage was useless, but now everyone's habits are slowly changing. There is more and more garbage but less and less space, so we must reduce waste. If everyone is willing to make an effort, our city will definitely be cleaner.",
+  vi:"Tôi làm tình nguyện viên bảo vệ môi trường đã ba năm. Lúc đầu nhiều người nghĩ phân loại rác không có ích gì, nhưng bây giờ thói quen của mọi người đang dần thay đổi. Rác ngày càng nhiều mà chỗ chứa ngày càng ít, vì vậy chúng ta phải giảm lãng phí. Nếu ai cũng sẵn lòng cố gắng, thành phố của chúng ta chắc chắn sẽ sạch hơn.",
+  g:["越来越 + adj","more and more …: 垃圾越来越多，地方越来越少"],
+  words:[["减少","jiǎnshǎo","to reduce","giảm bớt",4,"我想减少吃甜的东西。","Wǒ xiǎng jiǎnshǎo chī tián de dōngxi.","I want to eat less sweet food."],
+   ["浪费","làngfèi","to waste; waste","lãng phí",4,"不要浪费水。","Búyào làngfèi shuǐ.","Don't waste water."],
+   ["改变","gǎibiàn","to change","thay đổi",4,"这件事改变了他的生活。","Zhè jiàn shì gǎibiàn le tā de shēnghuó.","This event changed his life."]]},
+ {who:"吴女士",role:"Restaurant owner · 餐厅老板",lvl:5,c:"#b8362a",
+  zh:"我开餐厅已经十年了，我支持垃圾分类，但是我认为只靠大家自己是不够的。我们餐厅每天都有很多垃圾，要是没有足够的垃圾桶和专门的工人，再好的规定也没有用。另外，政府应该给认真分类的人一些好处，这样大家才会更积极。",
+  py:"Wǒ kāi cāntīng yǐjīng shí nián le, wǒ zhīchí lājī fēnlèi, dànshì wǒ rènwéi zhǐ kào dàjiā zìjǐ shì bú gòu de. Wǒmen cāntīng měi tiān dōu yǒu hěn duō lājī, yàoshi méiyǒu zúgòu de lājītǒng hé zhuānmén de gōngrén, zài hǎo de guīdìng yě méiyǒu yòng. Lìngwài, zhèngfǔ yīnggāi gěi rènzhēn fēnlèi de rén yìxiē hǎochù, zhèyàng dàjiā cái huì gèng jījí.",
+  en:"I've run a restaurant for ten years. I support garbage sorting, but I think relying on people themselves alone isn't enough. Our restaurant has a lot of garbage every day, and without enough bins and dedicated workers, even the best rules are useless. Besides, the government should give some benefits to people who sort carefully, so that everyone will be more motivated.",
+  vi:"Tôi mở nhà hàng đã mười năm, tôi ủng hộ phân loại rác, nhưng tôi cho rằng chỉ dựa vào bản thân mọi người thì không đủ. Nhà hàng chúng tôi ngày nào cũng có rất nhiều rác, nếu không có đủ thùng rác và nhân viên chuyên trách thì quy định có tốt đến đâu cũng vô ích. Ngoài ra, chính phủ nên dành một số lợi ích cho những người phân loại nghiêm túc, như vậy mọi người mới tích cực hơn.",
+  g:["再……也……","no matter how …, still …: 再好的规定也没有用 (even the best rules are useless)"],
+  words:[["规定","guīdìng","rule, regulation","quy định",4,"学校有很多规定。","Xuéxiào yǒu hěn duō guīdìng.","The school has many rules."],
+   ["专门","zhuānmén","specially; specialized","chuyên, chuyên dụng",5,"这个房间是专门给孩子玩儿的。","Zhège fángjiān shì zhuānmén gěi háizi wánr de.","This room is specially for children to play in."],
+   ["积极","jījí","positive, active","tích cực",4,"他学习很积极。","Tā xuéxí hěn jījí.","He is very enthusiastic about studying."]]}
+]}
 ]
 };
