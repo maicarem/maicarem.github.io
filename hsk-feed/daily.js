@@ -568,5 +568,45 @@ window.HSK_DAILY = {
    ["专门","zhuānmén","specially; specialized","chuyên, chuyên dụng",5,"这个房间是专门给孩子玩儿的。","Zhège fángjiān shì zhuānmén gěi háizi wánr de.","This room is specially for children to play in."],
    ["积极","jījí","positive, active","tích cực",4,"他学习很积极。","Tā xuéxí hěn jījí.","He is very enthusiastic about studying."]]}
 ]}
+],
+"2026-11-03":[
+{zh:"短视频：放松还是浪费时间？",py:"Duǎn shìpín: fàngsōng háishi làngfèi shíjiān?",en:"Short videos: relaxing or a waste of time?",vi:"Video ngắn: thư giãn hay lãng phí thời gian?",posts:[
+ {who:"小李",role:"University student · 大学生",lvl:2,c:"#2d5fa8",
+  zh:"我喜欢看短视频。每天晚上我都看半个小时，看完以后觉得很放松。视频里有很多有意思的东西。",
+  py:"Wǒ xǐhuan kàn duǎn shìpín. Měi tiān wǎnshang wǒ dōu kàn bàn gè xiǎoshí, kàn wán yǐhòu juéde hěn fàngsōng. Shìpín lǐ yǒu hěn duō yǒuyìsi de dōngxi.",
+  en:"I like watching short videos. Every evening I watch for half an hour, and afterwards I feel very relaxed. There are lots of interesting things in the videos.",
+  vi:"Tôi thích xem video ngắn. Tối nào tôi cũng xem nửa tiếng, xem xong cảm thấy rất thư giãn. Trong video có rất nhiều thứ thú vị.",
+  g:["V + 完","V + 完 = finish doing something: 看完 (finish watching)"],
+  words:[["觉得","juéde","to feel; to think","cảm thấy, thấy rằng",2,"我觉得今天很冷。","Wǒ juéde jīntiān hěn lěng.","I feel it's very cold today."],
+   ["放松","fàngsōng","to relax","thư giãn",4,"听音乐可以让人放松。","Tīng yīnyuè kěyǐ ràng rén fàngsōng.","Listening to music can help people relax."],
+   ["有意思","yǒu yìsi","interesting","thú vị, hay",3,"这本书很有意思。","Zhè běn shū hěn yǒu yìsi.","This book is very interesting."]]},
+ {who:"阮女士",role:"Primary school teacher · 小学老师",lvl:3,c:"#2f7d32",
+  zh:"我是一位小学老师。我发现学生们看短视频以后，上课很难注意听讲，作业也越来越慢。我觉得应该让孩子每天最多看二十分钟。",
+  py:"Wǒ shì yí wèi xiǎoxué lǎoshī. Wǒ fāxiàn xuéshengmen kàn duǎn shìpín yǐhòu, shàngkè hěn nán zhùyì tīngjiǎng, zuòyè yě yuè lái yuè màn. Wǒ juéde yīnggāi ràng háizi měi tiān zuìduō kàn èrshí fēnzhōng.",
+  en:"I'm a primary school teacher. I've noticed that after my students watch short videos, they find it hard to pay attention in class, and their homework gets slower and slower. I think children should be allowed to watch at most twenty minutes a day.",
+  vi:"Tôi là giáo viên tiểu học. Tôi nhận thấy sau khi học sinh xem video ngắn, các em khó tập trung nghe giảng trong giờ học, bài tập cũng ngày càng chậm. Tôi nghĩ mỗi ngày chỉ nên cho trẻ xem nhiều nhất hai mươi phút.",
+  g:["越来越","more and more: 越来越慢 (slower and slower)"],
+  words:[["发现","fāxiàn","to find out; to notice","phát hiện, nhận thấy",3,"我发现他不在家。","Wǒ fāxiàn tā bú zài jiā.","I found that he wasn't home."],
+   ["注意","zhùyì","to pay attention","chú ý",3,"过马路要注意安全。","Guò mǎlù yào zhùyì ānquán.","Pay attention to safety when crossing the road."],
+   ["作业","zuòyè","homework","bài tập",3,"今天的作业很多。","Jīntiān de zuòyè hěn duō.","There's a lot of homework today."]]},
+ {who:"老陈",role:"Shop owner · 店主",lvl:4,c:"#a86512",
+  zh:"我开了一家小店，现在大部分客人都是看了短视频才来的。短视频让更多人了解我们的东西，生意比以前好多了。虽然有时候会浪费时间，但是只要会选择，它就对工作和生活都有帮助。",
+  py:"Wǒ kāi le yì jiā xiǎo diàn, xiànzài dà bùfen kèrén dōu shì kàn le duǎn shìpín cái lái de. Duǎn shìpín ràng gèng duō rén liǎojiě wǒmen de dōngxi, shēngyi bǐ yǐqián hǎo duō le. Suīrán yǒu shíhou huì làngfèi shíjiān, dànshì zhǐyào huì xuǎnzé, tā jiù duì gōngzuò hé shēnghuó dōu yǒu bāngzhù.",
+  en:"I opened a small shop, and now most customers come only after seeing a short video. Short videos let more people learn about our goods, and business is much better than before. Although it sometimes wastes time, as long as you know how to choose, it is helpful for both work and life.",
+  vi:"Tôi mở một cửa hàng nhỏ, bây giờ phần lớn khách đều xem video ngắn xong mới tìm đến. Video ngắn giúp nhiều người hơn biết đến hàng của chúng tôi, việc làm ăn tốt hơn trước rất nhiều. Tuy đôi khi lãng phí thời gian, nhưng chỉ cần biết lựa chọn thì nó có ích cho cả công việc lẫn cuộc sống.",
+  g:["只要……就……","as long as … then …: 只要会选择，它就有帮助 (as long as you choose well, it helps)"],
+  words:[["生意","shēngyi","business; trade","việc làm ăn, kinh doanh",4,"他的生意做得很好。","Tā de shēngyi zuò de hěn hǎo.","His business is doing very well."],
+   ["浪费","làngfèi","to waste","lãng phí",4,"不要浪费水。","Búyào làngfèi shuǐ.","Don't waste water."],
+   ["选择","xuǎnzé","to choose; choice","lựa chọn",3,"你选择哪个工作？","Nǐ xuǎnzé nǎge gōngzuò?","Which job will you choose?"]]},
+ {who:"黎医生",role:"Doctor · 医生",lvl:5,c:"#b8362a",
+  zh:"我是一位医生，常常遇到熬夜看短视频的病人。短视频很容易让人停不下来，第二天就没有精神，工作效率也不高。我建议大家控制看视频的时间，睡觉前一个小时不要再看手机。",
+  py:"Wǒ shì yí wèi yīshēng, chángcháng yùdào áoyè kàn duǎn shìpín de bìngrén. Duǎn shìpín hěn róngyì ràng rén tíng bu xiàlái, dì-èr tiān jiù méiyǒu jīngshén, gōngzuò xiàolǜ yě bù gāo. Wǒ jiànyì dàjiā kòngzhì kàn shìpín de shíjiān, shuìjiào qián yí gè xiǎoshí búyào zài kàn shǒujī.",
+  en:"I'm a doctor and often see patients who stay up late watching short videos. Short videos easily make people unable to stop, so the next day they have no energy and their work efficiency is low. I suggest everyone control how long they watch, and not look at their phone for an hour before bed.",
+  vi:"Tôi là bác sĩ và thường gặp những bệnh nhân thức khuya xem video ngắn. Video ngắn rất dễ khiến người ta không dừng lại được, hôm sau không có tinh thần, hiệu suất làm việc cũng không cao. Tôi khuyên mọi người kiểm soát thời gian xem video, một tiếng trước khi ngủ đừng xem điện thoại nữa.",
+  g:["V + 不 + 下来","can't (keep) doing / can't stop: 停不下来 (unable to stop)"],
+  words:[["熬夜","áoyè","to stay up late","thức khuya",5,"他常常熬夜工作。","Tā chángcháng áoyè gōngzuò.","He often stays up late working."],
+   ["效率","xiàolǜ","efficiency","hiệu suất, hiệu quả",5,"这样做可以提高效率。","Zhèyàng zuò kěyǐ tígāo xiàolǜ.","Doing it this way can improve efficiency."],
+   ["控制","kòngzhì","to control","kiểm soát",5,"你要学会控制自己。","Nǐ yào xuéhuì kòngzhì zìjǐ.","You need to learn to control yourself."]]}
+]}
 ]
 };
