@@ -608,5 +608,45 @@ window.HSK_DAILY = {
    ["效率","xiàolǜ","efficiency","hiệu suất, hiệu quả",5,"这样做可以提高效率。","Zhèyàng zuò kěyǐ tígāo xiàolǜ.","Doing it this way can improve efficiency."],
    ["控制","kòngzhì","to control","kiểm soát",5,"你要学会控制自己。","Nǐ yào xuéhuì kòngzhì zìjǐ.","You need to learn to control yourself."]]}
 ]}
+],
+"2026-11-04":[
+{zh:"学生应该穿校服吗？",py:"Xuésheng yīnggāi chuān xiàofú ma?",en:"Should students wear school uniforms?",vi:"Học sinh có nên mặc đồng phục không?",posts:[
+ {who:"小林",role:"Middle school student · 中学生",lvl:3,c:"#2d5fa8",
+  zh:"我觉得穿校服很方便。每天早上我不用想穿什么，起床以后马上就可以去学校。而且大家穿得一样，不会比较谁的衣服更贵。",
+  py:"Wǒ juéde chuān xiàofú hěn fāngbiàn. Měi tiān zǎoshang wǒ bú yòng xiǎng chuān shénme, qǐchuáng yǐhòu mǎshàng jiù kěyǐ qù xuéxiào. Érqiě dàjiā chuān de yíyàng, bú huì bǐjiào shéi de yīfu gèng guì.",
+  en:"I think wearing a school uniform is very convenient. Every morning I don't have to think about what to wear; right after I get up I can go to school. Besides, everyone dresses the same, so nobody compares whose clothes are more expensive.",
+  vi:"Mình thấy mặc đồng phục rất tiện. Mỗi sáng mình không cần nghĩ xem mặc gì, thức dậy xong là đi học được ngay. Hơn nữa mọi người mặc giống nhau nên không ai so sánh quần áo của ai đắt hơn.",
+  g:["不用 + verb","no need to do something: 我不用想穿什么"],
+  words:[["方便","fāngbiàn","convenient","tiện lợi",3,"这里买东西很方便。","Zhèlǐ mǎi dōngxi hěn fāngbiàn.","It's very convenient to shop here."],
+   ["一样","yíyàng","the same","giống nhau",3,"我和他的手机一样。","Wǒ hé tā de shǒujī yíyàng.","My phone is the same as his."],
+   ["比较","bǐjiào","to compare; fairly","so sánh; khá",3,"不要总是和别人比较。","Búyào zǒngshì hé biérén bǐjiào.","Don't always compare yourself with others."]]},
+ {who:"阮老师",role:"Teacher · 老师",lvl:4,c:"#2f7d32",
+  zh:"作为老师，我支持学生穿校服。校服让学生觉得自己是学校的一部分，做事也更认真。比如参加比赛的时候，大家穿一样的衣服，会更有信心，也更团结。",
+  py:"Zuòwéi lǎoshī, wǒ zhīchí xuésheng chuān xiàofú. Xiàofú ràng xuésheng juéde zìjǐ shì xuéxiào de yí bùfen, zuò shì yě gèng rènzhēn. Bǐrú cānjiā bǐsài de shíhou, dàjiā chuān yíyàng de yīfu, huì gèng yǒu xìnxīn, yě gèng tuánjié.",
+  en:"As a teacher, I support students wearing uniforms. A uniform makes students feel they are part of the school, and they approach things more seriously. For example, when taking part in a competition, everyone wearing the same clothes has more confidence and is more united.",
+  vi:"Với tư cách là giáo viên, tôi ủng hộ việc học sinh mặc đồng phục. Đồng phục khiến học sinh cảm thấy mình là một phần của nhà trường và làm việc cũng nghiêm túc hơn. Ví dụ, khi tham gia thi đấu, mọi người mặc giống nhau sẽ tự tin hơn và đoàn kết hơn.",
+  g:["作为 + role，……","as a (role), …: 作为老师，我支持学生穿校服"],
+  words:[["比如","bǐrú","for example","ví dụ",4,"我喜欢运动，比如跑步和游泳。","Wǒ xǐhuan yùndòng, bǐrú pǎobù hé yóuyǒng.","I like sports, such as running and swimming."],
+   ["支持","zhīchí","to support","ủng hộ",4,"我支持你的决定。","Wǒ zhīchí nǐ de juédìng.","I support your decision."],
+   ["参加","cānjiā","to take part in","tham gia",3,"明天你参加会议吗？","Míngtiān nǐ cānjiā huìyì ma?","Will you attend the meeting tomorrow?"]]},
+ {who:"李妈妈",role:"Parent · 家长",lvl:5,c:"#a86512",
+  zh:"我女儿十五岁，她不太喜欢校服，觉得颜色和样子都很难看。青少年需要用自己的方式表达想法，穿衣服也是一种表达。如果学校管得太严，孩子反而会越来越不满意。",
+  py:"Wǒ nǚ'ér shíwǔ suì, tā bú tài xǐhuan xiàofú, juéde yánsè hé yàngzi dōu hěn nánkàn. Qīngshàonián xūyào yòng zìjǐ de fāngshì biǎodá xiǎngfǎ, chuān yīfu yě shì yì zhǒng biǎodá. Rúguǒ xuéxiào guǎn de tài yán, háizi fǎn'ér huì yuèláiyuè bù mǎnyì.",
+  en:"My daughter is fifteen and doesn't much like the uniform; she thinks both the color and the style are ugly. Teenagers need to express their ideas in their own way, and what they wear is also a kind of expression. If the school is too strict, children will actually become more and more dissatisfied.",
+  vi:"Con gái tôi mười lăm tuổi, nó không thích đồng phục lắm, thấy cả màu sắc lẫn kiểu dáng đều xấu. Thanh thiếu niên cần thể hiện suy nghĩ theo cách riêng của mình, mặc gì cũng là một cách thể hiện. Nếu nhà trường quản quá chặt, trẻ ngược lại sẽ ngày càng không hài lòng.",
+  g:["反而","on the contrary / instead: 管得太严，孩子反而不满意"],
+  words:[["表达","biǎodá","to express","thể hiện, diễn đạt",5,"他不太会表达自己的感情。","Tā bú tài huì biǎodá zìjǐ de gǎnqíng.","He isn't good at expressing his feelings."],
+   ["青少年","qīngshàonián","teenagers","thanh thiếu niên",5,"青少年应该多运动。","Qīngshàonián yīnggāi duō yùndòng.","Teenagers should exercise more."],
+   ["反而","fǎn'ér","on the contrary","ngược lại",5,"他没有生气，反而笑了。","Tā méiyǒu shēngqì, fǎn'ér xiào le.","He didn't get angry; on the contrary, he laughed."]]},
+ {who:"阿明",role:"Parent in Ho Chi Minh City · 胡志明市的家长",lvl:5,c:"#b8362a",
+  zh:"我觉得问题不在穿不穿，而在校服的质量。这里夏天很热，有些校服又厚又不舒服，会影响孩子学习。学校最好每周留一天让学生自己选衣服，这样两边的想法都能考虑到。",
+  py:"Wǒ juéde wèntí bú zài chuān bu chuān, ér zài xiàofú de zhìliàng. Zhèlǐ xiàtiān hěn rè, yǒuxiē xiàofú yòu hòu yòu bù shūfu, huì yǐngxiǎng háizi xuéxí. Xuéxiào zuìhǎo měi zhōu liú yì tiān ràng xuésheng zìjǐ xuǎn yīfu, zhèyàng liǎng biān de xiǎngfǎ dōu néng kǎolǜ dào.",
+  en:"I think the problem is not whether to wear one, but the quality of the uniform. Summers here are very hot, and some uniforms are thick and uncomfortable, which can affect children's studies. It would be best for the school to set aside one day a week when students choose their own clothes, so both sides' views can be taken into account.",
+  vi:"Tôi nghĩ vấn đề không nằm ở chỗ có mặc hay không, mà ở chất lượng của bộ đồng phục. Mùa hè ở đây rất nóng, có bộ vừa dày vừa khó chịu, ảnh hưởng đến việc học của trẻ. Tốt nhất nhà trường nên dành một ngày mỗi tuần để học sinh tự chọn quần áo, như vậy ý kiến của cả hai phía đều được cân nhắc.",
+  g:["不在……，而在……","the point is not…, but…: 问题不在穿不穿，而在质量"],
+  words:[["质量","zhìliàng","quality","chất lượng",4,"这家店的东西质量很好。","Zhè jiā diàn de dōngxi zhìliàng hěn hǎo.","The goods in this shop are of very good quality."],
+   ["影响","yǐngxiǎng","to affect; influence","ảnh hưởng",4,"天气会影响我的心情。","Tiānqì huì yǐngxiǎng wǒ de xīnqíng.","The weather affects my mood."],
+   ["考虑","kǎolǜ","to consider","cân nhắc",3,"我想再考虑一下。","Wǒ xiǎng zài kǎolǜ yíxià.","I'd like to think it over a bit more."]]}
+]}
 ]
 };
