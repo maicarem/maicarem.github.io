@@ -648,5 +648,45 @@ window.HSK_DAILY = {
    ["影响","yǐngxiǎng","to affect; influence","ảnh hưởng",4,"天气会影响我的心情。","Tiānqì huì yǐngxiǎng wǒ de xīnqíng.","The weather affects my mood."],
    ["考虑","kǎolǜ","to consider","cân nhắc",3,"我想再考虑一下。","Wǒ xiǎng zài kǎolǜ yíxià.","I'd like to think it over a bit more."]]}
 ]}
+],
+"2026-11-05":[
+{zh:"学校应该取消考试吗？",py:"Xuéxiào yīnggāi qǔxiāo kǎoshì ma?",en:"Should schools get rid of exams?",vi:"Trường học có nên bỏ thi cử không?",posts:[
+ {who:"李老师",role:"High-school teacher · 中学老师",lvl:3,c:"#2d5fa8",
+  zh:"我觉得考试不能取消。有了考试，学生才知道自己哪里学得不好。如果没有考试，很多人可能就不认真学习了。",
+  py:"Wǒ juéde kǎoshì bù néng qǔxiāo. Yǒu le kǎoshì, xuésheng cái zhīdào zìjǐ nǎlǐ xué de bù hǎo. Rúguǒ méiyǒu kǎoshì, hěn duō rén kěnéng jiù bú rènzhēn xuéxí le.",
+  en:"I think exams can't be abolished. Only with exams do students find out where they are weak. Without exams, many people might stop studying seriously.",
+  vi:"Tôi nghĩ không thể bỏ thi cử. Có kỳ thi, học sinh mới biết mình học chưa tốt ở chỗ nào. Nếu không có kỳ thi, nhiều người có thể sẽ không học nghiêm túc nữa.",
+  g:["……才……","only then (not before): 有了考试，学生才知道自己哪里学得不好"],
+  words:[["考试","kǎoshì","exam; to take an exam","kỳ thi; thi",2,"明天有汉语考试。","Míngtiān yǒu Hànyǔ kǎoshì.","Tomorrow there is a Chinese exam."],
+   ["取消","qǔxiāo","to cancel; to abolish","hủy bỏ",4,"因为下雨，比赛取消了。","Yīnwèi xià yǔ, bǐsài qǔxiāo le.","The match was cancelled because of the rain."],
+   ["认真","rènzhēn","serious; conscientious","nghiêm túc; chăm chỉ",3,"他学习很认真。","Tā xuéxí hěn rènzhēn.","He studies very conscientiously."]]},
+ {who:"小林",role:"University student · 大学生",lvl:4,c:"#2f7d32",
+  zh:"我是大学生，每次考试前都紧张得睡不着觉。其实考试只能看出学生会不会背书，不能说明他们真正的能力。我觉得老师可以多看看平时的表现。",
+  py:"Wǒ shì dàxuéshēng, měi cì kǎoshì qián dōu jǐnzhāng de shuì bu zháo jiào. Qíshí kǎoshì zhǐ néng kànchū xuésheng huì bu huì bèi shū, bù néng shuōmíng tāmen zhēnzhèng de nénglì. Wǒ juéde lǎoshī kěyǐ duō kànkan píngshí de biǎoxiàn.",
+  en:"I'm a university student, and before every exam I'm so nervous that I can't sleep. In fact, exams can only show whether students can memorize, not their real ability. I think teachers could look more at everyday performance.",
+  vi:"Tôi là sinh viên đại học, lần nào trước kỳ thi cũng lo lắng đến mức không ngủ được. Thật ra kỳ thi chỉ cho thấy học sinh có biết học thuộc lòng hay không, chứ không nói lên năng lực thật sự của họ. Tôi nghĩ giáo viên có thể xem nhiều hơn biểu hiện thường ngày.",
+  g:["V不V (正反问)","choice-type question: 会不会背书 = whether (they) can recite"],
+  words:[["紧张","jǐnzhāng","nervous; tense","căng thẳng; hồi hộp",4,"第一次坐飞机，他很紧张。","Dì-yī cì zuò fēijī, tā hěn jǐnzhāng.","It was his first time on a plane, so he was very nervous."],
+   ["能力","nénglì","ability","năng lực",4,"他的工作能力很强。","Tā de gōngzuò nénglì hěn qiáng.","His working ability is very strong."],
+   ["说明","shuōmíng","to show; to explain","cho thấy; giải thích",4,"这个问题说明他没认真看书。","Zhège wèntí shuōmíng tā méi rènzhēn kàn shū.","This question shows he didn't read the book carefully."]]},
+ {who:"阮先生",role:"Businessman in Hanoi · 河内的商人",lvl:5,c:"#a86512",
+  zh:"我认为考试是最公平的办法。如果取消考试，老师就只能凭印象给学生打分，结果可能受个人看法的影响。统一的标准虽然不一定最好，但是至少对每个人都一样。",
+  py:"Wǒ rènwéi kǎoshì shì zuì gōngpíng de bànfǎ. Rúguǒ qǔxiāo kǎoshì, lǎoshī jiù zhǐ néng píng yìnxiàng gěi xuésheng dǎ fēn, jiéguǒ kěnéng shòu gèrén kànfǎ de yǐngxiǎng. Tǒngyī de biāozhǔn suīrán bù yídìng zuì hǎo, dànshì zhìshǎo duì měi gè rén dōu yíyàng.",
+  en:"I believe exams are the fairest method. If exams were abolished, teachers could only grade students on impressions, and the results might be affected by personal opinions. A unified standard may not be the best, but at least it is the same for everyone.",
+  vi:"Tôi cho rằng thi cử là cách công bằng nhất. Nếu bỏ thi, giáo viên chỉ có thể dựa vào ấn tượng để chấm điểm, kết quả có thể bị ảnh hưởng bởi quan điểm cá nhân. Tiêu chuẩn thống nhất tuy chưa chắc là tốt nhất, nhưng ít nhất đối với mọi người đều giống nhau.",
+  g:["凭……","based on; relying on: 凭印象给学生打分"],
+  words:[["公平","gōngpíng","fair","công bằng",5,"老板对每个人都很公平。","Lǎobǎn duì měi gè rén dōu hěn gōngpíng.","The boss is very fair to everyone."],
+   ["标准","biāozhǔn","standard","tiêu chuẩn",4,"这家公司的要求标准很高。","Zhè jiā gōngsī de yāoqiú biāozhǔn hěn gāo.","This company's standards are very high."],
+   ["印象","yìnxiàng","impression","ấn tượng",4,"他给我留下了很好的印象。","Tā gěi wǒ liúxià le hěn hǎo de yìnxiàng.","He left me with a very good impression."]]},
+ {who:"阿兰",role:"Mother in Hanoi · 河内的妈妈",lvl:5,c:"#b8362a",
+  zh:"作为妈妈，我看到孩子每天因为考试压力很大，晚上还要复习到十一点。我不同意完全取消考试，但是可以减少考试的次数，让孩子有时间发展兴趣。除了分数以外，学校也应该看看孩子的态度。",
+  py:"Zuòwéi māma, wǒ kàndào háizi měi tiān yīnwèi kǎoshì yālì hěn dà, wǎnshang hái yào fùxí dào shíyī diǎn. Wǒ bù tóngyì wánquán qǔxiāo kǎoshì, dànshì kěyǐ jiǎnshǎo kǎoshì de cìshù, ràng háizi yǒu shíjiān fāzhǎn xìngqù. Chúle fēnshù yǐwài, xuéxiào yě yīnggāi kànkan háizi de tàidu.",
+  en:"As a mother, I see my child under great exam pressure every day, still reviewing until eleven at night. I don't agree with abolishing exams completely, but the number of exams could be reduced so children have time to develop interests. Besides grades, schools should also look at a child's attitude.",
+  vi:"Là một người mẹ, tôi thấy con mình mỗi ngày đều chịu áp lực thi cử rất lớn, tối còn phải ôn bài đến mười một giờ. Tôi không đồng ý bỏ hoàn toàn các kỳ thi, nhưng có thể giảm số lần thi để trẻ có thời gian phát triển sở thích. Ngoài điểm số ra, nhà trường cũng nên xem thái độ của trẻ.",
+  g:["除了……以外，也……","besides…, also…: 除了分数以外，学校也应该看看孩子的态度"],
+  words:[["压力","yālì","pressure","áp lực",4,"工作压力太大，他睡不好觉。","Gōngzuò yālì tài dà, tā shuì bu hǎo jiào.","The work pressure is so great that he can't sleep well."],
+   ["复习","fùxí","to review","ôn tập",3,"考试以前要好好复习。","Kǎoshì yǐqián yào hǎohāo fùxí.","You should review well before an exam."],
+   ["态度","tàidu","attitude","thái độ",4,"他对朋友的态度很好。","Tā duì péngyou de tàidu hěn hǎo.","His attitude towards his friends is very good."]]}
+]}
 ]
 };
