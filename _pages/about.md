@@ -34,15 +34,22 @@ I’m Anh Truong, currently pursuing a Ph.D. in Operations Research within the <
 
 **Research** My research interests include Interdiction Games, Bilevel Optimization, and Integer Programming. I am working on Generalized Network Interdiction Min-Cost Flow Problem, focusing on algorithmic approaches for finding optimal solutions in a sparse graph.
 
-**Research Projects**
-
-_Coordinating trucks and service operators._ Trucks carry service operators to work areas, drop them off, and pick them up when the job is done. I build integer programs that route trucks and operators together to finish all work as early as possible, then a second model re-times the plan so that vehicles never come closer than a safety distance.
-
-<iframe src="{{ '/assets/html/satp_animation.html' | relative_url }}?theme=light&embed" title="Animation: coordinating trucks and service operators" loading="lazy" style="width:100%; aspect-ratio:16/9; border:0; border-radius:8px;"></iframe>
-
 **Past Study** Before starting my Ph.D., I earned Master of Computer Science from <a href='https://psl.eu/en'>Paris Sciences et Lettres University</a>. I worked with <a href='https://www.lamsade.dauphine.fr/~arossi/'>Dr. André Rossi</a> and <a href='https://scholar.google.com/citations?user=cIKP9SMAAAAJ&hl=en'>Dr. Sonia Toubaline</a>. My thesis focused on the <a href='https://hal.science/hal-04493437/'>"Ring Star Problem under the failure of two hubs"</a> and I received the <a href='https://pginfo.ens.psl.eu/last/scholarship_grants_en.html'>"PSL Fellowship"</a> from PSL University and <a href='https://usth.edu.vn/en/call-for-application-for-france-excellence-scholarship-819/#:~:text=Along%20with%20the%20Eiffel%20Scholarship,and%2036%20months%20for%20PhD.'>"Excellence Scholarship"</a> from the French Embassy for funded study.
 
 Prior to that, I completed my Bachelor of Industrial and Systems Engineering at Vietnam National University HCMC where I worked with <a href='https://scholar.google.com/citations?hl=en&user=WHGCW3MAAAAJ'>Dr. Van-Hop Nguyen</a>, graduating as Valedictorian. During my undergraduate studies, I received a fully-funded scholarship and was honored as a Vietnam Outstanding Female Student in Science and Technology.
+
+<div style="clear: both;"></div>
+
+**Research Projects**
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-bottom: 1rem">
+  <div style="flex: 2 1 380px; min-width: 0">
+    <iframe src="{{ '/assets/html/satp_animation.html' | relative_url }}?theme=light&embed" title="Animation: coordinating trucks and service operators" loading="lazy" style="width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 8px"></iframe>
+  </div>
+  <div style="flex: 1 1 220px">
+    <p><em>Coordinating trucks and service operators.</em> Trucks carry service operators to work areas, drop them off, and pick them up when the job is done. I build integer programs that route trucks and operators together to finish all work as early as possible, then a second model re-times the plan so that vehicles never come closer than a safety distance.</p>
+  </div>
+</div>
 
 Beyond research, I gained industry experience as a Demand Planner at <a href='https://yes4all.com/en/'>Yes4All</a>, optimizing SQL queries and analyzing sales data, and as an Engineering Intern at <a href='https://www.intel.com/content/www/us/en/homepage.html'>Intel</a>, automating inventory management.
 
