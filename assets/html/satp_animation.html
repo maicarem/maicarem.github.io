@@ -132,13 +132,17 @@ function focusOf(s) {
 const pct = ((P2.makespan / P1.makespan - 1) * 100).toFixed(1);
 const SCENES = [
   { type: 'intro', dur: 3.2, s: P1, chip: 'The problem', color: BLUE,
-    text: 'Trucks carry service operators to work areas, drop them off and pick them up when the job is done. Goal: finish all work as early as possible.' },
+    text: 'Trucks carry service operators to work areas, drop them off and pick them up when the job is done. Goal: finish all work as early as possible.',
+    short: 'Trucks ferry operators to work areas.' },
   { type: 'play', s: P1, focus: focusOf(P1), freeze: crash, chip: 'Phase 1 · Routing ILP', color: BLUE,
-    text: 'An integer program routes trucks and operators together and minimizes the makespan: the time when the last job ends.' },
+    text: 'An integer program routes trucks and operators together and minimizes the makespan: the time when the last job ends.',
+    short: 'Route everything, finish as early as possible.' },
   ...(S.length > 1 ? [{ type: 'play', s: P2, focus: focusOf(P2), chip: 'Phase 2a · Timing & speed MIP', color: GREEN,
-    text: `Keep the routes, re-time departures and speeds so that every pair of vehicles stays at least d\u00a0=\u00a0${d} apart.` }] : []),
+    text: `Keep the routes, re-time departures and speeds so that every pair of vehicles stays at least d\u00a0=\u00a0${d} apart.`,
+    short: `Re-time so vehicles stay ≥\u00a0d\u00a0=\u00a0${d} apart.` }] : []),
   { type: 'outro', dur: 5, s: P2, chip: 'Result', color: GREEN,
-    text: crash ? `A safe plan for +${pct}% makespan: conflicts\u00a0${P1.crashes.length}\u00a0→\u00a0${P2.crashes.length}.` : 'Optimal coordinated plan.' },
+    text: crash ? `A safe plan for +${pct}% makespan: conflicts\u00a0${P1.crashes.length}\u00a0→\u00a0${P2.crashes.length}.` : 'Optimal coordinated plan.',
+    short: crash ? `+${pct}% makespan, conflicts\u00a0${P1.crashes.length}\u00a0→\u00a0${P2.crashes.length}.` : 'Optimal coordinated plan.' },
 ];
 const FREEZE = 2.8, END_HOLD = 1.4, PLAY_SECONDS = 9;
 let si = 0, st = 0, tm = 0, frozen = 0, froze = false, endHold = 0, paused = false, visible = true;
@@ -276,8 +280,8 @@ function drawOperator(s, op, t) {
 }
 
 // panel layout: ?embed drops the header (the host page has its own) and enlarges text for narrow columns
-const EMBED = params.has('embed'), FS = EMBED ? 1.35 : 1;
-const LAY = EMBED ? { chip: 40, text: 140, lh: 42, stats: 320, gantt: 500, rh: 40, legend: 790 }
+const EMBED = params.has('embed'), FS = EMBED ? 1.7 : 1;
+const LAY = EMBED ? { chip: 40, text: 165, lh: 50, stats: 290, gantt: 520, rh: 44, legend: 770 }
                   : { chip: 222, text: 300, lh: 32, stats: 418, gantt: 540, rh: 30, legend: 800 };
 function drawPanel(sc, t, fadeIn) {
   const x = 1000, w = 540;
@@ -289,13 +293,16 @@ function drawPanel(sc, t, fadeIn) {
   // chip + text (switches to the conflict message while frozen)
   const conflict = sc.freeze && frozen > 0;
   const chip = conflict ? 'Conflict detected' : sc.chip, color = conflict ? RED : sc.color;
-  const text = conflict ? `The optimal plan sends ${crash.a} and ${crash.b} through the same spot: they come ${crash.min_distance.toFixed(1)} apart, below the safety distance d = ${d}.` : sc.text;
+  const text = conflict ? `The optimal plan sends ${crash.a} and ${crash.b} through the same spot: they come ${crash.min_distance.toFixed(1)} apart, below the safety distance d\u00a0=\u00a0${d}.` : sc.text;
+  const shown = !EMBED ? text : conflict ? `${crash.a} and ${crash.b} come ${crash.min_distance.toFixed(1)} apart, below d\u00a0=\u00a0${d}.` : sc.short;
   ctx.globalAlpha = fadeIn;
-  font(700, 19 * FS); const cw = ctx.measureText(chip).width + 32 * FS, ch = 38 * FS;
+  let cf = 19 * FS; font(700, cf);
+  while (ctx.measureText(chip).width + 32 * FS > w && cf > 12) font(700, --cf);
+  const cw = ctx.measureText(chip).width + 32 * FS, ch = 38 * FS;
   ctx.beginPath(); ctx.roundRect(x, LAY.chip, cw, ch, ch / 2); ctx.fillStyle = alpha(color, 0.16); ctx.fill();
   ctx.lineWidth = 1.5; ctx.strokeStyle = alpha(color, 0.7); ctx.stroke();
   ctx.fillStyle = color; ctx.fillText(chip, x + 16 * FS, LAY.chip + 26 * FS);
-  font(400, 22 * FS); ctx.fillStyle = theme.fg; wrap(text, x, LAY.text, w, LAY.lh);
+  font(400, 22 * FS); ctx.fillStyle = theme.fg; wrap(shown, x, LAY.text, w, LAY.lh);
   ctx.globalAlpha = 1;
   // stat tiles
   const s = sc.s, nCrash = sc.type === 'intro' ? '–' : String(s === P1 && t < (crash ? crash.t_min : Infinity) ? 0 : s.crashes.length);
@@ -305,7 +312,7 @@ function drawPanel(sc, t, fadeIn) {
   tiles.forEach(([lab, val], i) => {
     const tx = x + i * 182, ty = LAY.stats;
     ctx.beginPath(); ctx.roundRect(tx, ty, 168, 84 * FS, 12); ctx.fillStyle = theme.panel; ctx.fill();
-    font(600, 15 * FS); ctx.fillStyle = theme.muted; ctx.fillText(lab.toUpperCase(), tx + 16, ty + 28 * FS);
+    font(600, (EMBED ? 12 : 15) * FS); ctx.fillStyle = theme.muted; ctx.fillText(lab.toUpperCase(), tx + 16, ty + 28 * FS);
     font(700, 32 * FS); ctx.fillStyle = lab === 'conflicts' && val !== '0' && val !== '–' ? RED : theme.fg; ctx.fillText(val, tx + 16, ty + 70 * FS);
   });
   if (sc.type === 'outro') drawCompare(x, w); else drawGantt(sc, t, x, w);
@@ -344,15 +351,16 @@ function drawGantt(sc, t, x, w) {
   ctx.strokeStyle = theme.fg; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(X(t), top - 6); ctx.lineTo(X(t), bottom + 6); ctx.stroke();
 }
 function drawCompare(x, w) {
-  const top = LAY.gantt, lx = x + 120 * FS, gw = w - 120 * FS - 170 * FS, bh = 34 * FS, k = smooth(st / 1.2);
+  const top = LAY.gantt, bh = 28 * FS, k = smooth(st / 1.2);
   font(600, 15 * FS); ctx.fillStyle = theme.muted; ctx.fillText('MAKESPAN', x, top - 14);
   [[P1, 'Phase 1', RED], [P2, 'Phase 2a', GREEN]].forEach(([s, lab, col], i) => {
-    const y = top + i * (bh + 36), bw = gw * (s.makespan / Tmax) * k;
-    font(600, 18 * FS); ctx.fillStyle = theme.fg; ctx.fillText(lab, x, y + 8 + bh * 0.68);
-    ctx.fillStyle = theme.panel; ctx.fillRect(lx, y + 8, gw, bh);
-    ctx.fillStyle = alpha(col, 0.85); ctx.fillRect(lx, y + 8, bw, bh);
-    font(700, 20 * FS); ctx.fillStyle = theme.fg;
-    ctx.fillText(`${s.makespan.toFixed(1)}  ${s.crashes.length ? '✕ unsafe' : '✓ safe'}`, lx + bw + 12, y + 8 + bh * 0.7);
+    const y = top + i * (26 * FS + bh + 8), bw = w * (s.makespan / Tmax) * k;
+    font(600, 18 * FS); ctx.fillStyle = theme.fg; ctx.fillText(lab, x, y + 18 * FS);
+    ctx.fillStyle = theme.panel; ctx.fillRect(x, y + 26 * FS, w, bh);
+    ctx.fillStyle = alpha(col, 0.85); ctx.fillRect(x, y + 26 * FS, bw, bh);
+    font(700, 17 * FS); ctx.fillStyle = '#ffffff'; ctx.textAlign = 'right';
+    ctx.fillText(`${s.makespan.toFixed(1)}  ${s.crashes.length ? '✕ unsafe' : '✓ safe'}`, x + bw - 12, y + 26 * FS + bh * 0.7);
+    ctx.textAlign = 'left';
   });
 }
 function drawLegend(x, w) {
