@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>General integer network interdiction</title>
+<style>
+  :root { --bg:#0b1020; --fg:#e8ebf4; --muted:#8a93a8; --line:rgba(255,255,255,0.08); --panel:rgba(255,255,255,0.035); --pipe:rgba(255,255,255,0.10); }
+  :root[data-theme=light] { --bg:#f6f7fb; --fg:#1a2033; --muted:#69728a; --line:rgba(10,20,40,0.10); --panel:rgba(10,20,40,0.035); --pipe:rgba(10,20,40,0.09); }
+  html, body { margin:0; background:var(--bg); }
+  .anim { position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; }
+  canvas { width:100%; height:100%; display:block; cursor:pointer; }
+  .anim button { position:absolute; right:1.2%; bottom:2%; width:34px; height:34px; border-radius:50%;
+    border:1px solid var(--line); background:var(--panel); color:var(--fg); font-size:13px; cursor:pointer; opacity:.7; }
+  .anim button:hover { opacity:1; }
+</style>
+</head>
+<body>
+<div class="anim"><canvas id="c"></canvas><button id="pp" aria-label="Pause">&#10074;&#10074;</button></div>
+<script>
+// Exact toy instance: every attack plan within the budget was enumerated and each defender response solved as a min-cost flow.
+const DATA = {"nodes":[{"id":"s","x":0,"y":50},{"id":"a","x":33,"y":85},{"id":"b","x":33,"y":15},{"id":"c","x":66,"y":85},{"id":"d","x":66,"y":15},{"id":"t","x":100,"y":50}],"arcs":[{"u":"s","v":"a","cap":3,"cost":1},{"u":"a","v":"c","cap":3,"cost":1},{"u":"c","v":"t","cap":3,"cost":1},{"u":"s","v":"b","cap":3,"cost":2},{"u":"b","v":"d","cap":3,"cost":2},{"u":"d","v":"t","cap":3,"cost":2},{"u":"a","v":"d","cap":2,"cost":2},{"u":"b","v":"c","cap":1,"cost":1}],"D":4,"B":4,"DC":1,"plans":[{"label":"No attack","z":15,"attack":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"flow":[3,3,3,1,1,1,0,0]},{"label":"Binary attack","z":20,"attack":[[0,0],[3,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],"flow":[2,0,1,2,1,3,2,1]},{"label":"General integer attack","z":25,"attack":[[0,1],[0,0],[2,0],[0,0],[0,0],[0,1],[0,0],[0,0]],"flow":[3,1,1,1,1,3,2,0]}]};
+(() => {
+const W = 1600, H = 900, FONT = 'system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
+const FLOW = '#4cc9f0', RED = '#ff4d6d', ORANGE = '#ffb703', GREEN = '#2ee59d', BLUE = '#6ea8fe';
+const params = new URLSearchParams(location.search);
+if (params.get('theme')) document.documentElement.dataset.theme = params.get('theme');
+const cv = document.getElementById('c'), ctx = cv.getContext('2d'), btn = document.getElementById('pp');
+let theme = {};
+const readTheme = () => { const s = getComputedStyle(document.documentElement);
+  for (const k of ['bg', 'fg', 'muted', 'line', 'panel', 'pipe']) theme[k] = s.getPropertyValue('--' + k).trim(); };
+const resize = () => { const r = cv.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr); };
+
+// ---------- data ----------
+const { D, B, DC } = DATA;
+const [P0, PB, PI] = DATA.plans;
+const nodeById = Object.fromEntries(DATA.nodes.map(v => [v.id, v]));
+const NAME = { s: 'source', t: 'sink' };
+const arcName = a => `${a.u} → ${a.v}`;
+const pctUp = z => Math.round((z / P0.z - 1) * 100);
+
+// ---------- geometry ----------
+const BOX = { x: 40, y: 40, w: 900, h: 820 };
+const toC = (x, y) => [BOX.x + 90 + (x / 100) * (BOX.w - 180), BOX.y + BOX.h / 2 - ((y - 50) / 70) * (BOX.h * 0.66)];
+const NR = 34, UNIT = 9; // node radius, pixels per capacity unit
+function arcGeom(a) {
+  const [x0, y0] = toC(nodeById[a.u].x, nodeById[a.u].y), [x1, y1] = toC(nodeById[a.v].x, nodeById[a.v].y);
+  const L = Math.hypot(x1 - x0, y1 - y0), ux = (x1 - x0) / L, uy = (y1 - y0) / L;
+  const sx = x0 + ux * (NR + 6), sy = y0 + uy * (NR + 6), ex = x1 - ux * (NR + 16), ey = y1 - uy * (NR + 16);
+  const cross = (a.u === 'a' && a.v === 'd') || (a.u === 'b' && a.v === 'c');
+  return { sx, sy, ex, ey, ux, uy, len: Math.hypot(ex - sx, ey - sy), ang: Math.atan2(uy, ux), lab: cross ? 0.28 : 0.5 };
+}
+const G = DATA.arcs.map(arcGeom);
+
+// ---------- scenes ----------
+const SCENES = [
+  { type: 'intro', dur: 4, plan: P0, chip: 'The game', color: BLUE,
+    text: `A defender ships ${D} units from source to sink at minimum cost. An attacker with a budget of ${B} units spends it on arcs to make that cost as high as possible.`,
+    short: `Defender ships ${D} units at min cost. Attacker spends a budget of ${B} to raise that cost.` },
+  { type: 'play', dur: 6, from: P0, plan: P0, chip: 'No attack', color: FLOW,
+    text: `Without an attack the defender uses the cheapest routes. Total cost ${P0.z}.`,
+    short: `Cheapest routes. Cost ${P0.z}.` },
+  { type: 'play', dur: 8, from: P0, plan: PB, chip: 'Classic: all or nothing', color: RED,
+    text: `A classic attacker can only destroy whole arcs (cost = capacity). Its best move reroutes the flow: cost ${PB.z} (+${pctUp(PB.z)}%).`,
+    short: `Destroy whole arcs only: cost ${PB.z} (+${pctUp(PB.z)}%).` },
+  { type: 'play', dur: 8, from: P0, plan: PI, chip: 'General integer: where and how much', color: ORANGE,
+    text: `Each budget unit cuts one unit of capacity or raises an arc's cost by ${DC}. Mixing partial cuts and cost raises gives cost ${PI.z} (+${pctUp(PI.z)}%).`,
+    short: `Partial cuts + cost raises: cost ${PI.z} (+${pctUp(PI.z)}%).` },
+  { type: 'outro', dur: 6, plan: PI, chip: 'Result', color: GREEN,
+    text: `With the same budget, choosing how much to attack, not just where, raises the damage from +${pctUp(PB.z)}% to +${pctUp(PI.z)}%.`,
+    short: `Same budget: +${pctUp(PI.z)}% vs +${pctUp(PB.z)}%. Intensity matters.` },
+];
+let si = 0, st = 0, gt = 0, paused = false, visible = true;
+function startScene(i) { si = i % SCENES.length; st = 0; }
+function update(dt) { st += dt; gt += dt; if (st >= SCENES[si].dur) startScene(si + 1); }
+
+// timeline inside a play scene: attack appears, then flow reroutes
+const ATT0 = 0.8, ATT1 = 2.2, MOR0 = 2.6, MOR1 = 3.8;
+const smooth = x => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
+function sceneState() {
+  const sc = SCENES[si];
+  if (sc.type === 'intro') return { att: 0, plan: P0, flow: P0.flow.map(() => 0), z: null, ka: 0 };
+  if (sc.type === 'outro') return { att: 1, plan: sc.plan, flow: sc.plan.flow, z: sc.plan.z, ka: 1 };
+  const ka = sc.plan === P0 ? 0 : smooth((st - ATT0) / (ATT1 - ATT0)), km = sc.plan === P0 ? 1 : smooth((st - MOR0) / (MOR1 - MOR0));
+  const flow = sc.plan.flow.map((f, k) => sc.from.flow[k] + (f - sc.from.flow[k]) * km);
+  return { att: ka, plan: sc.plan, flow, z: sc.from.z + (sc.plan.z - sc.from.z) * km, ka, km };
+}
+
+// ---------- drawing helpers ----------
+const font = (w, px) => (ctx.font = `${w} ${px}px ${FONT}`);
+const alpha = (hex, a) => hex + Math.round(Math.max(0, Math.min(1, a)) * 255).toString(16).padStart(2, '0');
+function wrap(text, x, y, maxW, lh) {
+  let line = '';
+  for (const w of text.split(' ')) {
+    const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(test).width > maxW && line) { ctx.fillText(line, x, y); line = w; y += lh; } else line = test;
+  }
+  if (line) ctx.fillText(line, x, y);
+}
+function circle(x, y, r) { ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI); }
+function band(g, width, color, dash) {
+  ctx.save(); ctx.translate(g.sx, g.sy); ctx.rotate(g.ang);
+  if (dash) { ctx.setLineDash(dash); ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.strokeRect(0, -width / 2, g.len, width); ctx.setLineDash([]); }
+  else { ctx.fillStyle = color; ctx.beginPath(); ctx.roundRect(0, -width / 2, g.len, width, Math.min(width / 2, 6)); ctx.fill(); }
+  ctx.restore();
+}
+function arrowHead(g, color) {
+  ctx.save(); ctx.translate(g.ex + g.ux * 10, g.ey + g.uy * 10); ctx.rotate(g.ang);
+  ctx.beginPath(); ctx.moveTo(6, 0); ctx.lineTo(-8, -8); ctx.lineTo(-8, 8); ctx.closePath(); ctx.fillStyle = color; ctx.fill(); ctx.restore();
+}
+function pill(x, y, parts, fs) {
+  font(650, fs);
+  const pad = 10, wid = parts.reduce((s, p) => s + ctx.measureText(p[0]).width, 0) + 2 * pad, h = fs + 12;
+  ctx.beginPath(); ctx.roundRect(x - wid / 2, y - h / 2, wid, h, h / 2); ctx.fillStyle = theme.bg; ctx.fill();
+  ctx.lineWidth = 1.5; ctx.strokeStyle = theme.line; ctx.stroke();
+  let cx = x - wid / 2 + pad; ctx.textAlign = 'left';
+  for (const [t, c] of parts) { ctx.fillStyle = c; ctx.fillText(t, cx, y + fs * 0.36); cx += ctx.measureText(t).width; }
+  return [wid, h];
+}
+
+function drawBackground() {
+  ctx.fillStyle = theme.bg; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = theme.line;
+  for (let x = BOX.x + 10; x < BOX.x + BOX.w; x += 36) for (let y = BOX.y + 10; y < BOX.y + BOX.h; y += 36) ctx.fillRect(x, y, 2, 2);
+}
+
+function drawNetwork(S, appear) {
+  DATA.arcs.forEach((a, k) => {
+    const g = G[k], [cut, raise] = S.plan.attack[k], ka = S.att;
+    ctx.globalAlpha = smooth(appear * 2 - k / DATA.arcs.length);
+    const destroyed = cut > 0 && cut === a.cap;
+    // capacity pipe; the cut share turns into a red dashed ghost
+    const capNow = a.cap - cut * ka;
+    if (cut) band(g, a.cap * UNIT, alpha(RED, 0.12 * ka));
+    if (cut) band(g, a.cap * UNIT, alpha(RED, 0.8 * ka), [6, 6]);
+    if (!destroyed || ka < 1) band(g, Math.max(0, capNow) * UNIT, theme.pipe);
+    // flow fill + moving particles
+    const f = S.flow[k];
+    if (f > 0.02) {
+      band(g, f * UNIT, alpha(FLOW, 0.55));
+      const n = Math.max(1, Math.round(f * 2)), sp = 90, gap = g.len / (Math.round(g.len / 70) || 1);
+      ctx.save(); ctx.translate(g.sx, g.sy); ctx.rotate(g.ang);
+      for (let off = (gt * sp) % gap; off < g.len; off += gap)
+        for (let j = 0; j < n; j++) { const yy = (j - (n - 1) / 2) * (f * UNIT / n); circle(off, yy, 3.2); ctx.fillStyle = '#ffffff'; ctx.fill(); }
+      ctx.restore();
+    }
+    arrowHead(g, destroyed && ka > 0.5 ? alpha(RED, 0.8) : theme.muted);
+    if (destroyed && ka > 0) {
+      const mx = g.sx + g.ux * g.len * 0.5, my = g.sy + g.uy * g.len * 0.5, r = 14 * ka;
+      ctx.strokeStyle = RED; ctx.lineWidth = 5; ctx.beginPath();
+      ctx.moveTo(mx - r, my - r); ctx.lineTo(mx + r, my + r); ctx.moveTo(mx + r, my - r); ctx.lineTo(mx - r, my + r); ctx.stroke();
+    }
+    // label: cost and capacity, showing attacked values
+    const lx = g.sx + g.ux * g.len * g.lab - g.uy * 34, ly = g.sy + g.uy * g.len * g.lab + g.ux * 34;
+    const show = ka > 0.5, fs = 15 * FS;
+    const parts = [[`$${a.cost}`, theme.fg]];
+    if (raise && show) parts.push([`→${a.cost + DC * raise}`, ORANGE]);
+    parts.push(['  cap ', theme.muted], [`${a.cap}`, theme.fg]);
+    if (cut && show) parts.push([`→${a.cap - cut}`, RED]);
+    const [pw, ph0] = pill(lx, ly, parts, fs);
+    if (raise && ka > 0) { // pulse on cost-raised arcs
+      const ph = (gt * 1.2) % 1; ctx.globalAlpha *= ka * (1 - ph);
+      ctx.beginPath(); ctx.roundRect(lx - pw / 2 - 12 * ph, ly - ph0 / 2 - 8 * ph, pw + 24 * ph, ph0 + 16 * ph, ph0 / 2 + 8 * ph); ctx.strokeStyle = ORANGE; ctx.lineWidth = 2; ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  });
+  DATA.nodes.forEach((v, i) => {
+    const k = smooth(appear * DATA.nodes.length - i); if (k <= 0) return;
+    const [x, y] = toC(v.x, v.y);
+    ctx.globalAlpha = k;
+    circle(x, y, NR); ctx.fillStyle = theme.bg; ctx.fill(); ctx.fillStyle = theme.panel; ctx.fill();
+    ctx.lineWidth = 2.5; ctx.strokeStyle = NAME[v.id] ? theme.fg : theme.muted; ctx.stroke();
+    font(700, 22 * FS); ctx.fillStyle = theme.fg; ctx.textAlign = 'center'; ctx.fillText(v.id, x, y + 8 * FS);
+    if (NAME[v.id]) { font(600, 16 * FS); ctx.fillStyle = theme.muted; ctx.fillText(NAME[v.id], x, y + NR + 22 * FS); }
+    ctx.globalAlpha = 1;
+  });
+}
+
+// ---------- panel ----------
+const EMBED = params.has('embed'), FS = EMBED ? 1.7 : 1;
+const LAY = EMBED ? { chip: 40, text: 165, lh: 50, stats: 290, list: 520, rh: 48, legend: 790 }
+                  : { chip: 222, text: 300, lh: 32, stats: 418, list: 560, rh: 34, legend: 800 };
+function drawPanel(S, fadeIn) {
+  const sc = SCENES[si], x = 1000, w = 540;
+  ctx.textAlign = 'left';
+  if (!EMBED) {
+    font(700, 16); ctx.fillStyle = theme.muted; ctx.fillText('PHD RESEARCH  ·  INTERDICTION GAMES', x, 84);
+    font(750, 40); ctx.fillStyle = theme.fg; ctx.fillText('General integer', x, 136); ctx.fillText('network interdiction', x, 184);
+  }
+  ctx.globalAlpha = fadeIn;
+  let cf = 19 * FS; font(700, cf);
+  while (ctx.measureText(sc.chip).width + 32 * FS > w && cf > 12) font(700, --cf);
+  const cw = ctx.measureText(sc.chip).width + 32 * FS, ch = 38 * FS;
+  ctx.beginPath(); ctx.roundRect(x, LAY.chip, cw, ch, ch / 2); ctx.fillStyle = alpha(sc.color, 0.16); ctx.fill();
+  ctx.lineWidth = 1.5; ctx.strokeStyle = alpha(sc.color, 0.7); ctx.stroke();
+  ctx.fillStyle = sc.color; ctx.fillText(sc.chip, x + 16 * FS, LAY.chip + 26 * FS);
+  font(400, 22 * FS); ctx.fillStyle = theme.fg; wrap(EMBED ? sc.short : sc.text, x, LAY.text, w, LAY.lh);
+  ctx.globalAlpha = 1;
+  const used = S.plan.attack.reduce((s, [u, c]) => s + u + c, 0);
+  const tiles = [['budget used', sc.type === 'intro' ? '–' : `${Math.round(used * S.ka)}/${B}`, theme.fg],
+                 ['flow cost', S.z === null ? '–' : String(Math.round(S.z)), theme.fg],
+                 ['vs no attack', S.z === null ? '–' : `+${Math.round((S.z / P0.z - 1) * 100)}%`, S.z > P0.z + 0.5 ? (sc.plan === PB ? RED : ORANGE) : theme.fg]];
+  tiles.forEach(([lab, val, col], i) => {
+    const tx = x + i * 182, ty = LAY.stats;
+    ctx.beginPath(); ctx.roundRect(tx, ty, 168, 84 * FS, 12); ctx.fillStyle = theme.panel; ctx.fill();
+    font(600, (EMBED ? 12 : 15) * FS); ctx.fillStyle = theme.muted; ctx.fillText(lab.toUpperCase(), tx + 16, ty + 28 * FS);
+    font(700, 32 * FS); ctx.fillStyle = col; ctx.fillText(val, tx + 16, ty + 70 * FS);
+  });
+  if (sc.type === 'outro') drawCompare(x, w); else drawAttackList(S, x, w);
+  if (sc.type !== 'outro' || !EMBED) drawLegend(x, w);
+}
+function drawAttackList(S, x, w) {
+  const top = LAY.list;
+  font(600, 15 * FS); ctx.fillStyle = theme.muted; ctx.fillText('ATTACK PLAN', x, top - 14);
+  const rows = [];
+  S.plan.attack.forEach(([cut, raise], k) => {
+    const a = DATA.arcs[k];
+    if (cut === a.cap) rows.push([arcName(a), `destroyed (−${cut} cap)`, RED, cut]);
+    else if (cut) rows.push([arcName(a), `capacity −${cut}`, RED, cut]);
+    if (raise) rows.push([arcName(a), `cost +${DC * raise} per unit`, ORANGE, raise]);
+  });
+  if (!rows.length) { font(400, 18 * FS); ctx.fillStyle = theme.muted; ctx.fillText(SCENES[si].type === 'intro' ? 'Waiting for the attacker…' : 'None', x, top + 26 * FS); return; }
+  rows.forEach(([name, what, col, units], r) => {
+    const y = top + r * LAY.rh, k = S.ka;
+    ctx.globalAlpha = smooth(k * rows.length - r);
+    ctx.fillStyle = theme.panel; ctx.fillRect(x, y, w, LAY.rh - 8);
+    ctx.fillStyle = col; ctx.fillRect(x, y, 5, LAY.rh - 8);
+    font(700, 17 * FS); ctx.fillStyle = theme.fg; ctx.fillText(name, x + 18, y + LAY.rh * 0.6);
+    font(500, 17 * FS); ctx.fillStyle = col; ctx.fillText(what, x + 18 + 110 * FS, y + LAY.rh * 0.6);
+    for (let j = 0; j < units; j++) { circle(x + w - 20 - j * 20, y + (LAY.rh - 8) / 2, 6); ctx.fillStyle = col; ctx.fill(); }
+    ctx.globalAlpha = 1;
+  });
+}
+function drawCompare(x, w) {
+  const top = LAY.list, bh = 24 * FS, k = smooth(st / 1.2), zmax = PI.z * 1.08;
+  font(600, 15 * FS); ctx.fillStyle = theme.muted; ctx.fillText(`DEFENDER COST, BUDGET ${B}`, x, top - 14);
+  [[P0, 'No attack', FLOW], [PB, 'All or nothing', RED], [PI, 'General integer', ORANGE]].forEach(([p, lab, col], i) => {
+    const y = top + i * (20 * FS + bh + 8), bw = w * (p.z / zmax) * k;
+    font(600, 16 * FS); ctx.fillStyle = theme.fg; ctx.fillText(lab, x, y + 15 * FS);
+    ctx.fillStyle = theme.panel; ctx.fillRect(x, y + 20 * FS, w, bh);
+    ctx.fillStyle = alpha(col, 0.85); ctx.fillRect(x, y + 20 * FS, bw, bh);
+    font(700, 16 * FS); ctx.fillStyle = '#ffffff'; ctx.textAlign = 'right';
+    ctx.fillText(String(p.z), x + bw - 10, y + 20 * FS + bh * 0.72); ctx.textAlign = 'left';
+  });
+}
+function drawLegend(x, w) {
+  const icons = {
+    'capacity': (ix, iy) => { ctx.fillStyle = theme.pipe; ctx.fillRect(ix - 14, iy - 8, 28, 16); },
+    'flow': (ix, iy) => { ctx.fillStyle = alpha(FLOW, 0.55); ctx.fillRect(ix - 14, iy - 5, 28, 10); circle(ix, iy, 3); ctx.fillStyle = '#fff'; ctx.fill(); },
+    'capacity cut': (ix, iy) => { ctx.setLineDash([4, 4]); ctx.strokeStyle = RED; ctx.lineWidth = 2; ctx.strokeRect(ix - 14, iy - 8, 28, 16); ctx.setLineDash([]); },
+    'cost raised': (ix, iy) => { ctx.beginPath(); ctx.roundRect(ix - 14, iy - 9, 28, 18, 9); ctx.strokeStyle = ORANGE; ctx.lineWidth = 2; ctx.stroke(); },
+  };
+  font(500, 16 * FS); ctx.textAlign = 'left';
+  let cx = x, cy = LAY.legend;
+  for (const [label, draw] of Object.entries(icons)) {
+    const iw = 34 + ctx.measureText(label).width + 28;
+    if (cx + iw - 28 > x + w) { cx = x; cy += 44 * FS; }
+    draw(cx + 13, cy - 5 * FS); ctx.fillStyle = theme.muted; ctx.fillText(label, cx + 34, cy);
+    cx += iw;
+  }
+}
+
+function render() {
+  ctx.setTransform(cv.width / W, 0, 0, cv.height / H, 0, 0);
+  const sc = SCENES[si], S = sceneState();
+  drawBackground();
+  drawNetwork(S, sc.type === 'intro' ? smooth(st / 2) : 1);
+  drawPanel(S, smooth(st / 0.5));
+  if (st < 0.35) { ctx.fillStyle = theme.bg; ctx.globalAlpha = 1 - st / 0.35; ctx.fillRect(960, 0, W - 960, H); ctx.globalAlpha = 1; }
+}
+
+let last = null;
+function frame(now) {
+  const dt = last === null ? 0 : Math.min(0.05, (now - last) / 1000); last = now;
+  if (!paused && visible) update(dt);
+  render();
+  requestAnimationFrame(frame);
+}
+const setPaused = p => { paused = p; btn.innerHTML = p ? '&#9654;' : '&#10074;&#10074;'; btn.setAttribute('aria-label', p ? 'Play' : 'Pause'); };
+btn.onclick = cv.onclick = () => setPaused(!paused);
+new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(cv);
+window.addEventListener('resize', resize);
+matchMedia('(prefers-reduced-motion: reduce)').matches && setPaused(true);
+if (params.get('scene')) { startScene(+params.get('scene')); st = +(params.get('st') || 0); setPaused(params.has('still')); }
+readTheme(); resize(); requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dynamic network flow with expiring interdiction</title>
+<style>
+  :root { --bg:#0b1020; --fg:#e8ebf4; --muted:#8a93a8; --line:rgba(255,255,255,0.08); --panel:rgba(255,255,255,0.035); --road:rgba(255,255,255,0.16); }
+  :root[data-theme=light] { --bg:#f6f7fb; --fg:#1a2033; --muted:#69728a; --line:rgba(10,20,40,0.10); --panel:rgba(10,20,40,0.035); --road:rgba(10,20,40,0.16); }
+  html, body { margin:0; background:var(--bg); }
+  .anim { position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; }
+  canvas { width:100%; height:100%; display:block; cursor:pointer; }
+  .anim button { position:absolute; right:1.2%; bottom:2%; width:34px; height:34px; border-radius:50%;
+    border:1px solid var(--line); background:var(--panel); color:var(--fg); font-size:13px; cursor:pointer; opacity:.7; }
+  .anim button:hover { opacity:1; }
+</style>
+</head>
+<body>
+<div class="anim"><canvas id="c"></canvas><button id="pp" aria-label="Pause">&#10074;&#10074;</button></div>
+<script>
+// Exact toy instance: every plan of at most B windows was enumerated, and the scheduler's response solved as a
+// min-cost flow on the time-expanded network (blocking rule and costs as in the DMCF-EI model).
+const DATA = {"nodes":[{"id":"s","x":0,"y":50},{"id":"a","x":50,"y":85},{"id":"b","x":50,"y":15},{"id":"t","x":100,"y":50}],"arcs":[{"u":"s","v":"a","cost":1,"cap":2,"tau":1},{"u":"a","v":"t","cost":1,"cap":2,"tau":1},{"u":"s","v":"b","cost":2,"cap":2,"tau":2},{"u":"b","v":"t","cost":2,"cap":2,"tau":2},{"u":"a","v":"b","cost":1,"cap":2,"tau":1}],"d":4,"B":2,"delta":2,"Tsoft":5,"Tmax":9,"w":1,"p":2,"M":40,"plans":[{"label":"No attack","z":10,"windows":[],"units":[[{"k":"move","arc":0,"t0":1,"t1":2},{"k":"move","arc":1,"t0":2,"t1":3},{"k":"arrive","t":3}],[{"k":"move","arc":0,"t0":1,"t1":2},{"k":"move","arc":1,"t0":2,"t1":3},{"k":"arrive","t":3}],[{"k":"wait","node":"s","t0":1,"t1":2},{"k":"move","arc":0,"t0":2,"t1":3},{"k":"move","arc":1,"t0":3,"t1":4},{"k":"arrive","t":4}],[{"k":"wait","node":"s","t0":1,"t1":2},{"k":"move","arc":0,"t0":2,"t1":3},{"k":"move","arc":1,"t0":3,"t1":4},{"k":"arrive","t":4}]]},{"label":"Mistimed attack","z":10,"windows":[{"arc":0,"q":3},{"arc":0,"q":4}],"units":[[{"k":"move","arc":0,"t0":1,"t1":2},{"k":"move","arc":1,"t0":2,"t1":3},{"k":"arrive","t":3}],[{"k":"move","arc":0,"t0":1,"t1":2},{"k":"move","arc":1,"t0":2,"t1":3},{"k":"arrive","t":3}],[{"k":"wait","node":"s","t0":1,"t1":2},{"k":"move","arc":0,"t0":2,"t1":3},{"k":"move","arc":1,"t0":3,"t1":4},{"k":"arrive","t":4}],[{"k":"wait","node":"s","t0":1,"t1":2},{"k":"move","arc":0,"t0":2,"t1":3},{"k":"move","arc":1,"t0":3,"t1":4},{"k":"arrive","t":4}]]},{"label":"Optimal attack","z":22,"windows":[{"arc":0,"q":1},{"arc":0,"q":2}],"units":[[{"k":"move","arc":2,"t0":1,"t1":3},{"k":"move","arc":3,"t0":3,"t1":5},{"k":"arrive","t":5}],[{"k":"move","arc":2,"t0":1,"t1":3},{"k":"move","arc":3,"t0":3,"t1":5},{"k":"arrive","t":5}],[{"k":"wait","node":"s","t0":1,"t1":2},{"k":"wait","node":"s","t0":2,"t1":3},{"k":"wait","node":"s","t0":3,"t1":4},{"k":"move","arc":0,"t0":4,"t1":5},{"k":"move","arc":1,"t0":5,"t1":6},{"k":"arrive","t":6}],[{"k":"wait","node":"s","t0":1,"t1":2},{"k":"wait","node":"s","t0":2,"t1":3},{"k":"wait","node":"s","t0":3,"t1":4},{"k":"move","arc":0,"t0":4,"t1":5},{"k":"move","arc":1,"t0":5,"t1":6},{"k":"arrive","t":6}]]}]};
+(() => {
+const W = 1600, H = 900, FONT = 'system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
+const UNIT = '#4cc9f0', RED = '#ff4d6d', ORANGE = '#ffb703', GREEN = '#2ee59d', BLUE = '#6ea8fe';
+const params = new URLSearchParams(location.search);
+if (params.get('theme')) document.documentElement.dataset.theme = params.get('theme');
+const cv = document.getElementById('c'), ctx = cv.getContext('2d'), btn = document.getElementById('pp');
+let theme = {};
+const readTheme = () => { const s = getComputedStyle(document.documentElement);
+  for (const k of ['bg', 'fg', 'muted', 'line', 'panel', 'road']) theme[k] = s.getPropertyValue('--' + k).trim(); };
+const resize = () => { const r = cv.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+  cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr); };
+
+// ---------- data ----------
+const { d, delta, Tsoft, p, w } = DATA;
+const [P0, PM, PO] = DATA.plans;
+const nodeById = Object.fromEntries(DATA.nodes.map(v => [v.id, v]));
+const NAME = { s: 'source', t: 'sink' };
+const arrivalOf = u => u.find(s => s.k === 'arrive').t;
+const TEND = Math.max(...DATA.plans.flatMap(P => P.units.map(arrivalOf))) + 1;
+// closed intervals [q, q + delta) per arc, merged
+function closures(P) {
+  const by = {};
+  for (const { arc, q } of P.windows) (by[arc] ||= []).push([q, q + delta]);
+  for (const k in by) {
+    const iv = by[k].sort((a, b) => a[0] - b[0]), m = [];
+    for (const [a, b] of iv) if (m.length && a <= m[m.length - 1][1]) m[m.length - 1][1] = Math.max(m[m.length - 1][1], b); else m.push([a, b]);
+    by[k] = m;
+  }
+  return by;
+}
+const periods = P => { const c = closures(P), iv = Object.values(c).flat(); return iv.length ? `${Math.min(...iv.map(i => i[0]))}–${Math.max(...iv.map(i => i[1])) - 1}` : ''; };
+const stepCost = s => s.k === 'move' ? DATA.arcs[s.arc].cost + (s.t1 > Tsoft ? p * (s.t1 - Tsoft) : 0)
+  : s.k === 'wait' ? (s.node === 's' ? w : w + p * Math.max(0, s.t1 - Tsoft)) : s.k === 'dummy' ? DATA.M : 0;
+const costAt = (P, T) => P.units.reduce((acc, u) => acc + u.reduce((a, s) => a + ((s.t1 ?? Infinity) <= T ? stepCost(s) : 0), 0), 0);
+const lateCount = P => P.units.filter(u => arrivalOf(u) > Tsoft).length;
+const detourCount = P => P.units.filter(u => u.some(s => s.k === 'move' && !P0.units[0].some(z => z.k === 'move' && z.arc === s.arc))).length;
+const words = ['no', 'one', 'two', 'three', 'four', 'five', 'six'];
+const cap = s => s[0].toUpperCase() + s.slice(1);
+
+// ---------- geometry ----------
+const BOX = { x: 40, y: 40, w: 900, h: 820 };
+const toC = (x, y) => [BOX.x + 110 + (x / 100) * (BOX.w - 220), BOX.y + BOX.h / 2 - 30 - ((y - 50) / 70) * (BOX.h * 0.62)];
+const NR = 36, UR = params.has('embed') ? 15 : 11;
+const CEN = toC(50, 50);
+const G = DATA.arcs.map(a => {
+  const [x0, y0] = toC(nodeById[a.u].x, nodeById[a.u].y), [x1, y1] = toC(nodeById[a.v].x, nodeById[a.v].y);
+  const L = Math.hypot(x1 - x0, y1 - y0), ux = (x1 - x0) / L, uy = (y1 - y0) / L;
+  const sx = x0 + ux * (NR + 8), sy = y0 + uy * (NR + 8), ex = x1 - ux * (NR + 16), ey = y1 - uy * (NR + 16);
+  const mx = sx + (ex - sx) * 0.42, my = sy + (ey - sy) * 0.42;
+  let nx = -uy, ny = ux; if ((mx + nx - CEN[0]) ** 2 + (my + ny - CEN[1]) ** 2 < (mx - CEN[0]) ** 2 + (my - CEN[1]) ** 2) { nx = -nx; ny = -ny; }
+  return { sx, sy, ex, ey, ux, uy, nx, ny, len: Math.hypot(ex - sx, ey - sy), ang: Math.atan2(uy, ux), mx, my };
+});
+
+// ---------- scenes ----------
+const late = lateCount(PO), det = detourCount(PO);
+const SCENES = [
+  { type: 'intro', dur: 5, P: P0, chip: 'The game', color: BLUE,
+    text: `A scheduler ships ${d} units from source to sink over time. Waiting costs extra, and so does arriving after the soft deadline (period ${Tsoft}). An interdictor can close a road, but each block expires after δ = ${delta} periods.`,
+    short: `Ship ${d} units by period ${Tsoft}. Each road block lasts only δ = ${delta} periods.` },
+  { type: 'play', P: P0, chip: 'No attack', color: UNIT,
+    text: `With every road open, all ${d} units take the fast road and arrive by period ${Math.max(...P0.units.map(arrivalOf))}. Cost ${P0.z}.`,
+    short: `All units take the fast road. Cost ${P0.z}.` },
+  { type: 'play', P: PM, chip: 'Blocked at the wrong time', color: ORANGE,
+    text: `The interdictor closes the fast road in periods ${periods(PM)}. The goods have already passed, so the cost stays ${PM.z}.`,
+    short: `Fast road closed in periods ${periods(PM)}: too late, cost stays ${PM.z}.` },
+  { type: 'play', P: PO, chip: 'Blocked at the right time', color: RED,
+    text: `Same budget, earlier: the fast road is closed in periods ${periods(PO)}. ${cap(words[det])} units detour on the slow road; ${words[late]} wait for the road to reopen and arrive late. Cost ${PO.z}.`,
+    short: `Closed in periods ${periods(PO)}: ${words[det]} units detour, ${words[late]} arrive late. Cost ${PO.z}.` },
+  { type: 'outro', dur: 6, P: PO, chip: 'Result', color: GREEN,
+    text: `Same budget, same road, cost ${PM.z} or ${PO.z}. With expiring blocks the interdictor must choose which roads to close and when.`,
+    short: `Same budget, cost ${PM.z} vs ${PO.z}: timing decides.` },
+];
+const SEC = 1.15, LEAD = 0.6, HOLD = 1.6; // seconds per period, before start, after end
+const playDur = (TEND - 1) * SEC + LEAD + HOLD;
+let si = 0, st = 0, gt = 0, paused = false, visible = true;
+function startScene(i) { si = i % SCENES.length; st = 0; }
+function update(dt) { st += dt; gt += dt; const sc = SCENES[si]; if (st >= (sc.dur ?? playDur)) startScene(si + 1); }
+const smooth = x => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
+const clock = () => { const sc = SCENES[si]; return sc.type === 'intro' || st < LEAD ? 1 - 1e-6 : sc.type === 'outro' ? TEND : Math.min(TEND, 1 + (st - LEAD) / SEC); };
+
+// ---------- unit positions ----------
+const nodeC = id => toC(nodeById[id].x, nodeById[id].y);
+function unitState(u, T) {
+  for (const s of u) {
+    if (s.k === 'move' && T < s.t1) return T < s.t0 ? { at: DATA.arcs[s.arc].u } : { arc: s.arc, f: (T - s.t0) / (s.t1 - s.t0) };
+    if (s.k === 'wait' && T < s.t1) return { at: s.node, waiting: true };
+    if (s.k === 'arrive') return T >= s.t ? { done: true, late: s.t > Tsoft, t: s.t } : { at: 't' };
+  }
+  return { at: 's' };
+}
+function layout(P, T) {
+  const S = P.units.map(u => unitState(u, T)), pos = [];
+  const groups = {};
+  S.forEach((s, i) => { const key = s.done ? 'done' : s.at ? 'n' + s.at : 'a' + s.arc + ':' + s.f.toFixed(3); (groups[key] ||= []).push(i); });
+  for (const [key, idx] of Object.entries(groups)) idx.forEach((i, j) => {
+    const s = S[i], m = idx.length;
+    if (s.done) { const [x, y] = nodeC('t'); pos[i] = [x + (j - (m - 1) / 2) * (2 * UR + 4), y + NR + 34 * FS + UR + 6]; }
+    else if (s.at) {
+      // 2-row grid beside the node, growing away from it (left of the source, above other nodes)
+      const [x, y] = nodeC(s.at), sp = 2 * UR + 4, col = Math.floor(j / 2), row = j % 2, rows = Math.min(2, m);
+      pos[i] = s.at === 's' ? [x - NR - UR - 8 - col * sp, y + (row - (rows - 1) / 2) * sp]
+                            : [x + (row - (rows - 1) / 2) * sp, y - NR - UR - 8 - col * sp];
+    } else { const g = G[s.arc], o = (j - (m - 1) / 2) * (2 * UR + 2), L = g.len * s.f; pos[i] = [g.sx + g.ux * L + g.nx * o, g.sy + g.uy * L + g.ny * o]; }
+  });
+  return { S, pos };
+}
+
+// ---------- drawing helpers ----------
+const font = (wt, px) => (ctx.font = `${wt} ${px}px ${FONT}`);
+const alpha = (hex, a) => hex + Math.round(Math.max(0, Math.min(1, a)) * 255).toString(16).padStart(2, '0');
+function wrap(text, x, y, maxW, lh) {
+  let line = '';
+  for (const wd of text.split(' ')) {
+    const test = line ? line + ' ' + wd : wd;
+    if (ctx.measureText(test).width > maxW && line) { ctx.fillText(line, x, y); line = wd; y += lh; } else line = test;
+  }
+  if (line) ctx.fillText(line, x, y);
+}
+function circle(x, y, r) { ctx.beginPath(); ctx.arc(x, y, r, 0, 2 * Math.PI); }
+function pill(x, y, text, fs, col, border) {
+  font(650, fs); const wid = ctx.measureText(text).width + 22, h = fs + 12;
+  ctx.beginPath(); ctx.roundRect(x - wid / 2, y - h / 2, wid, h, h / 2); ctx.fillStyle = theme.bg; ctx.fill();
+  ctx.lineWidth = 1.5; ctx.strokeStyle = border || theme.line; ctx.stroke();
+  ctx.fillStyle = col; ctx.textAlign = 'center'; ctx.fillText(text, x, y + fs * 0.36);
+}
+function drawBackground() {
+  ctx.fillStyle = theme.bg; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = theme.line;
+  for (let x = BOX.x + 10; x < BOX.x + BOX.w; x += 36) for (let y = BOX.y + 10; y < BOX.y + BOX.h; y += 36) ctx.fillRect(x, y, 2, 2);
+}
+
+function drawNetwork(P, T, appear) {
+  const cl = closures(P);
+  DATA.arcs.forEach((a, k) => {
+    const g = G[k], iv = (cl[k] || []), on = iv.find(([q0, q1]) => T >= q0 && T < q1), later = iv.find(([q0]) => T < q0);
+    const ended = iv.find(([, q1]) => T >= q1 && T < q1 + 0.6);
+    ctx.globalAlpha = smooth(appear * 2 - k / DATA.arcs.length);
+    ctx.lineCap = 'round'; ctx.lineWidth = 14; ctx.strokeStyle = on ? alpha(RED, 0.5) : ended ? alpha(GREEN, 0.5 * (1 - (T - ended[1]) / 0.6)) : theme.road;
+    ctx.beginPath(); ctx.moveTo(g.sx, g.sy); ctx.lineTo(g.ex, g.ey); ctx.stroke();
+    if (ended && !on) { ctx.strokeStyle = theme.road; ctx.beginPath(); ctx.moveTo(g.sx, g.sy); ctx.lineTo(g.ex, g.ey); ctx.stroke(); }
+    ctx.save(); ctx.translate(g.ex + g.ux * 10, g.ey + g.uy * 10); ctx.rotate(g.ang);
+    ctx.beginPath(); ctx.moveTo(7, 0); ctx.lineTo(-9, -10); ctx.lineTo(-9, 10); ctx.closePath(); ctx.fillStyle = on ? RED : theme.muted; ctx.fill(); ctx.restore();
+    // label: cost and travel time
+    pill(g.mx + g.nx * 40 * Math.min(FS, 1.35), g.my + g.ny * 40 * Math.min(FS, 1.35), `$${a.cost} · ${a.tau} ${a.tau > 1 ? 'periods' : 'period'}`, 15 * FS, theme.fg);
+    // road block: solid while active (with countdown ring), faint while scheduled
+    if (on || later) {
+      const bx = g.sx + g.ux * g.len * 0.76, by = g.sy + g.uy * g.len * 0.76, r = 20;
+      ctx.globalAlpha *= on ? 1 : 0.35;
+      circle(bx, by, r); ctx.fillStyle = RED; ctx.fill();
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(bx - 11, by - 3.5, 22, 7);
+      if (on) {
+        const left = (on[1] - T) / (on[1] - on[0]);
+        ctx.beginPath(); ctx.arc(bx, by, r + 9, -Math.PI / 2, -Math.PI / 2 + 2 * Math.PI * left); ctx.lineWidth = 4; ctx.strokeStyle = RED; ctx.stroke();
+        font(700, 15 * FS); ctx.fillStyle = RED; ctx.textAlign = 'center';
+        ctx.fillText(`reopens at ${on[1]}`, bx - g.nx * 58, by - g.ny * 58 + 5);
+      }
+    }
+    ctx.globalAlpha = 1;
+  });
+  DATA.nodes.forEach((v, i) => {
+    const k = smooth(appear * DATA.nodes.length - i); if (k <= 0) return;
+    const [x, y] = nodeC(v.id), lateNow = v.id === 't' && T > Tsoft;
+    ctx.globalAlpha = k;
+    circle(x, y, NR); ctx.fillStyle = theme.bg; ctx.fill(); ctx.fillStyle = theme.panel; ctx.fill();
+    ctx.lineWidth = 2.5; ctx.strokeStyle = lateNow ? ORANGE : NAME[v.id] ? theme.fg : theme.muted; ctx.stroke();
+    font(700, 22 * FS); ctx.fillStyle = theme.fg; ctx.textAlign = 'center'; ctx.fillText(v.id, x, y + 8 * FS);
+    if (NAME[v.id]) { font(600, 16 * FS); ctx.fillStyle = lateNow ? ORANGE : theme.muted; ctx.fillText(v.id === 't' && lateNow ? 'sink · late' : NAME[v.id], x, y + NR + 24 * FS); }
+    ctx.globalAlpha = 1;
+  });
+}
+function drawUnits(P, T, a) {
+  const { S, pos } = layout(P, T);
+  ctx.globalAlpha = a;
+  S.forEach((s, i) => {
+    const [x, y] = pos[i], col = s.done ? (s.late ? ORANGE : GREEN) : UNIT;
+    if (s.waiting && s.at !== 's') { const ph = (gt * 1.3) % 1; circle(x, y, UR + 1 + 12 * ph); ctx.strokeStyle = alpha(ORANGE, 1 - ph); ctx.lineWidth = 2; ctx.stroke(); }
+    ctx.shadowColor = col; ctx.shadowBlur = s.arc !== undefined ? 18 : 6;
+    circle(x, y, UR); ctx.fillStyle = col; ctx.fill(); ctx.shadowBlur = 0;
+    font(700, UR * 1.2); ctx.fillStyle = '#0b1020'; ctx.textAlign = 'center'; ctx.fillText(String(i + 1), x, y + UR * 0.42);
+  });
+  ctx.globalAlpha = 1;
+}
+
+// ---------- panel ----------
+const EMBED = params.has('embed'), FS = EMBED ? 1.7 : 1;
+const LAY = EMBED ? { chip: 40, text: 165, lh: 50, stats: 290, tl: 520, rh: 46, legend: 800 }
+                  : { chip: 222, text: 300, lh: 32, stats: 418, tl: 560, rh: 34, legend: 800 };
+function drawPanel(P, T, fadeIn) {
+  const sc = SCENES[si], x = 1000, wd = 540;
+  ctx.textAlign = 'left';
+  if (!EMBED) {
+    font(700, 16); ctx.fillStyle = theme.muted; ctx.fillText('PHD RESEARCH  ·  INTERDICTION GAMES', x, 84);
+    font(750, 40); ctx.fillStyle = theme.fg; ctx.fillText('Dynamic flow with', x, 136); ctx.fillText('expiring interdiction', x, 184);
+  }
+  ctx.globalAlpha = fadeIn;
+  let cf = 19 * FS; font(700, cf);
+  while (ctx.measureText(sc.chip).width + 32 * FS > wd && cf > 12) font(700, --cf);
+  const cw = ctx.measureText(sc.chip).width + 32 * FS, ch = 38 * FS;
+  ctx.beginPath(); ctx.roundRect(x, LAY.chip, cw, ch, ch / 2); ctx.fillStyle = alpha(sc.color, 0.16); ctx.fill();
+  ctx.lineWidth = 1.5; ctx.strokeStyle = alpha(sc.color, 0.7); ctx.stroke();
+  ctx.fillStyle = sc.color; ctx.fillText(sc.chip, x + 16 * FS, LAY.chip + 26 * FS);
+  font(400, (EMBED ? 22 : 21) * FS); ctx.fillStyle = theme.fg; wrap(EMBED ? sc.short : sc.text, x, LAY.text, wd, LAY.lh);
+  ctx.globalAlpha = 1;
+  const intro = sc.type === 'intro', delivered = P.units.filter(u => arrivalOf(u) <= T).length;
+  const nLate = P.units.filter(u => arrivalOf(u) <= T && arrivalOf(u) > Tsoft).length;
+  const tiles = [['period', intro ? '–' : String(Math.max(1, Math.min(TEND - 1, Math.floor(T)))), theme.fg],
+                 ['arrived', intro ? '–' : `${delivered}/${d}`, theme.fg],
+                 ['late', intro ? '–' : String(nLate), nLate ? ORANGE : theme.fg],
+                 ['cost', intro ? '–' : String(costAt(P, T)), costAt(P, T) > P0.z ? RED : theme.fg]];
+  tiles.forEach(([lab, val, col], i) => {
+    const tx = x + i * 138, ty = LAY.stats;
+    ctx.beginPath(); ctx.roundRect(tx, ty, 126, 84 * FS, 12); ctx.fillStyle = theme.panel; ctx.fill();
+    font(600, (EMBED ? 12 : 15) * FS); ctx.fillStyle = theme.muted; ctx.fillText(lab.toUpperCase(), tx + 16, ty + 28 * FS);
+    font(700, 32 * FS); ctx.fillStyle = col; ctx.fillText(val, tx + 16, ty + 70 * FS);
+  });
+  if (sc.type === 'outro') drawCompare(x, wd); else drawTimeline(P, T, x, wd, intro);
+  if (sc.type !== 'outro' || !EMBED) drawLegend(x, wd);
+}
+function drawTimeline(P, T, x, wd, intro) {
+  const top = LAY.tl, rh = LAY.rh, lx = x + 96 * FS, gw = wd - 96 * FS, X = v => lx + ((v - 1) / (TEND - 1)) * gw;
+  font(600, 15 * FS); ctx.fillStyle = theme.muted; ctx.textAlign = 'left'; ctx.fillText('TIMELINE', x, top - 14);
+  const rows = ['fast road', 'arrivals'];
+  rows.forEach((lab, r) => {
+    const y = top + r * rh;
+    font(600, 15 * FS); ctx.fillStyle = theme.muted; ctx.fillText(lab, x, y + rh * 0.62);
+    ctx.fillStyle = theme.panel; ctx.fillRect(lx, y + 3, gw, rh - 6);
+  });
+  if (!intro) {
+    // individual windows, stacked, then a playhead-revealed fill
+    const ws = P.windows.filter(wi => wi.arc === 0), n = ws.length || 1, bh = (rh - 10) / n;
+    ws.forEach((wi, j) => {
+      const y = top + 5 + j * bh, x0 = X(wi.q), x1 = X(wi.q + delta);
+      ctx.fillStyle = alpha(RED, 0.18); ctx.fillRect(x0, y + 1, x1 - x0, bh - 2);
+      if (T > wi.q) { ctx.fillStyle = alpha(RED, 0.85); ctx.fillRect(x0, y + 1, X(Math.min(T, wi.q + delta)) - x0, bh - 2); }
+    });
+    P.units.forEach(u => {
+      const t = arrivalOf(u); if (T < t) return;
+      const k = P.units.filter(v => arrivalOf(v) === t).indexOf(u), y = top + rh + rh / 2;
+      circle(X(t), y - 8 + k * 6, 7); ctx.fillStyle = t > Tsoft ? ORANGE : GREEN; ctx.fill();
+    });
+  }
+  const bottom = top + rows.length * rh;
+  font(500, 14 * FS); ctx.fillStyle = theme.muted; ctx.textAlign = 'center';
+  for (let t = 1; t < TEND; t++) ctx.fillText(String(t), X(t), bottom + 20 * FS);
+  ctx.setLineDash([5, 5]); ctx.strokeStyle = ORANGE; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(X(Tsoft), top - 4); ctx.lineTo(X(Tsoft), bottom + 4); ctx.stroke(); ctx.setLineDash([]);
+  font(600, 13 * FS); ctx.fillStyle = ORANGE; ctx.textAlign = 'right'; ctx.fillText('soft deadline', X(Tsoft) - 6, top - 14);
+  if (!intro) { ctx.strokeStyle = theme.fg; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(X(T), top - 6); ctx.lineTo(X(T), bottom + 6); ctx.stroke(); }
+  ctx.textAlign = 'left';
+}
+function drawCompare(x, wd) {
+  const top = LAY.tl, bh = 24 * FS, k = smooth(st / 1.2), zmax = PO.z * 1.08;
+  font(600, 15 * FS); ctx.fillStyle = theme.muted; ctx.textAlign = 'left'; ctx.fillText('SCHEDULER COST', x, top - 14);
+  [[P0, 'No attack', UNIT], [PM, 'Blocked too late', ORANGE], [PO, 'Blocked on time', RED]].forEach(([P, lab, col], i) => {
+    const y = top + i * (20 * FS + bh + 8), bw = wd * (P.z / zmax) * k;
+    font(600, 16 * FS); ctx.fillStyle = theme.fg; ctx.fillText(lab, x, y + 15 * FS);
+    ctx.fillStyle = theme.panel; ctx.fillRect(x, y + 20 * FS, wd, bh);
+    ctx.fillStyle = alpha(col, 0.85); ctx.fillRect(x, y + 20 * FS, bw, bh);
+    font(700, 16 * FS); ctx.fillStyle = '#ffffff'; ctx.textAlign = 'right';
+    ctx.fillText(String(P.z), x + bw - 10, y + 20 * FS + bh * 0.72); ctx.textAlign = 'left';
+  });
+}
+function drawLegend(x, wd) {
+  const icons = {
+    'goods': (ix, iy) => { circle(ix, iy, 9); ctx.fillStyle = UNIT; ctx.fill(); },
+    'road block': (ix, iy) => { circle(ix, iy, 10); ctx.fillStyle = RED; ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillRect(ix - 6, iy - 2, 12, 4); },
+    'on time': (ix, iy) => { circle(ix, iy, 8); ctx.fillStyle = GREEN; ctx.fill(); },
+    'late': (ix, iy) => { circle(ix, iy, 8); ctx.fillStyle = ORANGE; ctx.fill(); },
+  };
+  font(500, 16 * FS); ctx.textAlign = 'left';
+  let cx = x, cy = LAY.legend;
+  for (const [label, draw] of Object.entries(icons)) {
+    const iw = 34 + ctx.measureText(label).width + 28;
+    if (cx + iw - 28 > x + wd) { cx = x; cy += 44 * FS; }
+    draw(cx + 13, cy - 5 * FS); ctx.fillStyle = theme.muted; ctx.fillText(label, cx + 34, cy);
+    cx += iw;
+  }
+}
+
+function render() {
+  ctx.setTransform(cv.width / W, 0, 0, cv.height / H, 0, 0);
+  const sc = SCENES[si], T = clock(), appear = sc.type === 'intro' ? smooth(st / 2) : 1;
+  drawBackground();
+  drawNetwork(sc.P, T, appear);
+  drawUnits(sc.P, T, sc.type === 'intro' ? smooth((st - 1.6) / 0.6) : 1);
+  drawPanel(sc.P, T, smooth(st / 0.5));
+  if (st < 0.35) { ctx.fillStyle = theme.bg; ctx.globalAlpha = 1 - st / 0.35; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
+}
+
+let last = null;
+function frame(now) {
+  const dt = last === null ? 0 : Math.min(0.05, (now - last) / 1000); last = now;
+  if (!paused && visible) update(dt);
+  render();
+  requestAnimationFrame(frame);
+}
+const setPaused = q => { paused = q; btn.innerHTML = q ? '&#9654;' : '&#10074;&#10074;'; btn.setAttribute('aria-label', q ? 'Play' : 'Pause'); };
+btn.onclick = cv.onclick = () => setPaused(!paused);
+new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(cv);
+window.addEventListener('resize', resize);
+matchMedia('(prefers-reduced-motion: reduce)').matches && setPaused(true);
+if (params.get('scene')) { startScene(+params.get('scene')); st = +(params.get('st') || 0); setPaused(params.has('still')); }
+readTheme(); resize(); requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
