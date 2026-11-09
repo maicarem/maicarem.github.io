@@ -1417,3 +1417,22 @@ figure.cover {
     color: #23212d !important;
   }
 }
+
+// Research project cards on the about page: the animation floats left and long text wraps underneath it.
+.project-body::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.project-media {
+  float: left;
+  width: 62%;
+  margin: 0 1.5rem 0.75rem 0;
+
+  @media (max-width: 640px) {
+    float: none;
+    width: 100%;
+    margin-right: 0;
+  }
+}
